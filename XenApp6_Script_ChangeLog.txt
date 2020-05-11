@@ -8,6 +8,10 @@
 #http://www.CarlWebster.com
 #originally released to the Citrix community on September 30, 2011
 
+#Version 4.31 13-Feb-2017
+#	Added Chinese language support
+#	Fixed French wording for Table of Contents 2 (Thanks to David Rouquier)
+
 #Version 4.30 7-Feb-2017
 #	Fix numerous typos
 #	Remove references to Text and HTML as those are never going to be added
