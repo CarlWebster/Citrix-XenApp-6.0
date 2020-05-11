@@ -149,9 +149,9 @@
 	No objects are output from this script.  This script creates a Word document.
 .NOTES
 	NAME: XA6_Inventory_V4.ps1
-	VERSION: 4.02
+	VERSION: 4.03
 	AUTHOR: Carl Webster (with a lot of help from Michael B. Smith and Jeff Wouters)
-	LASTEDIT: December 5, 2013
+	LASTEDIT: December 30, 2013
 #>
 
 
@@ -271,6 +271,8 @@ $PSDefaultParameterValues = @{"*:Verbose"=$True}
 #	Fixed bug where XA65ConfigLog.udl was not found even if it existed
 #	Fixed bug where the functions in Citrix.GroupPolicy.Command.psm1 were not found
 #	Initialize switch parameters as $False
+#Updated 30-Dec-2013
+#	Do not sort the array of Citrix AD policies before returning the array from the function.  Causes the array to not work when there is only one AD policy.
 
 Set-StrictMode -Version 2
 	
@@ -2826,7 +2828,7 @@ Function GetCtxGPOsInAD
 			}
 		}
 	}
-	Return ,$xArray | Sort
+	Return ,$xArray
 }
 
 #Script begins
@@ -5146,6 +5148,8 @@ Else
 	If($CtxGPOArray -is [Array] -and $CtxGPOArray.Count -gt 0)
 	{
 		Write-Verbose "$(Get-Date): There are $($CtxGPOArray.Count) Citrix AD based policies to process"
+
+		$CtxGPOArray = $CtxGPOArray | Sort
 		
 		ForEach($CtxGPO in $CtxGPOArray)
 		{
