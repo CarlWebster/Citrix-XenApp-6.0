@@ -1,11 +1,13 @@
-#Requires -Version 3.0
+﻿#Requires -Version 3.0
 #This File is in Unicode format.  Do not edit in an ASCII editor.
 
 <#
 .SYNOPSIS
-	Creates a complete inventory of a Citrix XenApp 6 farm using Microsoft Word 2010 or 2013.
+	Creates a complete inventory of a Citrix XenApp 6 farm using Microsoft Word 2010, 2013, 
+	or 2016.
 .DESCRIPTION
-	Creates a complete inventory of a Citrix XenApp 6 farm using Microsoft Word and PowerShell.
+	Creates a complete inventory of a Citrix XenApp 6 farm using Microsoft Word and 
+	PowerShell.
 	Creates a Word document or PDF named after the XenApp 6 farm.
 	Document includes a Cover Page, Table of Contents and Footer.
 	Version 4.xx includes support for the following language versions of Microsoft Word:
@@ -24,9 +26,10 @@
 		
 .PARAMETER CompanyName
 	Company Name to use for the Cover Page.  
-	Default value is contained in HKCU:\Software\Microsoft\Office\Common\UserInfo\CompanyName or
-	HKCU:\Software\Microsoft\Office\Common\UserInfo\Company, whichever is populated on the 
-	computer running the script.
+	Default value is contained in 
+	HKCU:\Software\Microsoft\Office\Common\UserInfo\CompanyName or
+	HKCU:\Software\Microsoft\Office\Common\UserInfo\Company, whichever is populated 
+	on the computer running the script.
 	This parameter has an alias of CN.
 .PARAMETER CompanyAddress
 	Company Address to use for the Cover Page, if the Cover Page has the Address field.  
@@ -66,14 +69,14 @@
 	What Microsoft Word Cover Page to use.
 	Only Word 2010, 2013 and 2016 are supported.
 	(default cover pages in Word en-US)
-	
+
 	Valid input is:
 		Alphabet (Word 2010. Works)
 		Annual (Word 2010. Doesn't work well for this report)
 		Austere (Word 2010. Works)
-		Austin (Word 2010/2013/2016. Doesn't work in 2013 or 2016, mostly works in 2010 but 
-						Subtitle/Subject & Author fields need to be moved 
-						after title box is moved up)
+		Austin (Word 2010/2013/2016. Doesn't work in 2013 or 2016, mostly 
+		works in 2010 but Subtitle/Subject & Author fields need to be moved 
+		after title box is moved up)
 		Banded (Word 2013/2016. Works)
 		Conservative (Word 2010. Works)
 		Contrast (Word 2010. Works)
@@ -83,20 +86,22 @@
 		Filigree (Word 2013/2016. Works)
 		Grid (Word 2010/2013/2016. Works in 2010)
 		Integral (Word 2013/2016. Works)
-		Ion (Dark) (Word 2013/2016. Top date doesn't fit, box needs to be manually resized or font 
-						changed to 8 point)
-		Ion (Light) (Word 2013/2016. Top date doesn't fit, box needs to be manually resized or font 
-						changed to 8 point)
+		Ion (Dark) (Word 2013/2016. Top date doesn't fit; box needs to be 
+		manually resized or font changed to 8 point)
+		Ion (Light) (Word 2013/2016. Top date doesn't fit; box needs to be 
+		manually resized or font changed to 8 point)
 		Mod (Word 2010. Works)
-		Motion (Word 2010/2013/2016. Works if top date is manually changed to 36 point)
+		Motion (Word 2010/2013/2016. Works if top date is manually changed to 
+		36 point)
 		Newsprint (Word 2010. Works but date is not populated)
 		Perspective (Word 2010. Works)
 		Pinstripes (Word 2010. Works)
-		Puzzle (Word 2010. Top date doesn't fit, box needs to be manually resized or font 
-					changed to 14 point)
+		Puzzle (Word 2010. Top date doesn't fit; box needs to be manually 
+		resized or font changed to 14 point)
 		Retrospect (Word 2013/2016. Works)
 		Semaphore (Word 2013/2016. Works)
-		Sideline (Word 2010/2013/2016. Doesn't work in 2013 or 2016, works in 2010)
+		Sideline (Word 2010/2013/2016. Doesn't work in 2013 or 2016, works in 
+		2010)
 		Slice (Dark) (Word 2013/2016. Doesn't work)
 		Slice (Light) (Word 2013/2016. Doesn't work)
 		Stacks (Word 2010. Works)
@@ -104,7 +109,7 @@
 		Transcend (Word 2010. Works)
 		ViewMaster (Word 2013/2016. Works)
 		Whisp (Word 2013/2016. Works)
-		
+
 	The default value is Sideline.
 	This parameter has an alias of CP.
 	This parameter is only valid with the MSWORD and PDF output parameters.
@@ -115,7 +120,7 @@
 .PARAMETER PDF
 	SaveAs PDF file instead of DOCX file.
 	This parameter is disabled by default.
-	For Word 2007, the Microsoft add-in for saving as a PDF muct be installed.
+	For Word 2007, the Microsoft add-in for saving as a PDF must be installed.
 	For Word 2007, please see http://www.microsoft.com/en-us/download/details.aspx?id=9943
 	The PDF file is roughly 5X to 10X larger than the DOCX file.
 .PARAMETER MSWord
@@ -127,9 +132,12 @@
 .PARAMETER Software
 	Gather software installed by querying the registry.  
 	Use SoftwareExclusions.txt to exclude software from the report.
-	SoftwareExclusions.txt must exist, and be readable, in the same folder as this script.
-	SoftwareExclusions.txt can be an empty file to have no installed applications excluded.
-	See Get-Help About-Wildcards for help on formatting the lines to exclude applications.
+	SoftwareExclusions.txt must exist, and be readable, in the same folder as this 
+	script.
+	SoftwareExclusions.txt can be an empty file to have no installed applications 
+	excluded.
+	See Get-Help About-Wildcards for help on formatting the lines to exclude 
+	applications.
 	This parameter is disabled by default.
 .PARAMETER StartDate
 	Start date, in MM/DD/YYYY HH:MM format, for the Configuration Logging report.
@@ -142,7 +150,8 @@
 .PARAMETER Summary
 	Only give summary information, no details.
 	This parameter is disabled by default.
-	This parameter cannot be used with either the Hardware, Software, StartDate or EndDate parameters.
+	This parameter cannot be used with either the Hardware, Software, StartDate or 
+	EndDate parameters.
 .PARAMETER AddDateTime
 	Adds a date time stamp to the end of the file name.
 	Time stamp is in the format of yyyy-MM-dd_HHmm.
@@ -178,7 +187,8 @@
 	PS C:\PSScript > .\XA6_Inventory_V43.ps1 -PDF 
 	
 	Will use all Default values and save the document as a PDF file.
-	HKEY_CURRENT_USER\Software\Microsoft\Office\Common\UserInfo\CompanyName="Carl Webster" or
+	HKEY_CURRENT_USER\Software\Microsoft\Office\Common\UserInfo\CompanyName="Carl 
+	Webster" or
 	HKEY_CURRENT_USER\Software\Microsoft\Office\Common\UserInfo\Company="Carl Webster"
 	$env:username = Administrator
 
@@ -190,7 +200,8 @@
 	
 	Creates a Summary report with no detail.
 	Will use all Default values.
-	HKEY_CURRENT_USER\Software\Microsoft\Office\Common\UserInfo\CompanyName="Carl Webster" or
+	HKEY_CURRENT_USER\Software\Microsoft\Office\Common\UserInfo\CompanyName="Carl 
+	Webster" or
 	HKEY_CURRENT_USER\Software\Microsoft\Office\Common\UserInfo\Company="Carl Webster"
 	$env:username = Administrator
 
@@ -202,7 +213,8 @@
 	
 	Creates a Summary report with no detail.
 	Will use all Default values and save the document as a PDF file.
-	HKEY_CURRENT_USER\Software\Microsoft\Office\Common\UserInfo\CompanyName="Carl Webster" or
+	HKEY_CURRENT_USER\Software\Microsoft\Office\Common\UserInfo\CompanyName="Carl 
+	Webster" or
 	HKEY_CURRENT_USER\Software\Microsoft\Office\Common\UserInfo\Company="Carl Webster"
 	$env:username = Administrator
 
@@ -212,8 +224,10 @@
 .EXAMPLE
 	PS C:\PSScript > .\XA6_Inventory_V43.ps1 -Hardware 
 	
-	Will use all Default values and add additional information for each server about its hardware.
-	HKEY_CURRENT_USER\Software\Microsoft\Office\Common\UserInfo\CompanyName="Carl Webster" or
+	Will use all Default values and add additional information for each server about its 
+	hardware.
+	HKEY_CURRENT_USER\Software\Microsoft\Office\Common\UserInfo\CompanyName="Carl 
+	Webster" or
 	HKEY_CURRENT_USER\Software\Microsoft\Office\Common\UserInfo\Company="Carl Webster"
 	$env:username = Administrator
 
@@ -223,27 +237,34 @@
 .EXAMPLE
 	PS C:\PSScript > .\XA6_Inventory_V43.ps1 -StartDate "01/01/2020" -EndDate "01/02/2020" 
 	
-	Will use all Default values and add additional information for each server about its installed applications.
-	HKEY_CURRENT_USER\Software\Microsoft\Office\Common\UserInfo\CompanyName="Carl Webster" or
+	Will use all Default values and add additional information for each server about its 
+	installed applications.
+	HKEY_CURRENT_USER\Software\Microsoft\Office\Common\UserInfo\CompanyName="Carl 
+	Webster" or
 	HKEY_CURRENT_USER\Software\Microsoft\Office\Common\UserInfo\Company="Carl Webster"
 	$env:username = Administrator
 
 	Carl Webster for the Company Name.
 	Sideline for the Cover Page format.
 	Administrator for the User Name.
-	Will return all Configuration Logging entries from "01/01/2020 00:00:00" through "01/02/2020 "00:00:00".
+	Will return all Configuration Logging entries from "01/01/2020 00:00:00" through 
+	"01/02/2020 "00:00:00".
 .EXAMPLE
-	PS C:\PSScript > .\XA6_Inventory_V43.ps1 -StartDate "01/01/2020" -EndDate "01/01/2020" 
+	PS C:\PSScript > .\XA6_Inventory_V43.ps1 -StartDate "01/01/2020" -EndDate 
+	"01/01/2020" 
 	
-	Will use all Default values and add additional information for each server about its installed applications.
-	HKEY_CURRENT_USER\Software\Microsoft\Office\Common\UserInfo\CompanyName="Carl Webster" or
+	Will use all Default values and add additional information for each server about its 
+	installed applications.
+	HKEY_CURRENT_USER\Software\Microsoft\Office\Common\UserInfo\CompanyName="Carl 
+	Webster" or
 	HKEY_CURRENT_USER\Software\Microsoft\Office\Common\UserInfo\Company="Carl Webster"
 	$env:username = Administrator
 
 	Carl Webster for the Company Name.
 	Sideline for the Cover Page format.
 	Administrator for the User Name.
-	Will return all Configuration Logging entries from "01/01/2020 00:00:00" through "01/01/2020 "00:00:00".  In other words, nothing is returned.
+	Will return all Configuration Logging entries from "01/01/2020 00:00:00" through 
+	"01/01/2020 "00:00:00".  In other words, nothing is returned.
 .EXAMPLE
 	PS C:\PSScript > .\XA6_Inventory_V43.ps1 -StartDate "01/01/2020 21:00:00" -EndDate "01/01/2020 22:00:00" 
 	
@@ -257,24 +278,28 @@
 	Administrator for the User Name.
 	Will return all Configuration Logging entries from 9PM to 10PM on 01/01/2020.
 .EXAMPLE
-	PS C:\PSScript .\XA6_Inventory_V43.ps1 -CompanyName "Carl Webster Consulting" -CoverPage "Mod" -UserName "Carl Webster"
+	PS C:\PSScript .\XA6_Inventory_V43.ps1 -CompanyName "Carl Webster Consulting" 
+	-CoverPage "Mod" -UserName "Carl Webster"
 
 	Will use:
 		Carl Webster Consulting for the Company Name.
 		Mod for the Cover Page format.
 		Carl Webster for the User Name.
 .EXAMPLE
-	PS C:\PSScript .\XA6_Inventory_V43.ps1 -CN "Carl Webster Consulting" -CP "Mod" -UN "Carl Webster"
+	PS C:\PSScript .\XA6_Inventory_V43.ps1 -CN "Carl Webster Consulting" -CP "Mod" 
+	-UN "Carl Webster"
 
 	Will use:
 		Carl Webster Consulting for the Company Name (alias CN).
 		Mod for the Cover Page format (alias CP).
 		Carl Webster for the User Name (alias UN).
 .EXAMPLE
-	PS C:\PSScript .\XA6_Inventory_V43.ps1 -CompanyName "Sherlock Holmes Consulting" `
-	-CoverPage Exposure -UserName "Dr. Watson" `
-	-CompanyAddress "221B Baker Street, London, England" `
-	-CompanyFax "+44 1753 276600" `
+	PS C:\PSScript .\XA6_Inventory_V43.ps1 -CompanyName "Sherlock Holmes 
+	Consulting" 
+	-CoverPage Exposure 
+	-UserName "Dr. Watson" 
+	-CompanyAddress "221B Baker Street, London, England" 
+	-CompanyFax "+44 1753 276600" 
 	-CompanyPhone "+44 1753 276200"
 
 	Will use:
@@ -283,22 +308,25 @@
 		Dr. Watson for the User Name.
 		221B Baker Street, London, England for the Company Address.
 		+44 1753 276600 for the Company Fax.
-		+44 1753 276200 for the Compnay Phone.
+		+44 1753 276200 for the Company Phone.
 .EXAMPLE
-	PS C:\PSScript .\XA6_Inventory_V43.ps1 -CompanyName "Sherlock Holmes Consulting" `
-	-CoverPage Facet -UserName "Dr. Watson" `
+	PS C:\PSScript .\XA6_Inventory_V43.ps1 -CompanyName "Sherlock Holmes 
+	Consulting" 
+	-CoverPage Facet 
+	-UserName "Dr. Watson" 
 	-CompanyEmail SuperSleuth@SherlockHolmes.com
 
 	Will use:
 		Sherlock Holmes Consulting for the Company Name.
 		Facet for the Cover Page format.
 		Dr. Watson for the User Name.
-		SuperSleuth@SherlockHolmes.com for the Compnay Email.
+		SuperSleuth@SherlockHolmes.com for the Company Email.
 .EXAMPLE
 	PS C:\PSScript > .\XA6_Inventory_V43.ps1 -Section Policies
 	
 	Will use all Default values.
-	HKEY_CURRENT_USER\Software\Microsoft\Office\Common\UserInfo\CompanyName="Carl Webster" or
+	HKEY_CURRENT_USER\Software\Microsoft\Office\Common\UserInfo\CompanyName="Carl 
+	Webster" or
 	HKEY_CURRENT_USER\Software\Microsoft\Office\Common\UserInfo\Company="Carl Webster"
 	$env:username = Administrator
 
@@ -310,7 +338,8 @@
 	PS C:\PSScript > .\XA6_Inventory_V43.ps1 -AddDateTime
 	
 	Will use all Default values.
-	HKEY_CURRENT_USER\Software\Microsoft\Office\Common\UserInfo\CompanyName="Carl Webster" or
+	HKEY_CURRENT_USER\Software\Microsoft\Office\Common\UserInfo\CompanyName="Carl 
+	Webster" or
 	HKEY_CURRENT_USER\Software\Microsoft\Office\Common\UserInfo\Company="Carl Webster"
 	$env:username = Administrator
 
@@ -326,7 +355,8 @@
 	PS C:\PSScript > .\XA6_Inventory_V43.ps1 -PDF -AddDateTime
 	
 	Will use all Default values and save the document as a PDF file.
-	HKEY_CURRENT_USER\Software\Microsoft\Office\Common\UserInfo\CompanyName="Carl Webster" or
+	HKEY_CURRENT_USER\Software\Microsoft\Office\Common\UserInfo\CompanyName="Carl 
+	Webster" or
 	HKEY_CURRENT_USER\Software\Microsoft\Office\Common\UserInfo\Company="Carl Webster"
 	$env:username = Administrator
 
@@ -345,9 +375,9 @@
 	No objects are output from this script.  This script creates a Word or PDF document.
 .NOTES
 	NAME: XA6_Inventory_V43.ps1
-	VERSION: 4.33
+	VERSION: 4.34
 	AUTHOR: Carl Webster (with a lot of help from Michael B. Smith, Jeff Wouters and Iain Brighton)
-	LASTEDIT: December 17, 2019
+	LASTEDIT: May 9, 2020
 #>
 
 
@@ -390,28 +420,24 @@ Param(
     
 	[parameter(ParameterSetName="Word",Mandatory=$False)] 
 	[parameter(ParameterSetName="PDF",Mandatory=$False)] 
-	[parameter(ParameterSetName="SMTP",Mandatory=$False)] 
 	[Alias("CA")]
 	[ValidateNotNullOrEmpty()]
 	[string]$CompanyAddress="",
     
 	[parameter(ParameterSetName="Word",Mandatory=$False)] 
 	[parameter(ParameterSetName="PDF",Mandatory=$False)] 
-	[parameter(ParameterSetName="SMTP",Mandatory=$False)] 
 	[Alias("CE")]
 	[ValidateNotNullOrEmpty()]
 	[string]$CompanyEmail="",
     
 	[parameter(ParameterSetName="Word",Mandatory=$False)] 
 	[parameter(ParameterSetName="PDF",Mandatory=$False)] 
-	[parameter(ParameterSetName="SMTP",Mandatory=$False)] 
 	[Alias("CF")]
 	[ValidateNotNullOrEmpty()]
 	[string]$CompanyFax="",
     
 	[parameter(ParameterSetName="Word",Mandatory=$False)] 
 	[parameter(ParameterSetName="PDF",Mandatory=$False)] 
-	[parameter(ParameterSetName="SMTP",Mandatory=$False)] 
 	[Alias("CPh")]
 	[ValidateNotNullOrEmpty()]
 	[string]$CompanyPhone="",
@@ -441,6 +467,16 @@ Param(
 #http://www.CarlWebster.com
 #originally released to the Citrix community on September 30, 2011
 
+#Version 4.34 9-May-2020
+#	Add checking for a Word version of 0, which indicates the Office installation needs repairing
+#	Add Receive Side Scaling setting to Function OutputNICItem
+#	Change color variables $wdColorGray15 and $wdColorGray05 from [long] to [int]
+#	Reformatted the terminating Write-Error messages to make them more visible and readable in the console
+#	Remove the unused SMTP parameterset
+#	Update Function SetWordCellFormat to change parameter $BackgroundColor to [int]
+#	Update Functions GetComputerWMIInfo and OutputNicInfo to fix two bugs in NIC Power Management settings
+#	Update Help text
+#
 #Version 4.33 17-Dec-2019
 #	Fix Swedish Table of Contents (Thanks to Johan Kallio)
 #		From 
@@ -579,7 +615,15 @@ Else
 		Write-Verbose "$(Get-Date): MSWord is $($MSWord)"
 		Write-Verbose "$(Get-Date): PDF is $($PDF)"
 	}
-	Write-Error "Unable to determine output parameter.  Script cannot continue"
+	Write-Error "
+	`n`n
+	`t`t
+	Unable to determine output parameter.
+	`n`n
+	`t`t
+	Script cannot continue.
+	`n`n
+	"
 	Exit
 }
 
@@ -601,7 +645,13 @@ Switch ($Section)
 If($ValidSection -eq $False)
 {
 	$ErrorActionPreference = $SaveEAPreference
-	Write-Error -Message "`n`tThe Section parameter specified, $($Section), is an invalid Section option.`n`tValid options are:
+	Write-Error -Message "
+	`n`n
+	`t`t
+	The Section parameter specified, $($Section), is an invalid Section option.
+	`n`n
+	`t`t
+	Valid options are:
 	
 	`t`tAdmins
 	`t`tApps
@@ -614,7 +664,10 @@ If($ValidSection -eq $False)
 	`t`tZones
 	`t`tAll
 	
-	`tScript cannot continue."
+	`t`t
+	Script cannot continue.
+	`n`n
+	"
 	Exit
 }
 	
@@ -628,8 +681,8 @@ If($MSWord -or $PDF)
 	#http://groovy.codehaus.org/modules/scriptom/1.6.0/scriptom-office-2K3-tlb/apidocs/
 	#http://msdn.microsoft.com/en-us/library/office/aa211923(v=office.11).aspx
 	[int]$wdAlignPageNumberRight = 2
-	[long]$wdColorGray15 = 14277081
-	[long]$wdColorGray05 = 15987699 
+	[int]$wdColorGray15 = 14277081
+	[int]$wdColorGray05 = 15987699 
 	[int]$wdMove = 0
 	[int]$wdSeekMainDocument = 0
 	[int]$wdSeekPrimaryFooter = 4
@@ -909,7 +962,7 @@ Function GetComputerWMIInfo
 				
 				If($? -and $ThisNic -ne $Null)
 				{
-					OutputNicItem $Nic $ThisNic
+					OutputNicItem $Nic $ThisNic $RemoteComputerName
 				}
 				ElseIf(!$?)
 				{
@@ -1150,29 +1203,69 @@ Function OutputProcessorItem
 
 Function OutputNicItem
 {
-	Param([object]$Nic, [object]$ThisNic)
+	Param([object]$Nic, [object]$ThisNic, [string]$RemoteComputerName)
+	
+	$powerMgmt = Get-WmiObject -computername $RemoteComputerName MSPower_DeviceEnable -Namespace root\wmi | Where-Object{$_.InstanceName -match [regex]::Escape($ThisNic.PNPDeviceID)}
+
+	If($? -and $Null -ne $powerMgmt)
+	{
+		If($powerMgmt.Enable -eq $True)
+		{
+			$PowerSaving = "Enabled"
+		}
+		Else
+		{
+			$PowerSaving = "Disabled"
+		}
+	}
+	Else
+	{
+        $PowerSaving = "N/A"
+	}
 	
 	$xAvailability = ""
-	Switch ($processor.availability)
+	Switch ($ThisNic.availability)
 	{
-		1	{$xAvailability = "Other"}
-		2	{$xAvailability = "Unknown"}
-		3	{$xAvailability = "Running or Full Power"}
-		4	{$xAvailability = "Warning"}
-		5	{$xAvailability = "In Test"}
-		6	{$xAvailability = "Not Applicable"}
-		7	{$xAvailability = "Power Off"}
-		8	{$xAvailability = "Off Line"}
-		9	{$xAvailability = "Off Duty"}
-		10	{$xAvailability = "Degraded"}
-		11	{$xAvailability = "Not Installed"}
-		12	{$xAvailability = "Install Error"}
-		13	{$xAvailability = "Power Save - Unknown"}
-		14	{$xAvailability = "Power Save - Low Power Mode"}
-		15	{$xAvailability = "Power Save - Standby"}
-		16	{$xAvailability = "Power Cycle"}
-		17	{$xAvailability = "Power Save - Warning"}
-		Default	{$xAvailability = "Unknown"}
+		1		{$xAvailability = "Other"; Break}
+		2		{$xAvailability = "Unknown"; Break}
+		3		{$xAvailability = "Running or Full Power"; Break}
+		4		{$xAvailability = "Warning"; Break}
+		5		{$xAvailability = "In Test"; Break}
+		6		{$xAvailability = "Not Applicable"; Break}
+		7		{$xAvailability = "Power Off"; Break}
+		8		{$xAvailability = "Off Line"; Break}
+		9		{$xAvailability = "Off Duty"; Break}
+		10		{$xAvailability = "Degraded"; Break}
+		11		{$xAvailability = "Not Installed"; Break}
+		12		{$xAvailability = "Install Error"; Break}
+		13		{$xAvailability = "Power Save - Unknown"; Break}
+		14		{$xAvailability = "Power Save - Low Power Mode"; Break}
+		15		{$xAvailability = "Power Save - Standby"; Break}
+		16		{$xAvailability = "Power Cycle"; Break}
+		17		{$xAvailability = "Power Save - Warning"; Break}
+		Default	{$xAvailability = "Unknown"; Break}
+	}
+
+	#attempt to get Receive Side Scaling setting
+	$RSSEnabled = "N/A"
+	Try
+	{
+		#https://ios.developreference.com/article/10085450/How+do+I+enable+VRSS+(Virtual+Receive+Side+Scaling)+for+a+Windows+VM+without+relying+on+Enable-NetAdapterRSS%3F
+		$RSSEnabled = (Get-WmiObject -ComputerName $RemoteComputerName MSFT_NetAdapterRssSettingData -Namespace "root\StandardCimV2" -ea 0).Enabled
+
+		If($RSSEnabled)
+		{
+			$RSSEnabled = "Enabled"
+		}
+		ELse
+		{
+			$RSSEnabled = "Disabled"
+		}
+	}
+	
+	Catch
+	{
+		$RSSEnabled = "Not available on $Script:RunningOS"
 	}
 
 	$xIPAddress = @()
@@ -1247,6 +1340,8 @@ Function OutputNicItem
 		$NicInformation += @{ Data = "Connection ID"; Value = $ThisNic.NetConnectionID; }
 		$NicInformation += @{ Data = "Manufacturer"; Value = $Nic.manufacturer; }
 		$NicInformation += @{ Data = "Availability"; Value = $xAvailability; }
+		$NicInformation += @{ Data = "Allow the computer to turn off this device to save power"; Value = $PowerSaving; }
+		$NicInformation += @{ Data = "Receive Side Scaling"; Value = $RSSEnabled; }
 		$NicInformation += @{ Data = "Physical Address"; Value = $Nic.macaddress; }
 		If($xIPAddress.Count -gt 1)
 		{
@@ -4012,7 +4107,7 @@ Function SetWordCellFormat
 		# Font size
 		[Parameter()] [ValidateNotNullOrEmpty()] [int] $Size = 0,
 		# Cell background color
-		[Parameter()] [AllowNull()] $BackgroundColor = $null,
+		[Parameter()] [AllowNull()] [int]$BackgroundColor = $null,
 		# Force solid background color
 		[Switch] $Solid,
 		[Switch] $Bold,
@@ -4202,7 +4297,18 @@ Function SetupWord
 	{
 		Write-Warning "The Word object could not be created.  You may need to repair your Word installation."
 		$ErrorActionPreference = $SaveEAPreference
-		Write-Error "`n`n`t`tThe Word object could not be created.  You may need to repair your Word installation.`n`n`t`tScript cannot continue.`n`n"
+		Write-Error "
+		`n`n
+		`t`t
+		The Word object could not be created.
+		`n`n
+		`t`t
+		You may need to repair your Word installation.
+		`n`n
+		`t`t
+		Script cannot continue.
+		`n`n
+		"
 		Exit
 	}
 
@@ -4219,7 +4325,15 @@ Function SetupWord
 	If(!($Script:WordLanguageValue -gt -1))
 	{
 		$ErrorActionPreference = $SaveEAPreference
-		Write-Error "`n`n`t`tUnable to determine the Word language value.`n`n`t`tScript cannot continue.`n`n"
+		Write-Error "
+		`n`n
+		`t`t
+		Unable to determine the Word language value.
+		`n`n
+		`t`t
+		Script cannot continue.
+		`n`n
+		"
 		AbortScript
 	}
 	Write-Verbose "$(Get-Date): Word language value is $($Script:WordLanguageValue)"
@@ -4244,13 +4358,45 @@ Function SetupWord
 	ElseIf($Script:WordVersion -eq $wdWord2007)
 	{
 		$ErrorActionPreference = $SaveEAPreference
-		Write-Error "`n`n`t`tMicrosoft Word 2007 is no longer supported.`n`n`t`tScript will end.`n`n"
+		Write-Error "
+		`n`n
+		`t`t
+		Microsoft Word 2007 is no longer supported.
+		`n`n
+		`t`t
+		Script will end.
+		`n`n
+		"
 		AbortScript
+	}
+	ElseIf($Script:WordVersion -eq 0)
+	{
+		Write-Error "
+		`n`n
+		`t`t
+		The Word Version is 0. You should run a full online repair of your Office installation.
+		`n`n
+		`t`t
+		Script cannot continue.
+		`n`n
+		"
+		Exit
 	}
 	Else
 	{
 		$ErrorActionPreference = $SaveEAPreference
-		Write-Error "`n`n`t`tYou are running an untested or unsupported version of Microsoft Word.`n`n`t`tScript will end.`n`n`t`tPlease send info on your version of Word to webster@carlwebster.com`n`n"
+		Write-Error "
+		`n`n
+		`t`t
+		You are running an untested or unsupported version of Microsoft Word.
+		`n`n
+		`t`t
+		Script will end.
+		`n`n
+		`t`t
+		Please send info on your version of Word to webster@carlwebster.com
+		`n`n
+		"
 		AbortScript
 	}
 
@@ -4384,7 +4530,15 @@ Function SetupWord
 		$ErrorActionPreference = $SaveEAPreference
 		Write-Verbose "$(Get-Date): Word language value $($Script:WordLanguageValue)"
 		Write-Verbose "$(Get-Date): Culture code $($Script:WordCultureCode)"
-		Write-Error "`n`n`t`tFor $($Script:WordProduct), $($CoverPage) is not a valid Cover Page option.`n`n`t`tScript cannot continue.`n`n"
+		Write-Error "
+		`n`n
+		`t`t
+		For $($Script:WordProduct), $($CoverPage) is not a valid Cover Page option.
+		`n`n
+		`t`t
+		Script cannot continue.
+		`n`n
+		"
 		AbortScript
 	}
 
@@ -4447,7 +4601,15 @@ Function SetupWord
 	{
 		Write-Verbose "$(Get-Date): "
 		$ErrorActionPreference = $SaveEAPreference
-		Write-Error "`n`n`t`tAn empty Word document could not be created.`n`n`t`tScript cannot continue.`n`n"
+		Write-Error "
+		`n`n
+		`t`t
+		An empty Word document could not be created.
+		`n`n
+		`t`t
+		Script cannot continue.
+		`n`n
+		"
 		AbortScript
 	}
 
@@ -4456,7 +4618,15 @@ Function SetupWord
 	{
 		Write-Verbose "$(Get-Date): "
 		$ErrorActionPreference = $SaveEAPreference
-		Write-Error "`n`n`t`tAn unknown error happened selecting the entire Word document for default formatting options.`n`n`t`tScript cannot continue.`n`n"
+		Write-Error "
+		`n`n
+		`t`t
+		An unknown error happened selecting the entire Word document for default formatting options.
+		`n`n
+		`t`t
+		Script cannot continue.
+		`n`n
+		"
 		AbortScript
 	}
 
@@ -4734,7 +4904,18 @@ If(!(Check-NeededPSSnapins "Citrix.XenApp.Commands"))
 {
 	#We're missing Citrix Snapins that we need
 	$ErrorActionPreference = $SaveEAPreference
-	Write-Error "Missing Citrix PowerShell Snap-ins Detected, check the console above for more information. Are you sure you are running this script on a XenApp 6 Server? Script will now close."
+	Write-Error "
+	`n`n
+	`t`t
+	Missing Citrix PowerShell Snap-ins Detected, check the console above for more information.
+	`n`n
+	`t`t
+	Are you sure you are running this script on a XenApp 6 Server?
+	`n`n
+	`t`t
+	Script will now close.
+	`n`n
+	"
 	Exit
 }
 
@@ -4744,7 +4925,15 @@ If($Software)
 	If(!(Test-Path "$($pwd.path)\SoftwareExclusions.txt"))
 	{
 		$ErrorActionPreference = $SaveEAPreference
-		Write-Error "Software inventory requested but $($pwd.path)\SoftwareExclusions.txt does not exist.  Script cannot continue."
+		Write-Error "
+		`n`n
+		`t`t
+		Software inventory requested but $($pwd.path)\SoftwareExclusions.txt does not exist.
+		`n`n
+		`t`t
+		Script cannot continue.
+		`n`n
+		"
 		Exit
 	}
 	
@@ -4753,7 +4942,15 @@ If($Software)
 	If(!($?))
 	{
 		$ErrorActionPreference = $SaveEAPreference
-		Write-Error "There was an error accessing or reading $($pwd.path)\SoftwareExclusions.txt.  Script cannot continue."
+		Write-Error "
+		`n`n
+		`t`t
+		There was an error accessing or reading $($pwd.path)\SoftwareExclusions.txt.
+		`n`n
+		`t`t
+		Script cannot continue.
+		`n`n
+		"
 		Exit
 	}
 	$x = $Null
@@ -4785,7 +4982,15 @@ Else
 {
 	$ErrorActionPreference = $SaveEAPreference
 	Write-Warning "Farm information could not be retrieved"
-	Write-Error "Farm information could not be retrieved.  Script cannot continue."
+	Write-Error "
+	`n`n
+	`t`t
+	Farm information could not be retrieved.
+	`n`n
+	`t`t
+	Script cannot continue.
+	`n`n
+	"
 	Exit
 }
 $farm = $Null
