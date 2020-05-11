@@ -312,9 +312,9 @@
 	No objects are output from this script.  This script creates a Word or PDF document.
 .NOTES
 	NAME: XA6_Inventory_V42.ps1
-	VERSION: 4.2
+	VERSION: 4.21
 	AUTHOR: Carl Webster (with a lot of help from Michael B. Smith, Jeff Wouters and Iain Brighton)
-	LASTEDIT: August 3, 2014
+	LASTEDIT: December 18, 2014
 #>
 
 
@@ -385,6 +385,9 @@ Param(
 #@carlwebster on Twitter
 #http://www.CarlWebster.com
 #originally released to the Citrix community on September 30, 2011
+#Version 4.21 18-Dec-2014
+#	Updated for CTX129229 dated 18-Dec-2014
+#	Fix wrong variable name for saving as PDF for Word 2013
 #Version 4.2
 #	Fix the SWExclusions function to work if SoftwareExclusions.txt file contains only one item
 #	Cleanup the script's parameters section
@@ -640,7 +643,7 @@ If($MSWord -or $PDF)
 	[int]$wdWord2010 = 14
 	[int]$wdWord2013 = 15
 	[int]$wdFormatDocumentDefault = 16
-	[int]$wdSaveFormatPDF = 17
+	[int]$wdFormatPDF = 17
 	#http://blogs.technet.com/b/heyscriptingguy/archive/2006/03/01/how-can-i-right-align-a-single-column-in-a-word-table.aspx
 	#http://msdn.microsoft.com/en-us/library/office/ff835817%28v=office.15%29.aspx
 	[int]$wdAlignParagraphLeft = 0
@@ -6807,7 +6810,7 @@ If($Section -eq "All" -or $Section -eq "Servers")
 						}
 
 						#compare Citrix hotfixes to recommended Citrix hotfixes from CTX129229
-						#hotfix lists are from CTX129229 dated 18-APR-2014
+						#hotfix lists are from CTX129229 dated 18-DEC-2014
 						Write-Verbose "$(Get-Date): `t`tCompare Citrix hotfixes to recommended Citrix hotfixes from CTX129229"
 						If(!$HRP2Installed)
 						{
@@ -6820,7 +6823,7 @@ If($Section -eq "All" -or $Section -eq "Servers")
 						Else #HRP2 installed
 						{
 							Write-Verbose "$(Get-Date): `t`tProcessing HRP02 hotfix list for server $($server.ServerName)"
-							$RecommendedList = @("XA600R02W2K8R2X64015", "XA600R02W2K8R2X64041")
+							$RecommendedList = @("XA600R02W2K8R2X64015", "XA600R02W2K8R2X64051")
 						}
 						
 						If($RecommendedList.count -gt 0)
@@ -6932,7 +6935,7 @@ If($Section -eq "All" -or $Section -eq "Servers")
 								#Server 2008 R2 SP1 installed
 								$RecommendedList = @("KB2465772", "KB2620656", "KB2647753", "KB2661332", 
 												"KB2728738", "KB2748302", "KB2775511", "KB2778831",
-												"KB2896256", "KB917607")
+												"KB2896256", "KB2908190", "KB2920289", "KB917607")
 							}
 							Else
 							{
