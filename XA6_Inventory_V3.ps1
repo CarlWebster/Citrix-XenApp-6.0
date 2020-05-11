@@ -97,9 +97,9 @@
 	http://www.carlwebster.com/documenting-a-citrix-xenapp-6-farm-with-microsoft-powershell-and-word-version-3
 .NOTES
 	NAME: XA6_Inventory_V3.ps1
-	VERSION: 3
+	VERSION: 3.01
 	AUTHOR: Carl Webster (with a lot of help from Michael B. Smith and Jeff Wouters)
-	LASTEDIT: March 15, 2013
+	LASTEDIT: April 23, 2013
 #>
 
 
@@ -130,6 +130,8 @@ Param(	[parameter(
 	[ValidateNotNullOrEmpty()]
 	[string]$UserName=$env:username )
 
+
+Set-StrictMode -Version 2
 	
 #Original Script created 8/17/2010 by Michael Bogobowicz, Citrix Systems.
 #To contact, please message @mikebogo on Twitter
@@ -177,6 +179,10 @@ Param(	[parameter(
 #	?{?_.SessionId -eq $SessionID} should have been ?{$_.SessionId -eq $SessionID} in the CheckWordPrereq function
 #Updated March 15, 2013
 #	Include updated hotfix lists from CTX129229
+#Updated April 23, 2013
+#	Removed the Logon Control line from the Server section since Logon Control only applies to XenApp 6.5
+#	Added two more write-verbose lines
+#	Fixed a compatibility issue with the way the Word file was saved and Set-StrictMode -Version 2
 
 Function CheckWordPrereq
 {
@@ -1642,6 +1648,7 @@ If( $? )
 	WriteWordLine 1 0 "Servers:"
 	ForEach($server in $servers)
 	{
+		Write-Verbose "`tProcessing server $($server.ServerName)"
 		WriteWordLine 2 1 "Name: " $server.ServerName
 		WriteWordLine 0 2 "Product`t`t`t`t: " $server.CitrixProductName
 		WriteWordLine 0 2 "Edition`t`t`t`t: " $server.CitrixEdition
@@ -1656,16 +1663,6 @@ If( $? )
 		Else 
 		{
 			WriteWordLine 0 0 "Disabled"
-		}
-		WriteWordLine 0 2 "Logon Control Mode`t`t: " -nonewline
-		switch ($Server.LogOnMode)
-		{
-			"Unknown"                       {WriteWordLine 0 0 "Unknown"}
-			"AllowLogOns"                   {WriteWordLine 0 0 "Allow logons and reconnections"}
-			"ProhibitNewLogOnsUntilRestart" {WriteWordLine 0 0 "Prohibit logons until server restart"}
-			"ProhibitNewLogOns "            {WriteWordLine 0 0 "Prohibit logons only"}
-			"ProhibitLogOns "               {WriteWordLine 0 0 "Prohibit logons and reconnections"}
-			Default {WriteWordLine 0 0 "Logon control mode could not be determined: $($Server.LogOnMode)"}
 		}
 
 		WriteWordLine 0 2 "Product Installation Date`t: " $server.CitrixInstallDate
@@ -1710,24 +1707,24 @@ If( $? )
 			}
 		}
 		#list citrix services
-		write-verbose "Testing to see if $($server.ServerName) is online and reachable"
+		write-verbose "`t`tTesting to see if $($server.ServerName) is online and reachable to get service and hotfix data"
 		If(Test-Connection -ComputerName $server.servername -quiet -EA 0)
 		{
-			write-verbose "$($server.ServerName) is online.  Citrix Services and Hotfix areas processed."
-			write-verbose "Processing Citrix services for server $($server.ServerName)"
+			write-verbose "`t`t$($server.ServerName) is online.  Citrix Services and Hotfix areas processed."
+			write-verbose "`t`tProcessing Citrix services for server $($server.ServerName)"
 			$services = get-service -ComputerName $server.ServerName -EA 0 | where-object {$_.DisplayName -like "*Citrix*"} | sort-object DisplayName
 			WriteWordLine 0 2 "Citrix Services"
-			write-verbose "Create Word Table for Citrix services"
+			write-verbose "`t`tCreate Word Table for Citrix services"
 			$TableRange = $doc.Application.Selection.Range
 			[int]$Columns = 2
 			[int]$Rows = $services.count + 1
-			write-verbose "add Citrix services table to doc"
+			write-verbose "`t`tadd Citrix services table to doc"
 			$Table = $doc.Tables.Add($TableRange, $Rows, $Columns)
 			$table.Style = "Table Grid"
 			$table.Borders.InsideLineStyle = 1
 			$table.Borders.OutsideLineStyle = 1
 			[int]$xRow = 1
-			write-verbose "format first row with column headings"
+			write-verbose "`t`tformat first row with column headings"
 			$Table.Cell($xRow,1).Shading.BackgroundPatternColor = $wdColorGray15
 			$Table.Cell($xRow,1).Range.Font.Bold = $True
 			$Table.Cell($xRow,1).Range.Text = "Display Name"
@@ -1741,20 +1738,20 @@ If( $? )
 				$Table.Cell($xRow,2).Range.Text = $Service.Status
 			}
 
-			write-verbose "Move table of Citrix services to the right"
+			write-verbose "`t`tMove table of Citrix services to the right"
 			$Table.Rows.SetLeftIndent(75,1)
 			$table.AutoFitBehavior(1)
 
 			#return focus back to document
-			write-verbose "return focus back to document"
+			write-verbose "`t`treturn focus back to document"
 			$doc.ActiveWindow.ActivePane.view.SeekView=$wdSeekMainDocument
 
 			#move to the end of the current document
-			write-verbose "move to the end of the current document"
+			write-verbose "`t`tmove to the end of the current document"
 			$selection.EndKey($wdStory,$wdMove) | Out-Null
 
 			#Citrix hotfixes installed
-			write-verbose "Get list of Citrix hotfixes installed"
+			write-verbose "`t`tGet list of Citrix hotfixes installed"
 			$hotfixes = Get-XAServerHotfix -ServerName $server.ServerName -EA 0 | sort-object HotfixName
 			If( $? -and $hotfixes )
 			{
@@ -1766,21 +1763,21 @@ If( $? )
 				}
 				$Rows++
 				
-				write-verbose "number of hotfixes is $($Rows-1)"
+				write-verbose "`t`tnumber of hotfixes is $($Rows-1)"
 				$HotfixArray = ""
 				$HRP2Installed = $False
 				WriteWordLine 0 0 ""
 				WriteWordLine 0 2 "Citrix Installed Hotfixes:"
-				write-verbose "Create Word Table for Citrix Hotfixes"
+				write-verbose "`t`tCreate Word Table for Citrix Hotfixes"
 				$TableRange = $doc.Application.Selection.Range
 				$Columns = 5
-				write-verbose "add Citrix installed hotfix table to doc"
+				write-verbose "`t`tadd Citrix installed hotfix table to doc"
 				$Table = $doc.Tables.Add($TableRange, $Rows, $Columns)
 				$table.Style = "Table Grid"
 				$table.Borders.InsideLineStyle = 1
 				$table.Borders.OutsideLineStyle = 1
 				$xRow = 1
-				write-verbose "format first row with column headings"
+				write-verbose "`t`tformat first row with column headings"
 				$Table.Cell($xRow,1).Shading.BackgroundPatternColor = $wdColorGray15
 				$Table.Cell($xRow,1).Range.Font.Bold = $True
 				$Table.Cell($xRow,1).Range.Font.Size = "10"
@@ -1822,41 +1819,41 @@ If( $? )
 					$Table.Cell($xRow,5).Range.Font.Size = "10"
 					$Table.Cell($xRow,5).Range.Text = $hotfix.Valid
 				}
-				write-verbose "Move table of Citrix installed hotfixes to the right"
+				write-verbose "`t`tMove table of Citrix installed hotfixes to the right"
 				$Table.Rows.SetLeftIndent(75,1)
 				$table.AutoFitBehavior(1)
 
 				#return focus back to document
-				write-verbose "return focus back to document"
+				write-verbose "`t`treturn focus back to document"
 				$doc.ActiveWindow.ActivePane.view.SeekView=$wdSeekMainDocument
 
 				#move to the end of the current document
-				write-verbose "move to the end of the current document"
+				write-verbose "`t`tmove to the end of the current document"
 				$selection.EndKey($wdStory,$wdMove) | Out-Null
 				WriteWordLine 0 0 ""
 
 				#compare Citrix hotfixes to recommended Citrix hotfixes from CTX129229
 				#hotfix lists are from CTX129229 dated 4-MAR-2013
-				write-verbose "compare Citrix hotfixes to recommended Citrix hotfixes from CTX129229"
+				write-verbose "`t`tcompare Citrix hotfixes to recommended Citrix hotfixes from CTX129229"
 				If( !$HRP2Installed )
 				{
-					write-verbose "Processing pre HRP02 hotfix list for server $($server.ServerName)"
+					write-verbose "`t`tProcessing pre HRP02 hotfix list for server $($server.ServerName)"
 					WriteWordLine 0 2 "Citrix Recommended Hotfixes:"
 					$RecommendedList = @("XA600W2K8R2X64R01","XA600W2K8R2X64012","XA600W2K8R2X64017","XA600W2K8R2X64021",
 								"XA600W2K8R2X64029", "XA600W2K8R2X64046", "XA600W2K8R2X64058", "XA600W2K8R2X64060",
 								"XA600W2K8R2X64062", "XA600W2K8R2X64063", "XA600W2K8R2X64068", "XA600W2K8R2X64077", 
 								"XA600W2K8R2X64079", "XA600W2K8R2X64089")
-					write-verbose "Create Word Table for Citrix Hotfixes"
+					write-verbose "`t`tCreate Word Table for Citrix Hotfixes"
 					$TableRange = $doc.Application.Selection.Range
 					$Columns = 2
 					$Rows = $RecommendedList.count + 1
-					write-verbose "add Citrix recommended hotfix table to doc"
+					write-verbose "`t`tadd Citrix recommended hotfix table to doc"
 					$Table = $doc.Tables.Add($TableRange, $Rows, $Columns)
 					$table.Style = "Table Grid"
 					$table.Borders.InsideLineStyle = 1
 					$table.Borders.OutsideLineStyle = 1
 					$xRow = 1
-					write-verbose "format first row with column headings"
+					write-verbose "`t`tformat first row with column headings"
 					$Table.Cell($xRow,1).Shading.BackgroundPatternColor = $wdColorGray15
 					$Table.Cell($xRow,1).Range.Font.Bold = $True
 					$Table.Cell($xRow,1).Range.Text = "Citrix Hotfix"
@@ -1878,21 +1875,21 @@ If( $? )
 							$Table.Cell($xRow,2).Range.Text = "Installed"
 						}
 					}
-					write-verbose "Move table of Citrix hotfixes to the right"
+					write-verbose "`t`tMove table of Citrix hotfixes to the right"
 					$Table.Rows.SetLeftIndent(75,1)
 					$table.AutoFitBehavior(1)
 
 					#return focus back to document
-					write-verbose "return focus back to document"
+					write-verbose "`t`treturn focus back to document"
 					$doc.ActiveWindow.ActivePane.view.SeekView=$wdSeekMainDocument
 
 					#move to the end of the current document
-					write-verbose "move to the end of the current document"
+					write-verbose "`t`tmove to the end of the current document"
 					$selection.EndKey($wdStory,$wdMove) | Out-Null
 					WriteWordLine 0 0 ""
 				}
 				#build list of installed Microsoft hotfixes
-				write-verbose "Processing Microsoft hotfixes for server $($server.ServerName)"
+				write-verbose "`t`tProcessing Microsoft hotfixes for server $($server.ServerName)"
 				$MSInstalledHotfixes = Get-HotFix -computername $Server.ServerName -EA 0 | select-object -Expand HotFixID | sort-object HotFixID
 				If($server.OSServicePack.IndexOf('1') -gt 0)
 				{
@@ -1913,17 +1910,17 @@ If( $? )
 				}
 				
 				WriteWordLine 0 2 "Microsoft Recommended Hotfixes:"
-				write-verbose "Create Word Table for Microsoft Hotfixes"
+				write-verbose "`t`tCreate Word Table for Microsoft Hotfixes"
 				$TableRange = $doc.Application.Selection.Range
 				$Columns = 2
 				$Rows = $RecommendedList.count + 1
-				write-verbose "add Microsoft hotfix table to doc"
+				write-verbose "`t`tadd Microsoft hotfix table to doc"
 				$Table = $doc.Tables.Add($TableRange, $Rows, $Columns)
 				$table.Style = "Table Grid"
 				$table.Borders.InsideLineStyle = 1
 				$table.Borders.OutsideLineStyle = 1
 				$xRow = 1
-				write-verbose "format first row with column headings"
+				write-verbose "`t`tformat first row with column headings"
 				$Table.Cell($xRow,1).Shading.BackgroundPatternColor = $wdColorGray15
 				$Table.Cell($xRow,1).Range.Font.Bold = $True
 				$Table.Cell($xRow,1).Range.Text = "Microsoft Hotfix"
@@ -1945,23 +1942,23 @@ If( $? )
 						$Table.Cell($xRow,2).Range.Text = "Installed"
 					}
 				}
-				write-verbose "Move table of Microsoft hotfixes to the right"
+				write-verbose "`t`tMove table of Microsoft hotfixes to the right"
 				$Table.Rows.SetLeftIndent(75,1)
 				$table.AutoFitBehavior(1)
 
 				#return focus back to document
-				write-verbose "return focus back to document"
+				write-verbose "`t`treturn focus back to document"
 				$doc.ActiveWindow.ActivePane.view.SeekView=$wdSeekMainDocument
 
 				#move to the end of the current document
-				write-verbose "move to the end of the current document"
+				write-verbose "`t`tmove to the end of the current document"
 				$selection.EndKey($wdStory,$wdMove) | Out-Null
 				WriteWordLine 0 2 "Not all missing Microsoft hotfixes may be needed for this server"
 			}
 		}
 		Else
 		{
-			write-verbose "$($server.ServerName) is offline or unreachable.  Citrix Services and Hotfix areas skipped."
+			write-verbose "`t`t$($server.ServerName) is offline or unreachable.  Citrix Services and Hotfix areas skipped."
 			WriteWordLine 0 0 "Server $($server.ServerName) was offline or unreachable at "(get-date).ToString()
 			WriteWordLine 0 0 "The Citrix Services and Hotfix areas were skipped."
 		}
@@ -2099,6 +2096,7 @@ else
 		WriteWordLine 1 0 "Policies:"
 		ForEach($Policy in $Policies)
 		{
+			write-verbose "`t$($Policy.PolicyName)"
 			WriteWordLine 2 1 "Policy Name: " $Policy.PolicyName
 			WriteWordLine 0 2 "Type`t`t: " $Policy.Type
 			If(![String]::IsNullOrEmpty($Policy.Description))
@@ -3317,18 +3315,25 @@ If($CoverPagesExist)
 }
 
 write-verbose "Save and Close document and Shutdown Word"
-[ref]$SaveFormat = "microsoft.office.interop.word.WdSaveFormat" -as [type] 
 If ($WordVersion -eq 12)
 {
 	#Word 2007
-	$doc.SaveAs($filename, $SaveFormat::wdFormatDocument)
+	$SaveFormat = "microsoft.office.interop.word.WdSaveFormat" -as [type] 
+	$doc.SaveAs($filename, $SaveFormat)
 }
 Else
 {
-	$doc.SaveAs([REF]$filename, [ref]$SaveFormat::wdFormatDocument)
+	#the $saveFormat below passes StrictMode 2
+	#I found this at the following two links
+	#http://blogs.technet.com/b/bshukla/archive/2011/09/27/3347395.aspx
+	#http://msdn.microsoft.com/en-us/library/microsoft.office.interop.word.wdsaveformat(v=office.14).aspx
+	$saveFormat = [Enum]::Parse([Microsoft.Office.Interop.Word.WdSaveFormat], "wdFormatDocumentDefault")
+	$doc.SaveAs([REF]$filename, [ref]$SaveFormat)
 }
 
 $doc.Close()
 $Word.Quit()
+[System.Runtime.Interopservices.Marshal]::ReleaseComObject($Word) | out-null
+Remove-Variable -Name word
 [gc]::collect() 
 [gc]::WaitForPendingFinalizers()
