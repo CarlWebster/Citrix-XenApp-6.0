@@ -94,6 +94,12 @@
 	Only give summary information, no details.
 	This parameter is disabled by default.
 	This parameter cannot be used with either the Hardware, Software, StartDate or EndDate parameters.
+.PARAMETER AddDateTime
+	Adds a date time stamp to the end of the file name.
+	Time stamp is in the format of yyyy-MM-dd_HHmm.
+	June 1, 2014 at 6PM is 2014-06-01_1800.
+	Output filename will be ReportName_2014-06-01_1800.docx (or .pdf).
+	This parameter is disabled by default.
 .EXAMPLE
 	PS C:\PSScript > .\XA6_Inventory_V41.ps1
 	
@@ -225,9 +231,9 @@
 	No objects are output from this script.  This script creates a Word or PDF document.
 .NOTES
 	NAME: XA6_Inventory_V41.ps1
-	VERSION: 4.13
+	VERSION: 4.14
 	AUTHOR: Carl Webster (with a lot of help from Michael B. Smith and Jeff Wouters)
-	LASTEDIT: May 20, 2014
+	LASTEDIT: June 2, 2014
 #>
 
 
@@ -309,7 +315,18 @@ Param(
 	Position = 8, 
 	Mandatory=$False )
 	] 
-	[Switch]$Summary=$False	
+	[Switch]$Summary=$False,
+
+	[parameter(ParameterSetName="Standard",
+	Position = 9, 
+	Mandatory=$False )
+	] 
+	[parameter(ParameterSetName="Summary",
+	Position = 9, 
+	Mandatory=$False )
+	] 
+	[Switch]$AddDateTime=$False
+	
 	)
 
 
@@ -319,6 +336,10 @@ $PSDefaultParameterValues = @{"*:Verbose"=$True}
 $SaveEAPreference = $ErrorActionPreference
 $ErrorActionPreference = 'SilentlyContinue'
 
+If($PDF -eq $Null)
+{
+	$PDF = $False
+}
 If($Hardware -eq $Null)
 {
 	$Hardware = $False
@@ -330,6 +351,10 @@ If($Software -eq $Null)
 If($Summary -eq $Null)
 {
 	$Summary = $False
+}
+If($AddDateTime -eq $Null)
+{
+	$AddDateTime = $False
 }
 	
 #Original Script created 8/17/2010 by Michael Bogobowicz, Citrix Systems.
@@ -435,6 +460,8 @@ If($Summary -eq $Null)
 #		Test for existence of "word" variable before removal
 #		Fix GetComputerWMIInfo to work in a multi-forest Active Directory environment
 #	Next script update will require PowerShell Version 3.0 or higher
+#Version 4.14
+#	Added an AddDateTime parameter
 
 Set-StrictMode -Version 2
 	
@@ -3331,23 +3358,49 @@ If($?)
 	}
 	[string]$FarmName = $farm.FarmName
 	[string]$Title = "Inventory Report for the $($FarmName) Farm"
-	If($Summary)
-	{
-		[string]$filename1 = "$($pwd.path)\$($farm.FarmName)_Summary.docx"
-	}
-	Else
-	{
-		[string]$filename1 = "$($pwd.path)\$($farm.FarmName).docx"
-	}
-	If($PDF)
+	
+	If($AddDateTime)
 	{
 		If($Summary)
 		{
-			[string]$filename2 = "$($pwd.path)\$($farm.FarmName)_Summary.pdf"
+			[string]$filename1 = "$($pwd.path)\$($farm.FarmName)_Summary"
 		}
 		Else
 		{
-			[string]$filename2 = "$($pwd.path)\$($farm.FarmName).pdf"
+			[string]$filename1 = "$($pwd.path)\$($farm.FarmName)"
+		}
+		If($PDF)
+		{
+			If($Summary)
+			{
+				[string]$filename2 = "$($pwd.path)\$($farm.FarmName)_Summary"
+			}
+			Else
+			{
+				[string]$filename2 = "$($pwd.path)\$($farm.FarmName)"
+			}
+		}
+	}
+	Else
+	{
+		If($Summary)
+		{
+			[string]$filename1 = "$($pwd.path)\$($farm.FarmName)_Summary.docx"
+		}
+		Else
+		{
+			[string]$filename1 = "$($pwd.path)\$($farm.FarmName).docx"
+		}
+		If($PDF)
+		{
+			If($Summary)
+			{
+				[string]$filename2 = "$($pwd.path)\$($farm.FarmName)_Summary.pdf"
+			}
+			Else
+			{
+				[string]$filename2 = "$($pwd.path)\$($farm.FarmName).pdf"
+			}
 		}
 	}
 } 
@@ -3548,6 +3601,7 @@ If($PDF)
 {
 	Write-Verbose "$(Get-Date): Filename2    : $filename2"
 }
+Write-Verbose "$(Get-Date): Add DateTime : $AddDateTime"
 Write-Verbose "$(Get-Date): OS Detected  : $RunningOS"
 Write-Verbose "$(Get-Date): PSUICulture  : $PSUICulture"
 Write-Verbose "$(Get-Date): PSCulture    : $PSCulture"
@@ -6184,7 +6238,16 @@ If($WordVersion -eq $wdWord2007)
 	{
 		Write-Verbose "$(Get-Date): Saving DOCX file"
 	}
-	$RunningOS = (Get-WmiObject -class Win32_OperatingSystem).Caption
+
+	If($AddDateTime)
+	{
+		$FileName1 += "_$(Get-Date -f yyyy-MM-dd_HHmm).docx"
+		If($PDF)
+		{
+			$FileName2 += "_$(Get-Date -f yyyy-MM-dd_HHmm).pdf"
+		}
+	}
+
 	Write-Verbose "$(Get-Date): Running Word 2007 and detected operating system $($RunningOS)"
 	If($RunningOS.Contains("Server 2008 R2"))
 	{
@@ -6224,6 +6287,16 @@ Else
 	{
 		Write-Verbose "$(Get-Date): Saving DOCX file"
 	}
+
+	If($AddDateTime)
+	{
+		$FileName1 += "_$(Get-Date -f yyyy-MM-dd_HHmm).docx"
+		If($PDF)
+		{
+			$FileName2 += "_$(Get-Date -f yyyy-MM-dd_HHmm).pdf"
+		}
+	}
+
 	$saveFormat = [Enum]::Parse([Microsoft.Office.Interop.Word.WdSaveFormat], "wdFormatDocumentDefault")
 	$doc.SaveAs([REF]$filename1, [ref]$SaveFormat)
 	If($PDF)
