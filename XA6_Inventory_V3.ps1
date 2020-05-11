@@ -97,9 +97,9 @@
 	http://www.carlwebster.com/documenting-a-citrix-xenapp-6-farm-with-microsoft-powershell-and-word-version-3
 .NOTES
 	NAME: XA6_Inventory_V3.ps1
-	VERSION: 3.04
+	VERSION: 3.05
 	AUTHOR: Carl Webster (with a lot of help from Michael B. Smith and Jeff Wouters)
-	LASTEDIT: July 1, 2013
+	LASTEDIT: July 3, 2013
 #>
 
 
@@ -192,7 +192,13 @@ Set-StrictMode -Version 2
 #	Added a few more Write-Verbose statements
 #Updated July 1, 2013
 #	Include updated hotfix lists from CTX129229
-
+#Updated July 3, 2013
+#	Added -EA 0 to the Load Balancing Policy cmdlets
+#	Added skipping blank Descriptions for:
+#	Load Balancing Policies
+#	Load Evaluators
+#	Worker Groups
+#	Health Monitoring and Recovery Tests in Computer Policies
 
 Function CheckWordPrereq
 {
@@ -1325,11 +1331,14 @@ If( $? -and $LoadBalancingPolicies)
 	WriteWordLine 1 0 "Load Balancing Policies:"
 	ForEach($LoadBalancingPolicy in $LoadBalancingPolicies)
 	{
-		$LoadBalancingPolicyConfiguration = Get-XALoadBalancingPolicyConfiguration -PolicyName $LoadBalancingPolicy.PolicyName
-		$LoadBalancingPolicyFilter = Get-XALoadBalancingPolicyFilter -PolicyName $LoadBalancingPolicy.PolicyName 
+		$LoadBalancingPolicyConfiguration = Get-XALoadBalancingPolicyConfiguration -PolicyName $LoadBalancingPolicy.PolicyName -EA 0
+		$LoadBalancingPolicyFilter = Get-XALoadBalancingPolicyFilter -PolicyName $LoadBalancingPolicy.PolicyName -EA 0
 	
 		WriteWordLine 2 0 $LoadBalancingPolicy.PolicyName
-		WriteWordLine 0 1 "Description`t: " $LoadBalancingPolicy.Description
+		If(![String]::IsNullOrEmpty( $LoadBalancingPolicy.Description ))
+		{
+			WriteWordLine 0 1 "Description`t: " $LoadBalancingPolicy.Description
+		}
 		WriteWordLine 0 1 "Enabled`t`t: " -nonewline
 		If($LoadBalancingPolicy.Enabled)
 		{
@@ -1522,7 +1531,10 @@ If( $? )
 	ForEach($LoadEvaluator in $LoadEvaluators)
 	{
 		WriteWordLine 2 0 $LoadEvaluator.LoadEvaluatorName
-		WriteWordLine 0 1 "Description: " $LoadEvaluator.Description
+		If(![String]::IsNullOrEmpty( $LoadEvaluator.Description ))
+		{
+			WriteWordLine 0 1 "Description: " $LoadEvaluator.Description
+		}
 		
 		If($LoadEvaluator.IsBuiltIn)
 		{
@@ -2012,7 +2024,10 @@ If( $? -and $WorkerGroups)
 	ForEach($WorkerGroup in $WorkerGroups)
 	{
 		WriteWordLine 2 0 $WorkerGroup.WorkerGroupName
-		WriteWordLine 0 1 "Description: " $WorkerGroup.Description
+		If(![String]::IsNullOrEmpty( $WorkerGroup.Description ))
+		{
+			WriteWordLine 0 1 "Description: " $WorkerGroup.Description
+		}
 		WriteWordLine 0 1 "Folder Path: " $WorkerGroup.FolderPath
 		If($WorkerGroup.ServerNames)
 		{
@@ -2371,7 +2386,10 @@ else
 								{
 									WriteWordLine 0 3 "Arguments: " $test.arguments
 								}
-								WriteWordLine 0 3 "Description: " $test.description
+								If(![String]::IsNullOrEmpty( $test.Description ))
+								{
+									WriteWordLine 0 3 "Description: " $test.description
+								}
 								WriteWordLine 0 3 "Interval: " $test.interval
 								WriteWordLine 0 3 "Time-out: " $test.timeout
 								WriteWordLine 0 3 "Threshold: " $test.threshold
