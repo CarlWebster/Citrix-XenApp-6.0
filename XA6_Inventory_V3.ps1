@@ -97,9 +97,9 @@
 	http://www.carlwebster.com/documenting-a-citrix-xenapp-6-farm-with-microsoft-powershell-and-word-version-3
 .NOTES
 	NAME: XA6_Inventory_V3.ps1
-	VERSION: 3.01
+	VERSION: 3.02
 	AUTHOR: Carl Webster (with a lot of help from Michael B. Smith and Jeff Wouters)
-	LASTEDIT: April 23, 2013
+	LASTEDIT: May 4, 2013
 #>
 
 
@@ -183,6 +183,8 @@ Set-StrictMode -Version 2
 #	Removed the Logon Control line from the Server section since Logon Control only applies to XenApp 6.5
 #	Added two more write-verbose lines
 #	Fixed a compatibility issue with the way the Word file was saved and Set-StrictMode -Version 2
+#Updated May 4, 2013
+#	Include updated hotfix lists from CTX129229
 
 Function CheckWordPrereq
 {
@@ -1897,7 +1899,7 @@ If( $? )
 					$RecommendedList = @("KB2444328", "KB2465772", "KB2551503", "KB2571388", 
 										"KB2578159", "KB2617858", "KB2620656", "KB2647753",
 										"KB2661001", "KB2661332", "KB2731847", "KB2748302",
-										"KB917607")
+										"KB2775511","KB917607")
 				}
 				Else
 				{
