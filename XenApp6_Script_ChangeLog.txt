@@ -8,6 +8,13 @@
 #http://www.CarlWebster.com
 #originally released to the Citrix community on September 30, 2011
 
+#Version 4.30 7-Feb-2017
+#	Fix numerous typos
+#	Remove references to Text and HTML as those are never going to be added
+#	Removed snapin citrix.common.commands as it is no longer used and no cmdlets are used from that snapin
+#	Update help text
+#	Updated for CTX129229 dated December 2016
+
 #Version 4.25 29-Oct-2015
 #	Updated for CTX129229 that was updated September 2015
 

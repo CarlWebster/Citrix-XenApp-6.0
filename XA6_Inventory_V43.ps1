@@ -70,12 +70,12 @@
 		ViewMaster (Word 2013/2016. Works)
 		Whisp (Word 2013/2016. Works)
 		
-	Default value is Sideline.
+	The default value is Sideline.
 	This parameter has an alias of CP.
 	This parameter is only valid with the MSWORD and PDF output parameters.
 .PARAMETER UserName
 	User name to use for the Cover Page and Footer.
-	Default value is contained in $env:username
+	The default value is contained in $env:username
 	This parameter has an alias of UN.
 .PARAMETER PDF
 	SaveAs PDF file instead of DOCX file.
@@ -83,17 +83,9 @@
 	For Word 2007, the Microsoft add-in for saving as a PDF muct be installed.
 	For Word 2007, please see http://www.microsoft.com/en-us/download/details.aspx?id=9943
 	The PDF file is roughly 5X to 10X larger than the DOCX file.
-.PARAMETER Text
-	Creates a formatted text file with a .txt extension.
-	This parameter is reserved for a future update.
-	This parameter is disabled by default.
 .PARAMETER MSWord
 	SaveAs DOCX file
 	This parameter is set True if no other output format is selected.
-.PARAMETER HTML
-	Creates an HTML file with an .html extension.
-	This parameter is disabled by default.
-	This parameter is reserved for a future update and no output is created at this time.
 .PARAMETER Hardware
 	Use WMI to gather hardware information on: Computer System, Disks, Processor and Network Interface Cards
 	This parameter is disabled by default.
@@ -106,12 +98,12 @@
 	This parameter is disabled by default.
 .PARAMETER StartDate
 	Start date, in MM/DD/YYYY HH:MM format, for the Configuration Logging report.
-	Default is today's date minus seven days.
-	If the StartDate is entered as 01/01/2014, the date becomes 01/01/2014 00:00:00.
+	The default is today's date minus seven days.
+	If the StartDate is entered as 01/01/2017, the date becomes 01/01/2017 00:00:00.
 .PARAMETER EndDate
 	End date, in MM/DD/YYYY HH:MM format, for the Configuration Logging report.
-	Default is today's date.
-	If the EndDate is entered as 01/01/2014, the date becomes 01/01/2014 00:00:00.
+	The default is today's date.
+	If the EndDate is entered as 01/01/2017, the date becomes 01/01/2017 00:00:00.
 .PARAMETER Summary
 	Only give summary information, no details.
 	This parameter is disabled by default.
@@ -119,8 +111,8 @@
 .PARAMETER AddDateTime
 	Adds a date time stamp to the end of the file name.
 	Time stamp is in the format of yyyy-MM-dd_HHmm.
-	June 1, 2014 at 6PM is 2014-06-01_1800.
-	Output filename will be ReportName_2014-06-01_1800.docx (or .pdf).
+	June 1, 2017 at 6PM is 2017-06-01_1800.
+	Output filename will be ReportName_2017-06-01_1800.docx (or .pdf).
 	This parameter is disabled by default.
 .PARAMETER Section
 	Processes a specific section of the report.
@@ -137,7 +129,7 @@
 		All
 	This parameter defaults to All sections.
 .EXAMPLE
-	PS C:\PSScript > .\XA6_Inventory_V42.ps1
+	PS C:\PSScript > .\XA6_Inventory_V43.ps1
 	
 	Will use all Default values.
 	HKEY_CURRENT_USER\Software\Microsoft\Office\Common\UserInfo\CompanyName="Carl Webster" or
@@ -148,7 +140,7 @@
 	Sideline for the Cover Page format.
 	Administrator for the User Name.
 .EXAMPLE
-	PS C:\PSScript > .\XA6_Inventory_V42.ps1 -PDF 
+	PS C:\PSScript > .\XA6_Inventory_V43.ps1 -PDF 
 	
 	Will use all Default values and save the document as a PDF file.
 	HKEY_CURRENT_USER\Software\Microsoft\Office\Common\UserInfo\CompanyName="Carl Webster" or
@@ -159,33 +151,7 @@
 	Sideline for the Cover Page format.
 	Administrator for the User Name.
 .EXAMPLE
-	PS C:\PSScript > .\XA6_Inventory_V42.ps1 -TEXT
-
-	This parameter is reserved for a future update and no output is created at this time.
-	
-	Will use all default values and save the document as a formatted text file.
-	HKEY_CURRENT_USER\Software\Microsoft\Office\Common\UserInfo\CompanyName="Carl Webster" or
-	HKEY_CURRENT_USER\Software\Microsoft\Office\Common\UserInfo\Company="Carl Webster"
-	$env:username = Administrator
-
-	Carl Webster for the Company Name.
-	Sideline for the Cover Page format.
-	Administrator for the User Name.
-.EXAMPLE
-	PS C:\PSScript > .\XA6_Inventory_V42.ps1 -HTML
-
-	This parameter is reserved for a future update and no output is created at this time.
-	
-	Will use all default values and save the document as an HTML file.
-	HKEY_CURRENT_USER\Software\Microsoft\Office\Common\UserInfo\CompanyName="Carl Webster" or
-	HKEY_CURRENT_USER\Software\Microsoft\Office\Common\UserInfo\Company="Carl Webster"
-	$env:username = Administrator
-
-	Carl Webster for the Company Name.
-	Sideline for the Cover Page format.
-	Administrator for the User Name.
-.EXAMPLE
-	PS C:\PSScript > .\XA65_Inventory_V42.ps1 -Summary
+	PS C:\PSScript > .\XA65_Inventory_V43.ps1 -Summary
 	
 	Creates a Summary report with no detail.
 	Will use all Default values.
@@ -197,7 +163,7 @@
 	Sideline for the Cover Page format.
 	Administrator for the User Name.
 .EXAMPLE
-	PS C:\PSScript > .\XA65_Inventory_V42.ps1 -PDF -Summary 
+	PS C:\PSScript > .\XA65_Inventory_V43.ps1 -PDF -Summary 
 	
 	Creates a Summary report with no detail.
 	Will use all Default values and save the document as a PDF file.
@@ -209,7 +175,7 @@
 	Sideline for the Cover Page format.
 	Administrator for the User Name.
 .EXAMPLE
-	PS C:\PSScript > .\XA6_Inventory_V42.ps1 -Hardware 
+	PS C:\PSScript > .\XA6_Inventory_V43.ps1 -Hardware 
 	
 	Will use all Default values and add additional information for each server about its hardware.
 	HKEY_CURRENT_USER\Software\Microsoft\Office\Common\UserInfo\CompanyName="Carl Webster" or
@@ -220,7 +186,7 @@
 	Sideline for the Cover Page format.
 	Administrator for the User Name.
 .EXAMPLE
-	PS C:\PSScript > .\XA6_Inventory_V42.ps1 -StartDate "01/01/2014" -EndDate "01/02/2014" 
+	PS C:\PSScript > .\XA6_Inventory_V43.ps1 -StartDate "01/01/2017" -EndDate "01/02/2017" 
 	
 	Will use all Default values and add additional information for each server about its installed applications.
 	HKEY_CURRENT_USER\Software\Microsoft\Office\Common\UserInfo\CompanyName="Carl Webster" or
@@ -230,9 +196,9 @@
 	Carl Webster for the Company Name.
 	Sideline for the Cover Page format.
 	Administrator for the User Name.
-	Will return all Configuration Logging entries from "01/01/2014 00:00:00" through "01/02/2014 "00:00:00".
+	Will return all Configuration Logging entries from "01/01/2017 00:00:00" through "01/02/2017 "00:00:00".
 .EXAMPLE
-	PS C:\PSScript > .\XA6_Inventory_V42.ps1 -StartDate "01/01/2014" -EndDate "01/01/2014" 
+	PS C:\PSScript > .\XA6_Inventory_V43.ps1 -StartDate "01/01/2017" -EndDate "01/01/2017" 
 	
 	Will use all Default values and add additional information for each server about its installed applications.
 	HKEY_CURRENT_USER\Software\Microsoft\Office\Common\UserInfo\CompanyName="Carl Webster" or
@@ -242,9 +208,9 @@
 	Carl Webster for the Company Name.
 	Sideline for the Cover Page format.
 	Administrator for the User Name.
-	Will return all Configuration Logging entries from "01/01/2014 00:00:00" through "01/01/2014 "00:00:00".  In other words, nothing is returned.
+	Will return all Configuration Logging entries from "01/01/2017 00:00:00" through "01/01/2017 "00:00:00".  In other words, nothing is returned.
 .EXAMPLE
-	PS C:\PSScript > .\XA6_Inventory_V42.ps1 -StartDate "01/01/2014 21:00:00" -EndDate "01/01/2014 22:00:00" 
+	PS C:\PSScript > .\XA6_Inventory_V43.ps1 -StartDate "01/01/2017 21:00:00" -EndDate "01/01/2017 22:00:00" 
 	
 	Will use all Default values and add additional information for each server about its installed applications.
 	HKEY_CURRENT_USER\Software\Microsoft\Office\Common\UserInfo\CompanyName="Carl Webster" or
@@ -254,23 +220,23 @@
 	Carl Webster for the Company Name.
 	Sideline for the Cover Page format.
 	Administrator for the User Name.
-	Will return all Configuration Logging entries from 9PM to 10PM on 01/01/2014.
+	Will return all Configuration Logging entries from 9PM to 10PM on 01/01/2017.
 .EXAMPLE
-	PS C:\PSScript .\XA6_Inventory_V42.ps1 -CompanyName "Carl Webster Consulting" -CoverPage "Mod" -UserName "Carl Webster"
+	PS C:\PSScript .\XA6_Inventory_V43.ps1 -CompanyName "Carl Webster Consulting" -CoverPage "Mod" -UserName "Carl Webster"
 
 	Will use:
 		Carl Webster Consulting for the Company Name.
 		Mod for the Cover Page format.
 		Carl Webster for the User Name.
 .EXAMPLE
-	PS C:\PSScript .\XA6_Inventory_V42.ps1 -CN "Carl Webster Consulting" -CP "Mod" -UN "Carl Webster"
+	PS C:\PSScript .\XA6_Inventory_V43.ps1 -CN "Carl Webster Consulting" -CP "Mod" -UN "Carl Webster"
 
 	Will use:
 		Carl Webster Consulting for the Company Name (alias CN).
 		Mod for the Cover Page format (alias CP).
 		Carl Webster for the User Name (alias UN).
 .EXAMPLE
-	PS C:\PSScript > .\XA6_Inventory_V42.ps1 -Section Policies
+	PS C:\PSScript > .\XA6_Inventory_V43.ps1 -Section Policies
 	
 	Will use all Default values.
 	HKEY_CURRENT_USER\Software\Microsoft\Office\Common\UserInfo\CompanyName="Carl Webster" or
@@ -282,7 +248,7 @@
 	Administrator for the User Name.
 	Processes only the Policies section of the report.
 .EXAMPLE
-	PS C:\PSScript > .\XA6_Inventory_V42.ps1 -AddDateTime
+	PS C:\PSScript > .\XA6_Inventory_V43.ps1 -AddDateTime
 	
 	Will use all Default values.
 	HKEY_CURRENT_USER\Software\Microsoft\Office\Common\UserInfo\CompanyName="Carl Webster" or
@@ -295,10 +261,10 @@
 
 	Adds a date time stamp to the end of the file name.
 	Time stamp is in the format of yyyy-MM-dd_HHmm.
-	June 1, 2014 at 6PM is 2014-06-01_1800.
-	Output filename will be XA6FarmName_2014-06-01_1800.docx
+	June 1, 2017 at 6PM is 2017-06-01_1800.
+	Output filename will be XA6FarmName_2017-06-01_1800.docx
 .EXAMPLE
-	PS C:\PSScript > .\XA6_Inventory_V42.ps1 -PDF -AddDateTime
+	PS C:\PSScript > .\XA6_Inventory_V43.ps1 -PDF -AddDateTime
 	
 	Will use all Default values and save the document as a PDF file.
 	HKEY_CURRENT_USER\Software\Microsoft\Office\Common\UserInfo\CompanyName="Carl Webster" or
@@ -312,17 +278,17 @@
 
 	Adds a date time stamp to the end of the file name.
 	Time stamp is in the format of yyyy-MM-dd_HHmm.
-	June 1, 2014 at 6PM is 2014-06-01_1800.
-	Output filename will be XA6FarmName_2014-06-01_1800.pdf
+	June 1, 2017 at 6PM is 2017-06-01_1800.
+	Output filename will be XA6FarmName_2017-06-01_1800.pdf
 .INPUTS
 	None.  You cannot pipe objects to this script.
 .OUTPUTS
 	No objects are output from this script.  This script creates a Word or PDF document.
 .NOTES
-	NAME: XA6_Inventory_V42.ps1
-	VERSION: 4.25
+	NAME: XA6_Inventory_V43.ps1
+	VERSION: 4.30
 	AUTHOR: Carl Webster (with a lot of help from Michael B. Smith, Jeff Wouters and Iain Brighton)
-	LASTEDIT: October 29, 2015
+	LASTEDIT: February 7, 2017
 #>
 
 
@@ -393,6 +359,14 @@ Param(
 #@carlwebster on Twitter
 #http://www.CarlWebster.com
 #originally released to the Citrix community on September 30, 2011
+
+#Version 4.30 7-Feb-2017
+#	Fix numerous typos
+#	Remove references to Text and HTML as those are never going to be added
+#	Removed snapin citrix.common.commands as it is no longer used and no cmdlets are used from that snapin
+#	Update help text
+#	Updated for CTX129229 dated December 2016
+#
 #Version 4.25 29-Oct-2015
 #	Updated for CTX129229 that was updated September 2015
 #
@@ -462,14 +436,6 @@ If($PDF -eq $Null)
 {
 	$PDF = $False
 }
-If($Text -eq $Null)
-{
-	$Text = $False
-}
-If($HTML -eq $Null)
-{
-	$HTML = $False
-}
 If($Hardware -eq $Null)
 {
 	$Hardware = $False
@@ -507,14 +473,6 @@ If(!(Test-Path Variable:PDF))
 {
 	$PDF = $False
 }
-If(!(Test-Path Variable:Text))
-{
-	$Text = $False
-}
-If(!(Test-Path Variable:HTML))
-{
-	$HTML = $False
-}
 If(!(Test-Path Variable:Hardware))
 {
 	$Hardware = $False
@@ -546,7 +504,7 @@ If(!(Test-Path Variable:Section))
 
 If($MSWord -eq $Null)
 {
-	If($Text -or $HTML -or $PDF)
+	If($PDF)
 	{
 		$MSWord = $False
 	}
@@ -556,7 +514,7 @@ If($MSWord -eq $Null)
 	}
 }
 
-If($MSWord -eq $False -and $PDF -eq $False -and $Text -eq $False -and $HTML -eq $False)
+If($MSWord -eq $False -and $PDF -eq $False)
 {
 	$MSWord = $True
 }
@@ -571,14 +529,6 @@ ElseIf($PDF)
 {
 	Write-Verbose "$(Get-Date): PDF is set"
 }
-ElseIf($Text)
-{
-	Write-Verbose "$(Get-Date): Text is set"
-}
-ElseIf($HTML)
-{
-	Write-Verbose "$(Get-Date): HTML is set"
-}
 Else
 {
 	$ErrorActionPreference = $SaveEAPreference
@@ -591,20 +541,10 @@ Else
 	{
 		Write-Verbose "$(Get-Date): PDF is Null"
 	}
-	ElseIf($Text -eq $Null)
-	{
-		Write-Verbose "$(Get-Date): Text is Null"
-	}
-	ElseIf($HTML -eq $Null)
-	{
-		Write-Verbose "$(Get-Date): HTML is Null"
-	}
 	Else
 	{
 		Write-Verbose "$(Get-Date): MSWord is $($MSWord)"
 		Write-Verbose "$(Get-Date): PDF is $($PDF)"
-		Write-Verbose "$(Get-Date): Text is $($Text)"
-		Write-Verbose "$(Get-Date): HTML is $($HTML)"
 	}
 	Write-Error "Unable to determine output parameter.  Script cannot continue"
 	Exit
@@ -733,15 +673,6 @@ Function GetComputerWMIInfo
 		WriteWordLine 3 0 "Computer Information: $($RemoteComputerName)"
 		WriteWordLine 4 0 "General Computer"
 	}
-	ElseIf($Text)
-	{
-		Line 0 "Computer Information: $($RemoteComputerName)"
-		Line 1 "General Computer"
-	}
-	ElseIf($HTML)
-	{
-		WriteHTMLLine 3 0 "Computer Information: $($RemoteComputerName)"
-	}
 	
 	[bool]$GotComputerItems = $True
 	
@@ -778,21 +709,6 @@ Function GetComputerWMIInfo
 			WriteWordLine 0 2 "and winmgmt /salvagerepository.  If this is a trusted Forest, you may" "" $Null 0 $False $True
 			WriteWordLine 0 2 "need to rerun the script with Domain Admin credentials from the trusted Forest." "" $Null 0 $False $True
 		}
-		ElseIf($Text)
-		{
-			Line 2 "Get-WmiObject win32_computersystem failed for $($RemoteComputerName)"
-			Line 2 "On $($RemoteComputerName) you may need to run winmgmt /verifyrepository"
-			Line 2 "and winmgmt /salvagerepository.  If this is a trusted Forest, you may"
-			Line 2 "need to rerun the script with Domain Admin credentials from the trusted Forest."
-			Line 2 ""
-		}
-		ElseIf($HTML)
-		{
-			WriteHTMLLine 0 2 "Get-WmiObject win32_computersystem failed for $($RemoteComputerName)" "" $Null 0 $False $True
-			WriteHTMLLine 0 2 "On $($RemoteComputerName) you may need to run winmgmt /verifyrepository" "" $Null 0 $False $True
-			WriteHTMLLine 0 2 "and winmgmt /salvagerepository.  If this is a trusted Forest, you may" "" $Null 0 $False $True
-			WriteHTMLLine 0 2 "need to rerun the script with Domain Admin credentials from the trusted Forest." "" $Null 0 $False $True
-		}
 	}
 	Else
 	{
@@ -800,14 +716,6 @@ Function GetComputerWMIInfo
 		If($MSWORD -or $PDF)
 		{
 			WriteWordLine 0 2 "No results Returned for Computer information" "" $Null 0 $False $True
-		}
-		ElseIf($Text)
-		{
-			Line 2 "No results Returned for Computer information"
-		}
-		ElseIf($HTML)
-		{
-			WriteHTMLLine 0 2 "No results Returned for Computer information" "" $Null 0 $False $True
 		}
 	}
 	
@@ -817,14 +725,6 @@ Function GetComputerWMIInfo
 	If($MSWord -or $PDF)
 	{
 		WriteWordLine 4 0 "Drive(s)"
-	}
-	ElseIf($Text)
-	{
-		Line 1 "Drive(s)"
-	}
-	ElseIf($HTML)
-	{
-		WriteHTMLLine 2 0 "Drive(s)"
 	}
 
 	[bool]$GotDrives = $True
@@ -864,20 +764,6 @@ Function GetComputerWMIInfo
 			WriteWordLine 0 2 "and winmgmt /salvagerepository.  If this is a trusted Forest, you may" "" $Null 0 $False $True
 			WriteWordLine 0 2 "need to rerun the script with Domain Admin credentials from the trusted Forest." "" $Null 0 $False $True
 		}
-		ElseIf($Text)
-		{
-			Line 2 "Get-WmiObject Win32_LogicalDisk failed for $($RemoteComputerName)"
-			Line 2 "On $($RemoteComputerName) you may need to run winmgmt /verifyrepository"
-			Line 2 "and winmgmt /salvagerepository.  If this is a trusted Forest, you may"
-			Line 2 "need to rerun the script with Domain Admin credentials from the trusted Forest."
-		}
-		ElseIf($HTML)
-		{
-			WriteHTMLLine 0 2 "Get-WmiObject Win32_LogicalDisk failed for $($RemoteComputerName)" "" $Null 0 $False $True
-			WriteHTMLLine 0 2 "On $($RemoteComputerName) you may need to run winmgmt /verifyrepository" "" $Null 0 $False $True
-			WriteHTMLLine 0 2 "and winmgmt /salvagerepository.  If this is a trusted Forest, you may" "" $Null 0 $False $True
-			WriteHTMLLine 0 2 "need to rerun the script with Domain Admin credentials from the trusted Forest." "" $Null 0 $False $True
-		}
 	}
 	Else
 	{
@@ -885,14 +771,6 @@ Function GetComputerWMIInfo
 		If($MSWORD -or $PDF)
 		{
 			WriteWordLine 0 2 "No results Returned for Drive information" "" $Null 0 $False $True
-		}
-		ElseIf($Text)
-		{
-			Line 2 "No results Returned for Drive information"
-		}
-		ElseIf($HTML)
-		{
-			WriteHTMLLine 0 2 "No results Returned for Drive information" "" $Null 0 $False $True
 		}
 	}
 	
@@ -903,13 +781,6 @@ Function GetComputerWMIInfo
 	If($MSWord -or $PDF)
 	{
 		WriteWordLine 4 0 "Processor(s)"
-	}
-	ElseIf($Text)
-	{
-		Line 1 "Processor(s)"
-	}
-	ElseIf($HTML)
-	{
 	}
 
 	[bool]$GotProcessors = $True
@@ -945,20 +816,6 @@ Function GetComputerWMIInfo
 			WriteWordLine 0 2 "and winmgmt /salvagerepository.  If this is a trusted Forest, you may" "" $Null 0 $False $True
 			WriteWordLine 0 2 "need to rerun the script with Domain Admin credentials from the trusted Forest." "" $Null 0 $False $True
 		}
-		ElseIf($Text)
-		{
-			Line 2 "Get-WmiObject win32_Processor failed for $($RemoteComputerName)"
-			Line 2 "On $($RemoteComputerName) you may need to run winmgmt /verifyrepository"
-			Line 2 "and winmgmt /salvagerepository.  If this is a trusted Forest, you may"
-			Line 2 "need to rerun the script with Domain Admin credentials from the trusted Forest."
-		}
-		ElseIf($HTML)
-		{
-			WriteHTMLLine 0 2 "Get-WmiObject win32_Processor failed for $($RemoteComputerName)" "" $Null 0 $False $True
-			WriteHTMLLine 0 2 "On $($RemoteComputerName) you may need to run winmgmt /verifyrepository" "" $Null 0 $False $True
-			WriteHTMLLine 0 2 "and winmgmt /salvagerepository.  If this is a trusted Forest, you may" "" $Null 0 $False $True
-			WriteHTMLLine 0 2 "need to rerun the script with Domain Admin credentials from the trusted Forest." "" $Null 0 $False $True
-		}
 	}
 	Else
 	{
@@ -966,14 +823,6 @@ Function GetComputerWMIInfo
 		If($MSWORD -or $PDF)
 		{
 			WriteWordLine 0 2 "No results Returned for Processor information" "" $Null 0 $False $True
-		}
-		ElseIf($Text)
-		{
-			Line 2 "No results Returned for Processor information"
-		}
-		ElseIf($HTML)
-		{
-			WriteHTMLLine 0 2 "No results Returned for Processor information" "" $Null 0 $False $True
 		}
 	}
 
@@ -983,13 +832,6 @@ Function GetComputerWMIInfo
 	If($MSWord -or $PDF)
 	{
 		WriteWordLine 4 0 "Network Interface(s)"
-	}
-	ElseIf($Text)
-	{
-		Line 1 "Network Interface(s)"
-	}
-	ElseIf($HTML)
-	{
 	}
 
 	[bool]$GotNics = $True
@@ -1049,22 +891,6 @@ Function GetComputerWMIInfo
 						WriteWordLine 0 2 "and winmgmt /salvagerepository.  If this is a trusted Forest, you may" "" $Null 0 $False $True
 						WriteWordLine 0 2 "need to rerun the script with Domain Admin credentials from the trusted Forest." "" $Null 0 $False $True
 					}
-					ElseIf($Text)
-					{
-						Line 2 "Error retrieving NIC information"
-						Line 2 "Get-WmiObject win32_networkadapterconfiguration failed for $($RemoteComputerName)"
-						Line 2 "On $($RemoteComputerName) you may need to run winmgmt /verifyrepository"
-						Line 2 "and winmgmt /salvagerepository.  If this is a trusted Forest, you may"
-						Line 2 "need to rerun the script with Domain Admin credentials from the trusted Forest."
-					}
-					ElseIf($HTML)
-					{
-						WriteHTMLLine 0 2 "Error retrieving NIC information" "" $Null 0 $False $True
-						WriteHTMLLine 0 2 "Get-WmiObject win32_networkadapterconfiguration failed for $($RemoteComputerName)" "" $Null 0 $False $True
-						WriteHTMLLine 0 2 "On $($RemoteComputerName) you may need to run winmgmt /verifyrepository" "" $Null 0 $False $True
-						WriteHTMLLine 0 2 "and winmgmt /salvagerepository.  If this is a trusted Forest, you may" "" $Null 0 $False $True
-						WriteHTMLLine 0 2 "need to rerun the script with Domain Admin credentials from the trusted Forest." "" $Null 0 $False $True
-					}
 				}
 				Else
 				{
@@ -1072,14 +898,6 @@ Function GetComputerWMIInfo
 					If($MSWORD -or $PDF)
 					{
 						WriteWordLine 0 2 "No results Returned for NIC information" "" $Null 0 $False $True
-					}
-					ElseIf($Text)
-					{
-						Line 2 "No results Returned for NIC information"
-					}
-					ElseIf($HTML)
-					{
-						WriteHTMLLine 0 2 "No results Returned for NIC information" "" $Null 0 $False $True
 					}
 				}
 			}
@@ -1098,22 +916,6 @@ Function GetComputerWMIInfo
 			WriteWordLine 0 2 "and winmgmt /salvagerepository.  If this is a trusted Forest, you may" "" $Null 0 $False $True
 			WriteWordLine 0 2 "need to rerun the script with Domain Admin credentials from the trusted Forest." "" $Null 0 $False $True
 		}
-		ElseIf($Text)
-		{
-			Line 2 "Error retrieving NIC configuration information"
-			Line 2 "Get-WmiObject win32_networkadapterconfiguration failed for $($RemoteComputerName)"
-			Line 2 "On $($RemoteComputerName) you may need to run winmgmt /verifyrepository"
-			Line 2 "and winmgmt /salvagerepository.  If this is a trusted Forest, you may"
-			Line 2 "need to rerun the script with Domain Admin credentials from the trusted Forest."
-		}
-		ElseIf($HTML)
-		{
-			WriteHTMLLine 0 2 "Error retrieving NIC configuration information" "" $Null 0 $False $True
-			WriteHTMLLine 0 2 "Get-WmiObject win32_networkadapterconfiguration failed for $($RemoteComputerName)" "" $Null 0 $False $True
-			WriteHTMLLine 0 2 "On $($RemoteComputerName) you may need to run winmgmt /verifyrepository" "" $Null 0 $False $True
-			WriteHTMLLine 0 2 "and winmgmt /salvagerepository.  If this is a trusted Forest, you may" "" $Null 0 $False $True
-			WriteHTMLLine 0 2 "need to rerun the script with Domain Admin credentials from the trusted Forest." "" $Null 0 $False $True
-		}
 	}
 	Else
 	{
@@ -1122,27 +924,11 @@ Function GetComputerWMIInfo
 		{
 			WriteWordLine 0 2 "No results Returned for NIC configuration information" "" $Null 0 $False $True
 		}
-		ElseIf($Text)
-		{
-			Line 2 "No results Returned for NIC configuration information"
-		}
-		ElseIf($HTML)
-		{
-			WriteHTMLLine 0 2 "No results Returned for NIC configuration information" "" $Null 0 $False $True
-		}
 	}
 	
 	If($MSWORD -or $PDF)
 	{
 		WriteWordLine 0 0 ""
-	}
-	ElseIf($Text)
-	{
-		Line 0 ""
-	}
-	ElseIf($HTML)
-	{
-		WriteHTMLLine 0 0 ""
 	}
 
 	$Results = $Null
@@ -1181,31 +967,6 @@ Function OutputComputerItem
 		FindWordDocumentEnd
 		$Table = $Null
 		WriteWordLine 0 2 ""
-	}
-	ElseIf($Text)
-	{
-		Line 2 "Manufacturer`t: " $Item.manufacturer
-		Line 2 "Model`t`t: " $Item.model
-		Line 2 "Domain`t`t: " $Item.domain
-		Line 2 "Total Ram`t: $($Item.totalphysicalram) GB"
-		Line 2 "Physical Processors (sockets): " $Item.NumberOfProcessors
-		Line 2 "Logical Processors (cores w/HT): " $Item.NumberOfLogicalProcessors
-		Line 2 ""
-	}
-	ElseIf($HTML)
-	{
-		$rowdata = @()
-		$columnHeaders = @("Manufacturer",($htmlsilver -bor $htmlbold),$Item.manufacturer,$htmlwhite)
-		$rowdata += @(,('Model',($htmlsilver -bor $htmlbold),$Item.model,$htmlwhite))
-		$rowdata += @(,('Domain',($htmlsilver -bor $htmlbold),$Item.domain,$htmlwhite))
-		$rowdata += @(,('Total Ram',($htmlsilver -bor $htmlbold),"$($Item.totalphysicalram) GB",$htmlwhite))
-		$rowdata += @(,('Physical Processors (sockets)',($htmlsilver -bor $htmlbold),$Item.NumberOfProcessors,$htmlwhite))
-		$rowdata += @(,('Logical Processors (cores w/HT)',($htmlsilver -bor $htmlbold),$Item.NumberOfLogicalProcessors,$htmlwhite))
-
-		$msg = "General Computer"
-		$columnWidths = @("150px","200px")
-		FormatHTMLTable $msg -rowarray $rowdata -columnArray $columnheaders -fixedWidth $columnWidths
-		WriteHTMLLine 0 0 ""
 	}
 }
 
@@ -1282,60 +1043,6 @@ Function OutputDriveItem
 		$Table = $Null
 		WriteWordLine 0 2 ""
 	}
-	ElseIf($Text)
-	{
-		Line 2 "Caption`t`t: " $drive.caption
-		Line 2 "Size`t`t: $($drive.drivesize) GB"
-		If(![String]::IsNullOrEmpty($drive.filesystem))
-		{
-			Line 2 "File System`t: " $drive.filesystem
-		}
-		Line 2 "Free Space`t: $($drive.drivefreespace) GB"
-		If(![String]::IsNullOrEmpty($drive.volumename))
-		{
-			Line 2 "Volume Name`t: " $drive.volumename
-		}
-		If(![String]::IsNullOrEmpty($drive.volumedirty))
-		{
-			Line 2 "Volume is Dirty`t: " $xVolumeDirty
-		}
-		If(![String]::IsNullOrEmpty($drive.volumeserialnumber))
-		{
-			Line 2 "Volume Serial #`t: " $drive.volumeserialnumber
-		}
-		Line 2 "Drive Type`t: " $xDriveType
-		Line 2 ""
-	}
-	ElseIf($HTML)
-	{
-		$rowdata = @()
-		$columnHeaders = @("Caption",($htmlsilver -bor $htmlbold),$Drive.caption,$htmlwhite)
-		$rowdata += @(,('Size',($htmlsilver -bor $htmlbold),"$($drive.drivesize) GB",$htmlwhite))
-
-		If(![String]::IsNullOrEmpty($drive.filesystem))
-		{
-			$rowdata += @(,('File System',($htmlsilver -bor $htmlbold),$Drive.filesystem,$htmlwhite))
-		}
-		$rowdata += @(,('Free Space',($htmlsilver -bor $htmlbold),"$($drive.drivefreespace) GB",$htmlwhite))
-		If(![String]::IsNullOrEmpty($drive.volumename))
-		{
-			$rowdata += @(,('Volume Name',($htmlsilver -bor $htmlbold),$Drive.volumename,$htmlwhite))
-		}
-		If(![String]::IsNullOrEmpty($drive.volumedirty))
-		{
-			$rowdata += @(,('Volume is Dirty',($htmlsilver -bor $htmlbold),$xVolumeDirty,$htmlwhite))
-		}
-		If(![String]::IsNullOrEmpty($drive.volumeserialnumber))
-		{
-			$rowdata += @(,('Volume Serial Number',($htmlsilver -bor $htmlbold),$Drive.volumeserialnumber,$htmlwhite))
-		}
-		$rowdata += @(,('Drive Type',($htmlsilver -bor $htmlbold),$xDriveType,$htmlwhite))
-
-		$msg = ""
-		$columnWidths = @("150px","200px")
-		FormatHTMLTable $msg -rowarray $rowdata -columnArray $columnheaders -fixedWidth $columnWidths
-		WriteHTMLLine 0 0 ""
-	}
 }
 
 Function OutputProcessorItem
@@ -1405,60 +1112,6 @@ Function OutputProcessorItem
 		FindWordDocumentEnd
 		$Table = $Null
 		WriteWordLine 0 0 ""
-	}
-	ElseIf($Text)
-	{
-		Line 2 "Name`t`t`t: " $processor.name
-		Line 2 "Description`t`t: " $processor.description
-		Line 2 "Max Clock Speed`t`t: $($processor.maxclockspeed) MHz"
-		If($processor.l2cachesize -gt 0)
-		{
-			Line 2 "L2 Cache Size`t`t: $($processor.l2cachesize) KB"
-		}
-		If($processor.l3cachesize -gt 0)
-		{
-			Line 2 "L3 Cache Size`t`t: $($processor.l3cachesize) KB"
-		}
-		If($processor.numberofcores -gt 0)
-		{
-			Line 2 "# of Cores`t`t: " $processor.numberofcores
-		}
-		If($processor.numberoflogicalprocessors -gt 0)
-		{
-			Line 2 "# of Logical Procs (cores w/HT)`t: " $processor.numberoflogicalprocessors
-		}
-		Line 2 "Availability`t`t: " $xAvailability
-		Line 2 ""
-	}
-	ElseIf($HTML)
-	{
-		$rowdata = @()
-		$columnHeaders = @("Name",($htmlsilver -bor $htmlbold),$Processor.name,$htmlwhite)
-		$rowdata += @(,('Description',($htmlsilver -bor $htmlbold),$Processor.description,$htmlwhite))
-
-		$rowdata += @(,('Max Clock Speed',($htmlsilver -bor $htmlbold),"$($processor.maxclockspeed) MHz",$htmlwhite))
-		If($processor.l2cachesize -gt 0)
-		{
-			$rowdata += @(,('L2 Cache Size',($htmlsilver -bor $htmlbold),"$($processor.l2cachesize) KB",$htmlwhite))
-		}
-		If($processor.l3cachesize -gt 0)
-		{
-			$rowdata += @(,('L3 Cache Size',($htmlsilver -bor $htmlbold),"$($processor.l3cachesize) KB",$htmlwhite))
-		}
-		If($processor.numberofcores -gt 0)
-		{
-			$rowdata += @(,('Number of Cores',($htmlsilver -bor $htmlbold),$Processor.numberofcores,$htmlwhite))
-		}
-		If($processor.numberoflogicalprocessors -gt 0)
-		{
-			$rowdata += @(,('Number of Logical Processors (cores w/HT)',($htmlsilver -bor $htmlbold),$Processor.numberoflogicalprocessors,$htmlwhite))
-		}
-		$rowdata += @(,('Availability',($htmlsilver -bor $htmlbold),$xAvailability,$htmlwhite))
-
-		$msg = "Processor(s)"
-		$columnWidths = @("150px","200px")
-		FormatHTMLTable $msg -rowarray $rowdata -columnArray $columnheaders -fixedWidth $columnWidths
-		WriteHTMLLine 0 0 ""
 	}
 }
 
@@ -1655,197 +1308,6 @@ Function OutputNicItem
 
 		FindWordDocumentEnd
 		$Table = $Null
-	}
-	ElseIf($Text)
-	{
-		Line 2 "Name`t`t`t: " $ThisNic.Name
-		If($ThisNic.Name -ne $nic.description)
-		{
-			Line 2 "Description`t`t: " $nic.description
-		}
-		Line 2 "Connection ID`t`t: " $ThisNic.NetConnectionID
-		Line 2 "Manufacturer`t`t: " $ThisNic.manufacturer
-		Line 2 "Availability`t`t: " $xAvailability
-		Line 2 "Physical Address`t: " $nic.macaddress
-		Line 2 "IP Address`t`t: " $xIPAddress[0]
-		$cnt = -1
-		ForEach($tmp in $xIPAddress)
-		{
-			$cnt++
-			If($cnt -gt 0)
-			{
-				Line 5 "" $tmp
-			}
-		}
-		Line 2 "Default Gateway`t`t: " $Nic.Defaultipgateway
-		Line 2 "Subnet Mask`t`t: " $xIPSubnet[0]
-		$cnt = -1
-		ForEach($tmp in $xIPSubnet)
-		{
-			$cnt++
-			If($cnt -gt 0)
-			{
-				Line 5 "" $tmp
-			}
-		}
-		If($nic.dhcpenabled)
-		{
-			$DHCPLeaseObtainedDate = $nic.ConvertToDateTime($nic.dhcpleaseobtained)
-			$DHCPLeaseExpiresDate = $nic.ConvertToDateTime($nic.dhcpleaseexpires)
-			Line 2 "DHCP Enabled`t`t: " $nic.dhcpenabled
-			Line 2 "DHCP Lease Obtained`t: " $dhcpleaseobtaineddate
-			Line 2 "DHCP Lease Expires`t: " $dhcpleaseexpiresdate
-			Line 2 "DHCP Server`t`t:" $nic.dhcpserver
-		}
-		If(![String]::IsNullOrEmpty($nic.dnsdomain))
-		{
-			Line 2 "DNS Domain`t`t: " $nic.dnsdomain
-		}
-		If($nic.dnsdomainsuffixsearchorder -ne $Null -and $nic.dnsdomainsuffixsearchorder.length -gt 0)
-		{
-			[int]$x = 1
-			Line 2 "DNS Search Suffixes`t:" $xnicdnsdomainsuffixsearchorder[0]
-			$cnt = -1
-			ForEach($tmp in $xnicdnsdomainsuffixsearchorder)
-			{
-				$cnt++
-				If($cnt -gt 0)
-				{
-					$ScriptInformation += @{ Data = ""; Value = $tmp; }
-				}
-			}
-		}
-		Line 2 "DNS WINS Enabled`t: " $xdnsenabledforwinsresolution
-		If($nic.dnsserversearchorder -ne $Null -and $nic.dnsserversearchorder.length -gt 0)
-		{
-			[int]$x = 1
-			Line 2 "DNS Servers`t`t:" $xnicdnsserversearchorder[0]
-			$cnt = -1
-			ForEach($tmp in $xnicdnsserversearchorder)
-			{
-				$cnt++
-				If($cnt -gt 0)
-				{
-					$ScriptInformation += @{ Data = ""; Value = $tmp; }
-				}
-			}
-		}
-		Line 2 "NetBIOS Setting`t`t: " $xTcpipNetbiosOptions
-		Line 2 "WINS:"
-		Line 3 "Enabled LMHosts`t: " $xwinsenablelmhostslookup
-		If(![String]::IsNullOrEmpty($nic.winshostlookupfile))
-		{
-			Line 3 "Host Lookup File`t: " $nic.winshostlookupfile
-		}
-		If(![String]::IsNullOrEmpty($nic.winsprimaryserver))
-		{
-			Line 3 "Primary Server`t`t: " $nic.winsprimaryserver
-		}
-		If(![String]::IsNullOrEmpty($nic.winssecondaryserver))
-		{
-			Line 3 "Secondary Server`t: " $nic.winssecondaryserver
-		}
-		If(![String]::IsNullOrEmpty($nic.winsscopeid))
-		{
-			Line 3 "Scope ID`t`t: " $nic.winsscopeid
-		}
-	}
-	ElseIf($HTML)
-	{
-		$rowdata = @()
-		$columnHeaders = @("Name",($htmlsilver -bor $htmlbold),$ThisNic.Name,$htmlwhite)
-		If($ThisNic.Name -ne $nic.description)
-		{
-			$rowdata += @(,('Description',($htmlsilver -bor $htmlbold),$Nic.description,$htmlwhite))
-		}
-		$rowdata += @(,('Connection ID',($htmlsilver -bor $htmlbold),$ThisNic.NetConnectionID,$htmlwhite))
-		$rowdata += @(,('Manufacturer',($htmlsilver -bor $htmlbold),$Nic.manufacturer,$htmlwhite))
-		$rowdata += @(,('Availability',($htmlsilver -bor $htmlbold),$xAvailability,$htmlwhite))
-		$rowdata += @(,('Physical Address',($htmlsilver -bor $htmlbold),$Nic.macaddress,$htmlwhite))
-		$rowdata += @(,('IP Address',($htmlsilver -bor $htmlbold),$xIPAddress[0],$htmlwhite))
-		$cnt = -1
-		ForEach($tmp in $xIPAddress)
-		{
-			$cnt++
-			If($cnt -gt 0)
-			{
-				$rowdata += @(,('IP Address',($htmlsilver -bor $htmlbold),$tmp,$htmlwhite))
-			}
-		}
-		$rowdata += @(,('Default Gateway',($htmlsilver -bor $htmlbold),$Nic.Defaultipgateway,$htmlwhite))
-		$rowdata += @(,('Subnet Mask',($htmlsilver -bor $htmlbold),$xIPSubnet[0],$htmlwhite))
-		$cnt = -1
-		ForEach($tmp in $xIPSubnet)
-		{
-			$cnt++
-			If($cnt -gt 0)
-			{
-				$rowdata += @(,('Subnet Mask',($htmlsilver -bor $htmlbold),$tmp,$htmlwhite))
-			}
-		}
-		If($nic.dhcpenabled)
-		{
-			$DHCPLeaseObtainedDate = $nic.ConvertToDateTime($nic.dhcpleaseobtained)
-			$DHCPLeaseExpiresDate = $nic.ConvertToDateTime($nic.dhcpleaseexpires)
-			$rowdata += @(,('DHCP Enabled',($htmlsilver -bor $htmlbold),$Nic.dhcpenabled,$htmlwhite))
-			$rowdata += @(,('DHCP Lease Obtained',($htmlsilver -bor $htmlbold),$dhcpleaseobtaineddate,$htmlwhite))
-			$rowdata += @(,('DHCP Lease Expires',($htmlsilver -bor $htmlbold),$dhcpleaseexpiresdate,$htmlwhite))
-			$rowdata += @(,('DHCP Server',($htmlsilver -bor $htmlbold),$Nic.dhcpserver,$htmlwhite))
-		}
-		If(![String]::IsNullOrEmpty($nic.dnsdomain))
-		{
-			$rowdata += @(,('DNS Domain',($htmlsilver -bor $htmlbold),$Nic.dnsdomain,$htmlwhite))
-		}
-		If($nic.dnsdomainsuffixsearchorder -ne $Null -and $nic.dnsdomainsuffixsearchorder.length -gt 0)
-		{
-			$rowdata += @(,('DNS Search Suffixes',($htmlsilver -bor $htmlbold),$xnicdnsdomainsuffixsearchorder[0],$htmlwhite))
-			$cnt = -1
-			ForEach($tmp in $xnicdnsdomainsuffixsearchorder)
-			{
-				$cnt++
-				If($cnt -gt 0)
-				{
-					$rowdata += @(,('',($htmlsilver -bor $htmlbold),$tmp,$htmlwhite))
-				}
-			}
-		}
-		$rowdata += @(,('DNS WINS Enabled',($htmlsilver -bor $htmlbold),$xdnsenabledforwinsresolution,$htmlwhite))
-		If($nic.dnsserversearchorder -ne $Null -and $nic.dnsserversearchorder.length -gt 0)
-		{
-			$rowdata += @(,('DNS Servers',($htmlsilver -bor $htmlbold),$xnicdnsserversearchorder[0],$htmlwhite))
-			$cnt = -1
-			ForEach($tmp in $xnicdnsserversearchorder)
-			{
-				$cnt++
-				If($cnt -gt 0)
-				{
-					$rowdata += @(,('',($htmlsilver -bor $htmlbold),$tmp,$htmlwhite))
-				}
-			}
-		}
-		$rowdata += @(,('NetBIOS Setting',($htmlsilver -bor $htmlbold),$xTcpipNetbiosOptions,$htmlwhite))
-		$rowdata += @(,('WINS: Enabled LMHosts',($htmlsilver -bor $htmlbold),$xwinsenablelmhostslookup,$htmlwhite))
-		If(![String]::IsNullOrEmpty($nic.winshostlookupfile))
-		{
-			$rowdata += @(,('Host Lookup File',($htmlsilver -bor $htmlbold),$Nic.winshostlookupfile,$htmlwhite))
-		}
-		If(![String]::IsNullOrEmpty($nic.winsprimaryserver))
-		{
-			$rowdata += @(,('Primary Server',($htmlsilver -bor $htmlbold),$Nic.winsprimaryserver,$htmlwhite))
-		}
-		If(![String]::IsNullOrEmpty($nic.winssecondaryserver))
-		{
-			$rowdata += @(,('Secondary Server',($htmlsilver -bor $htmlbold),$Nic.winssecondaryserver,$htmlwhite))
-		}
-		If(![String]::IsNullOrEmpty($nic.winsscopeid))
-		{
-			$rowdata += @(,('Scope ID',($htmlsilver -bor $htmlbold),$Nic.winsscopeid,$htmlwhite))
-		}
-
-		$msg = "Network Interface(s)"
-		$columnWidths = @("150px","200px")
-		FormatHTMLTable $msg -rowarray $rowdata -columnArray $columnheaders -fixedWidth $columnWidths
-		WriteHTMLLine 0 0 ""
 	}
 }
 #endregion
@@ -2482,26 +1944,6 @@ Function Check-NeededPSSnapins
 	Else
 	{
 		Return $True
-	}
-}
-
-Function line
-#function created by Michael B. Smith, Exchange MVP
-#@essentialexchange on Twitter
-#http://TheEssentialExchange.com
-#for creating the formatted text report
-#created March 2011
-#updated March 2014
-{
-	Param( [int]$tabs = 0, [string]$name = '', [string]$value = '', [string]$newline = "`r`n", [switch]$nonewline )
-	While( $tabs -gt 0 ) { $Global:Output += "`t"; $tabs--; }
-	If( $nonewline )
-	{
-		$Global:Output += $name + $value
-	}
-	Else
-	{
-		$Global:Output += $name + $value + $newline
 	}
 }
 
@@ -4131,7 +3573,6 @@ Function BuildTableForServerOrWG
 			$MaxLength = $TmpLength
 		}
 	}
-	Write-Verbose "$(Get-Date): `t`tMax length of $xType name is $($MaxLength)"
 	$TableRange = $doc.Application.Selection.Range
 	#removed hard-coded value of 60 and replace with MaxTableWidth variable
 	[int]$Columns = [Math]::Floor($MaxTableWidth / $MaxLength)
@@ -5139,24 +4580,6 @@ Function SaveandCloseDocumentandShutdownWord
 	[gc]::WaitForPendingFinalizers()
 }
 
-Function SaveandCloseTextDocument
-{
-	If($AddDateTime)
-	{
-		$Script:FileName1 += "_$(Get-Date -f yyyy-MM-dd_HHmm).txt"
-	}
-
-	Write-Output $Global:Output | Out-File $Script:Filename1 4>$Null
-}
-
-Function SaveandCloseHTMLDocument
-{
-	If($AddDateTime)
-	{
-		$Script:FileName1 += "_$(Get-Date -f yyyy-MM-dd_HHmm).html"
-	}
-}
-
 Function SetFileName1andFileName2
 {
 	Param([string]$OutputFileName)
@@ -5193,32 +4616,13 @@ Function SetFileName1andFileName2
 
 		SetupWord
 	}
-	ElseIf($Text)
-	{
-		If(!$AddDateTime)
-		{
-			[string]$Script:FileName1 = "$($pwdpath)\$($OutputFileName).txt"
-		}
-	}
-	ElseIf($HTML)
-	{
-		If(!$AddDateTime)
-		{
-			[string]$Script:FileName1 = "$($pwdpath)\$($OutputFileName).html"
-		}
-	}
 }
 
 #Script begins
 
 $script:startTime = Get-date
 
-If($TEXT)
-{
-	$global:output = ""
-}
-
-If(!(Check-NeededPSSnapins "Citrix.Common.Commands","Citrix.XenApp.Commands"))
+If(!(Check-NeededPSSnapins "Citrix.XenApp.Commands"))
 {
 	#We're missing Citrix Snapins that we need
 	$ErrorActionPreference = $SaveEAPreference
@@ -6889,13 +6293,6 @@ If($Section -eq "All" -or $Section -eq "Servers")
 							## Seed the $Services row index from the second row
 							[int] $CurrentServiceIndex = 2;
 						}
-						ElseIf($Text)
-						{
-							Line 0 " ($NumServices Services found)"
-						}
-						ElseIf($HTML)
-						{
-						}
 						
 						ForEach($Service in $Services) 
 						{
@@ -6915,16 +6312,6 @@ If($Section -eq "All" -or $Section -eq "Servers")
 									$HighlightedCells += @{ Row = $CurrentServiceIndex; Column = 2; }
 								}
 								$CurrentServiceIndex++;
-							}
-							ElseIf($Text)
-							{
-								Line 0 "Display Name`t: " $Service.DisplayName
-								Line 0 "Status`t`t: " $Service.State
-								Line 0 "Start Mode`t: " $Service.StartMode
-								Line 0 ""
-							}
-							ElseIf($HTML)
-							{
 							}
 						}
 						
@@ -6947,12 +6334,6 @@ If($Section -eq "All" -or $Section -eq "Servers")
 							FindWordDocumentEnd
 							$Table = $Null
 						}
-						ElseIf($Text)
-						{
-						}
-						ElseIf($HTML)
-						{
-						}
 					}
 					ElseIf(!$?)
 					{
@@ -6962,15 +6343,6 @@ If($Section -eq "All" -or $Section -eq "Servers")
 							WriteWordLine 0 0 "Warning: No Services were retrieved" "" $Null 0 $False $True
 							WriteWordLine 0 1 "If this is a trusted Forest, you may need to rerun the" "" $Null 0 $False $True
 							WriteWordLine 0 1 "script with Admin credentials from the trusted Forest." "" $Null 0 $False $True
-						}
-						ElseIf($Text)
-						{
-							Line 0 "Warning: No Services were retrieved"
-							Line 1 "If this is a trusted Forest, you may need to rerun the"
-							Line 1 "script with Admin credentials from the trusted Forest."
-						}
-						ElseIf($HTML)
-						{
 						}
 					}
 					Else
@@ -7016,12 +6388,6 @@ If($Section -eq "All" -or $Section -eq "Servers")
 							## Seed the row index from the second row
 							[int] $CurrentServiceIndex = 2;
 						}
-						ElseIf($Text)
-						{
-						}
-						ElseIf($HTML)
-						{
-						}
 
 						ForEach($hotfix in $hotfixes)
 						{
@@ -7041,17 +6407,6 @@ If($Section -eq "All" -or $Section -eq "Servers")
 								$HotfixesWordTable += $WordTableRowHash;
 
 								$CurrentServiceIndex++;
-							}
-							ElseIf($Text)
-							{
-								Line 1 "Hotfix: " $hotfix.HotfixName
-								Line 1 "Installed By: " $hotfix.InstalledBy
-								Line 1 "Install Date: " $InstallDate.SubString(0,$InstallDate.IndexOf(" "))
-								Line 1 "Type: " $hotfix.HotfixType
-								Line 0 ""
-							}
-							ElseIf($HTML)
-							{
 							}
 						}
 						
@@ -7074,15 +6429,9 @@ If($Section -eq "All" -or $Section -eq "Servers")
 							$Table = $Null
 							WriteWordLine 0 0 ""
 						}
-						ElseIf($Text)
-						{
-						}
-						ElseIf($HTML)
-						{
-						}
 
 						#compare Citrix hotfixes to recommended Citrix hotfixes from CTX129229
-						#hotfix lists are from CTX129229 dated 18-DEC-2014
+						#hotfix lists are from CTX129229 dated 16-DEC-2016
 						Write-Verbose "$(Get-Date): `t`tCompare Citrix hotfixes to recommended Citrix hotfixes from CTX129229"
 						If(!$HRP2Installed)
 						{
@@ -7110,13 +6459,6 @@ If($Section -eq "All" -or $Section -eq "Servers")
 								[System.Collections.Hashtable[]] $HighlightedCells = @();
 								## Seed the row index from the second row
 								[int] $CurrentServiceIndex = 2;
-							}
-							ElseIf($Text)
-							{
-								Line 1 "Citrix Recommended Hotfixes:"
-							}
-							ElseIf($HTML)
-							{
 							}
 							
 							ForEach($element in $RecommendedList)
@@ -7146,15 +6488,6 @@ If($Section -eq "All" -or $Section -eq "Servers")
 									}
 									$CurrentServiceIndex++;
 								}
-								ElseIf($Text)
-								{
-									Line 0 "Citrix Hotfix: " $element
-									Line 0 "Status: " $Tmp
-									Line 0 ""
-								}
-								ElseIf($HTML)
-								{
-								}
 							}
 							
 							If($MSWord -or $PDF)
@@ -7176,12 +6509,6 @@ If($Section -eq "All" -or $Section -eq "Servers")
 								FindWordDocumentEnd
 								$Table = $Null
 								WriteWordLine 0 0 ""
-							}
-							ElseIf($Text)
-							{
-							}
-							ElseIf($HTML)
-							{
 							}
 						}
 						#build list of installed Microsoft hotfixes
@@ -7232,13 +6559,6 @@ If($Section -eq "All" -or $Section -eq "Servers")
 									## Seed the row index from the second row
 									[int] $CurrentServiceIndex = 2;
 								}
-								ElseIf($Text)
-								{
-									Line 1 "Microsoft Recommended Hotfixes (from CTX129229):"
-								}
-								ElseIf($HTML)
-								{
-								}
 
 								ForEach($hotfix in $RecommendedList)
 								{
@@ -7266,15 +6586,6 @@ If($Section -eq "All" -or $Section -eq "Servers")
 										}
 										$CurrentServiceIndex++;
 									}
-									ElseIf($Text)
-									{
-										Line 0 "Microsoft Hotfix: " $hotfix
-										Line 0 "Status: " $Tmp
-										Line 0 ""
-									}
-									ElseIf($HTML)
-									{
-									}
 								}
 								
 								If($MSWord -or $PDF)
@@ -7298,12 +6609,6 @@ If($Section -eq "All" -or $Section -eq "Servers")
 									WriteWordLine 0 1 "Not all missing Microsoft hotfixes may be needed for this server `n`tor might already be replaced and not recorded in CTX129229."
 									WriteWordLine 0 0 ""
 								}
-								ElseIf($Text)
-								{
-								}
-								ElseIf($HTML)
-								{
-								}
 							}
 						}
 						Else
@@ -7315,14 +6620,6 @@ If($Section -eq "All" -or $Section -eq "Servers")
 								WriteWordLine 0 0 "Get-HotFix failed for $($server.ServerName)" "" $Null 0 $False $True
 								WriteWordLine 0 0 "On $($server.ServerName) you may need to run winmgmt /verifyrepository and winmgmt /salvagerepository"
 							}
-							ElseIf($Text)
-							{
-								Line 0 "Get-HotFix failed for $($server.ServerName)"
-								Line 0 "On $($server.ServerName) you may need to run winmgmt /verifyrepository and winmgmt /salvagerepository"
-							}
-							ElseIf($HTML)
-							{
-							}
 						}
 					}
 					ElseIf(!$?)
@@ -7332,13 +6629,6 @@ If($Section -eq "All" -or $Section -eq "Servers")
 						{
 							WriteWordLine 0 0 "Warning: No Citrix hotfixes were retrieved" "" $Null 0 $False $True
 						}
-						ElseIf($Text)
-						{
-							Line 0 "Warning: No Citrix hotfixes were retrieved"
-						}
-						ElseIf($HTML)
-						{
-						}
 					}
 					Else
 					{
@@ -7346,13 +6636,6 @@ If($Section -eq "All" -or $Section -eq "Servers")
 						If($MSWORD -or $PDF)
 						{
 							WriteWordLine 0 0 "Citrix hotfix retrieval was successful but no Citrix hotfixes were returned." "" $Null 0 $False $True
-						}
-						ElseIf($Text)
-						{
-							Line 0 "Citrix hotfix retrieval was successful but no Citrix hotfixes were returned."
-						}
-						ElseIf($HTML)
-						{
 						}
 					}
 				}
@@ -7716,12 +6999,6 @@ If(!$Summary -and ($Section -eq "All"))
 		## Seed the $Services row index from the second row
 		[int] $CurrentServiceIndex = 2;
 	}
-	ElseIf($Text)
-	{
-	}
-	ElseIf($HTML)
-	{
-	}
 	
 	ForEach($Item in $SessionSharingItems)
 	{
@@ -7738,12 +7015,6 @@ If(!$Summary -and ($Section -eq "All"))
 			$ItemsWordTable += $WordTableRowHash;
 
 			$CurrentServiceIndex++;
-		}
-		ElseIf($Text)
-		{
-		}
-		ElseIf($HTML)
-		{
 		}
 	}
 
@@ -7764,12 +7035,6 @@ If(!$Summary -and ($Section -eq "All"))
 		$TableRange = $Null
 		$Table = $Null
 	}
-	ElseIf($Text)
-	{
-	}
-	ElseIf($HTML)
-	{
-	}
 	
 	Write-Verbose "$(Get-Date): Finished Create Appendix A - Session Sharing Items"
 	Write-Verbose "$(Get-Date): "
@@ -7784,12 +7049,6 @@ If(!$Summary -and ($Section -eq "All"))
 		[System.Collections.Hashtable[]] $ItemsWordTable = @();
 		## Seed the $Services row index from the second row
 		[int] $CurrentServiceIndex = 2;
-	}
-	ElseIf($Text)
-	{
-	}
-	ElseIf($HTML)
-	{
 	}
 
 	ForEach($Item in $ServerItems)
@@ -7818,12 +7077,6 @@ If(!$Summary -and ($Section -eq "All"))
 
 			$CurrentServiceIndex++;
 		}
-		ElseIf($Text)
-		{
-		}
-		ElseIf($HTML)
-		{
-		}
 	}
 
 	If($MSWord -or $PDF)
@@ -7841,12 +7094,6 @@ If(!$Summary -and ($Section -eq "All"))
 
 		FindWordDocumentEnd
 		$Table = $Null
-	}
-	ElseIf($Text)
-	{
-	}
-	ElseIf($HTML)
-	{
 	}
 	
 	Write-Verbose "$(Get-Date): Finished Create Appendix B - Server Major Items"
@@ -7963,14 +7210,6 @@ UpdateDocumentProperties $AbstractTitle $SubjectTitle
 If($MSWORD -or $PDF)
 {
     SaveandCloseDocumentandShutdownWord
-}
-ElseIf($Text)
-{
-    SaveandCloseTextDocument
-}
-ElseIf($HTML)
-{
-    SaveandCloseHTMLDocument
 }
 
 Write-Verbose "$(Get-Date): Script has completed"
