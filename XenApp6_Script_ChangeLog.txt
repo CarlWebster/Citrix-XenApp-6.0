@@ -1,12 +1,16 @@
-#Original Script created 8/17/2010 by Michael Bogobowicz, Citrix Systems.
-#To contact, please message @mikebogo on Twitter
-#This script is designed to be run on a XenApp 6 server
-
 #Modifications by Carl Webster, CTP and independent consultant
 #webster@carlwebster.com
 #@carlwebster on Twitter
 #http://www.CarlWebster.com
 #originally released to the Citrix community on September 30, 2011
+
+#Version 4.33 17-Dec-2019
+#	Fix Swedish Table of Contents (Thanks to Johan Kallio)
+#		From 
+#			'sv-'	{ 'Automatisk innehållsförteckning2'; Break }
+#		To
+#			'sv-'	{ 'Automatisk innehållsförteckn2'; Break }
+#	Updated help text
 
 #Version 4.32 13-Jun-2017
 #	Add four new Cover Page properties
