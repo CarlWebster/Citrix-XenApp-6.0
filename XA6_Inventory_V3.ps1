@@ -97,9 +97,9 @@
 	http://www.carlwebster.com/documenting-a-citrix-xenapp-6-farm-with-microsoft-powershell-and-word-version-3
 .NOTES
 	NAME: XA6_Inventory_V3.ps1
-	VERSION: 3.03
+	VERSION: 3.04
 	AUTHOR: Carl Webster (with a lot of help from Michael B. Smith and Jeff Wouters)
-	LASTEDIT: June 7, 2013
+	LASTEDIT: July 1, 2013
 #>
 
 
@@ -190,6 +190,8 @@ Set-StrictMode -Version 2
 #	Citrix services that are Stopped will now show in a Red cell with bold, black text
 #	Recommended hotfixes that are Not Installed will now show in a Red cell with bold, black text
 #	Added a few more Write-Verbose statements
+#Updated July 1, 2013
+#	Include updated hotfix lists from CTX129229
 
 
 Function CheckWordPrereq
@@ -1859,54 +1861,60 @@ If( $? )
 								"XA600W2K8R2X64029", "XA600W2K8R2X64046", "XA600W2K8R2X64058", "XA600W2K8R2X64060",
 								"XA600W2K8R2X64062", "XA600W2K8R2X64063", "XA600W2K8R2X64068", "XA600W2K8R2X64077", 
 								"XA600W2K8R2X64079", "XA600W2K8R2X64089")
-					write-verbose "`t`tCreate Word Table for Citrix Hotfixes"
-					$TableRange = $doc.Application.Selection.Range
-					$Columns = 2
-					$Rows = $RecommendedList.count + 1
-					write-verbose "`t`tadd Citrix recommended hotfix table to doc"
-					$Table = $doc.Tables.Add($TableRange, $Rows, $Columns)
-					$table.Style = "Table Grid"
-					$table.Borders.InsideLineStyle = 1
-					$table.Borders.OutsideLineStyle = 1
-					$xRow = 1
-					write-verbose "`t`tformat first row with column headings"
-					$Table.Cell($xRow,1).Shading.BackgroundPatternColor = $wdColorGray15
-					$Table.Cell($xRow,1).Range.Font.Bold = $True
-					$Table.Cell($xRow,1).Range.Text = "Citrix Hotfix"
-					$Table.Cell($xRow,2).Shading.BackgroundPatternColor = $wdColorGray15
-					$Table.Cell($xRow,2).Range.Font.Bold = $True
-					$Table.Cell($xRow,2).Range.Text = "Status"
-					ForEach($element in $RecommendedList)
-					{
-						$xRow++
-						$Table.Cell($xRow,1).Range.Text = $element
-						If(!$HotfixArray -contains $element)
-						{
-							#missing a recommended Citrix hotfix
-							#WriteWordLine 0 2 "Recommended Citrix Hotfix $element is not installed"
-							$Table.Cell($xRow,2).Shading.BackgroundPatternColor = $wdColorRed
-							$Table.Cell($xRow,2).Range.Font.Bold  = $True
-							$Table.Cell($xRow,2).Range.Font.Color = $WDColorBlack
-							$Table.Cell($xRow,2).Range.Text = "Not Installed"
-						}
-						Else
-						{
-							$Table.Cell($xRow,2).Range.Text = "Installed"
-						}
-					}
-					write-verbose "`t`tMove table of Citrix hotfixes to the right"
-					$Table.Rows.SetLeftIndent(43,1)
-					$table.AutoFitBehavior(1)
-
-					#return focus back to document
-					write-verbose "`t`treturn focus back to document"
-					$doc.ActiveWindow.ActivePane.view.SeekView=$wdSeekMainDocument
-
-					#move to the end of the current document
-					write-verbose "`t`tmove to the end of the current document"
-					$selection.EndKey($wdStory,$wdMove) | Out-Null
-					WriteWordLine 0 0 ""
 				}
+				Else #HRP2 installed
+				{
+					write-verbose "`t`tProcessing HRP02 hotfix list for server $($server.ServerName)"
+					WriteWordLine 0 1 "Citrix Recommended Hotfixes:"
+					$RecommendedList = @("XA600R02W2K8R2X64015")
+				}
+				write-verbose "`t`tCreate Word Table for Citrix Hotfixes"
+				$TableRange = $doc.Application.Selection.Range
+				$Columns = 2
+				$Rows = $RecommendedList.count + 1
+				write-verbose "`t`tadd Citrix recommended hotfix table to doc"
+				$Table = $doc.Tables.Add($TableRange, $Rows, $Columns)
+				$table.Style = "Table Grid"
+				$table.Borders.InsideLineStyle = 1
+				$table.Borders.OutsideLineStyle = 1
+				$xRow = 1
+				write-verbose "`t`tformat first row with column headings"
+				$Table.Cell($xRow,1).Shading.BackgroundPatternColor = $wdColorGray15
+				$Table.Cell($xRow,1).Range.Font.Bold = $True
+				$Table.Cell($xRow,1).Range.Text = "Citrix Hotfix"
+				$Table.Cell($xRow,2).Shading.BackgroundPatternColor = $wdColorGray15
+				$Table.Cell($xRow,2).Range.Font.Bold = $True
+				$Table.Cell($xRow,2).Range.Text = "Status"
+				ForEach($element in $RecommendedList)
+				{
+					$xRow++
+					$Table.Cell($xRow,1).Range.Text = $element
+					If(!$HotfixArray -contains $element)
+					{
+						#missing a recommended Citrix hotfix
+						#WriteWordLine 0 2 "Recommended Citrix Hotfix $element is not installed"
+						$Table.Cell($xRow,2).Shading.BackgroundPatternColor = $wdColorRed
+						$Table.Cell($xRow,2).Range.Font.Bold  = $True
+						$Table.Cell($xRow,2).Range.Font.Color = $WDColorBlack
+						$Table.Cell($xRow,2).Range.Text = "Not Installed"
+					}
+					Else
+					{
+						$Table.Cell($xRow,2).Range.Text = "Installed"
+					}
+				}
+				write-verbose "`t`tMove table of Citrix hotfixes to the right"
+				$Table.Rows.SetLeftIndent(43,1)
+				$table.AutoFitBehavior(1)
+
+				#return focus back to document
+				write-verbose "`t`treturn focus back to document"
+				$doc.ActiveWindow.ActivePane.view.SeekView=$wdSeekMainDocument
+
+				#move to the end of the current document
+				write-verbose "`t`tmove to the end of the current document"
+				$selection.EndKey($wdStory,$wdMove) | Out-Null
+				WriteWordLine 0 0 ""
 				#build list of installed Microsoft hotfixes
 				write-verbose "`t`tProcessing Microsoft hotfixes for server $($server.ServerName)"
 				$MSInstalledHotfixes = Get-HotFix -computername $Server.ServerName -EA 0 | select-object -Expand HotFixID | sort-object HotFixID
@@ -1916,15 +1924,15 @@ If( $? )
 					$RecommendedList = @("KB2444328", "KB2465772", "KB2551503", "KB2571388", 
 										"KB2578159", "KB2617858", "KB2620656", "KB2647753",
 										"KB2661001", "KB2661332", "KB2731847", "KB2748302",
-										"KB2775511","KB917607")
+										"KB2775511", "KB2778831", "KB917607")
 				}
 				Else
 				{
 					#Server 2008 R2 without SP1 installed
-					$RecommendedList = @("KB2265716", "KB2388142", "KB238928", "KB2444328", 
+					$RecommendedList = @("KB2265716", "KB2388142", "KB2383928", "KB2444328", 
 										"KB2465772", "KB2551503", "KB2571388", "KB2578159", 
 										"KB2617858", "KB2620656", "KB2647753", "KB2661001",
-										"KB2661332", "KB2731847", "KB2748302", "KB917607", 
+										"KB2661332", "KB2731847", "KB2748302", "KB2778831", "KB917607", 
 										"KB975777", "KB979530", "KB980663", "KB983460")
 				}
 				
