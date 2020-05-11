@@ -498,7 +498,7 @@ Function _SetDocumentProperty
 
 #Script begins
 
-if (!(Check-NeededPSSnapins "Citrix.Common.Commands","Citrix.Common.GroupPolicy","Citrix.XenApp.Commands")){
+if (!(Check-NeededPSSnapins "Citrix.Common.Commands","Citrix.XenApp.Commands")){
     #We're missing Citrix Snapins that we need
     write-error "Missing Citrix PowerShell Snap-ins Detected, check the console above for more information. Are you sure you are running this script on a XenApp 6 Server? Script will now close."
     break
