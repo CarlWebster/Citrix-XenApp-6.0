@@ -142,11 +142,11 @@
 .PARAMETER StartDate
 	Start date, in MM/DD/YYYY HH:MM format, for the Configuration Logging report.
 	The default is today's date minus seven days.
-	If the StartDate is entered as 01/01/2020, the date becomes 01/01/2020 00:00:00.
+	If the StartDate is entered as 01/01/2022, the date becomes 01/01/2022 00:00:00.
 .PARAMETER EndDate
 	End date, in MM/DD/YYYY HH:MM format, for the Configuration Logging report.
 	The default is today's date.
-	If the EndDate is entered as 01/01/2020, the date becomes 01/01/2020 00:00:00.
+	If the EndDate is entered as 01/01/2022, the date becomes 01/01/2022 00:00:00.
 .PARAMETER Summary
 	Only give summary information, no details.
 	This parameter is disabled by default.
@@ -155,8 +155,8 @@
 .PARAMETER AddDateTime
 	Adds a date time stamp to the end of the file name.
 	Time stamp is in the format of yyyy-MM-dd_HHmm.
-	June 1, 2020 at 6PM is 2020-06-01_1800.
-	Output filename will be ReportName_2020-06-01_1800.docx (or .pdf).
+	June 1, 2022 at 6PM is 2022-06-01_1800.
+	Output filename will be ReportName_2022-06-01_1800.docx (or .pdf).
 	This parameter is disabled by default.
 .PARAMETER Section
 	Processes a specific section of the report.
@@ -235,7 +235,7 @@
 	Sideline for the Cover Page format.
 	Administrator for the User Name.
 .EXAMPLE
-	PS C:\PSScript > .\XA6_Inventory_V43.ps1 -StartDate "01/01/2020" -EndDate "01/02/2020" 
+	PS C:\PSScript > .\XA6_Inventory_V43.ps1 -StartDate "01/01/2022" -EndDate "01/02/2022" 
 	
 	Will use all Default values and add additional information for each server about its 
 	installed applications.
@@ -247,11 +247,11 @@
 	Carl Webster for the Company Name.
 	Sideline for the Cover Page format.
 	Administrator for the User Name.
-	Will return all Configuration Logging entries from "01/01/2020 00:00:00" through 
-	"01/02/2020 "00:00:00".
+	Will return all Configuration Logging entries from "01/01/2022 00:00:00" through 
+	"01/02/2022 "00:00:00".
 .EXAMPLE
-	PS C:\PSScript > .\XA6_Inventory_V43.ps1 -StartDate "01/01/2020" -EndDate 
-	"01/01/2020" 
+	PS C:\PSScript > .\XA6_Inventory_V43.ps1 -StartDate "01/01/2022" -EndDate 
+	"01/01/2022" 
 	
 	Will use all Default values and add additional information for each server about its 
 	installed applications.
@@ -263,10 +263,10 @@
 	Carl Webster for the Company Name.
 	Sideline for the Cover Page format.
 	Administrator for the User Name.
-	Will return all Configuration Logging entries from "01/01/2020 00:00:00" through 
-	"01/01/2020 "00:00:00".  In other words, nothing is returned.
+	Will return all Configuration Logging entries from "01/01/2022 00:00:00" through 
+	"01/01/2022 "00:00:00".  In other words, nothing is returned.
 .EXAMPLE
-	PS C:\PSScript > .\XA6_Inventory_V43.ps1 -StartDate "01/01/2020 21:00:00" -EndDate "01/01/2020 22:00:00" 
+	PS C:\PSScript > .\XA6_Inventory_V43.ps1 -StartDate "01/01/2022 21:00:00" -EndDate "01/01/2022 22:00:00" 
 	
 	Will use all Default values and add additional information for each server about its installed applications.
 	HKEY_CURRENT_USER\Software\Microsoft\Office\Common\UserInfo\CompanyName="Carl Webster" or
@@ -276,7 +276,7 @@
 	Carl Webster for the Company Name.
 	Sideline for the Cover Page format.
 	Administrator for the User Name.
-	Will return all Configuration Logging entries from 9PM to 10PM on 01/01/2020.
+	Will return all Configuration Logging entries from 9PM to 10PM on 01/01/2022.
 .EXAMPLE
 	PS C:\PSScript .\XA6_Inventory_V43.ps1 -CompanyName "Carl Webster Consulting" 
 	-CoverPage "Mod" -UserName "Carl Webster"
@@ -349,8 +349,8 @@
 
 	Adds a date time stamp to the end of the file name.
 	Time stamp is in the format of yyyy-MM-dd_HHmm.
-	June 1, 2020 at 6PM is 2020-06-01_1800.
-	Output filename will be XA6FarmName_2020-06-01_1800.docx
+	June 1, 2022 at 6PM is 2022-06-01_1800.
+	Output filename will be XA6FarmName_2022-06-01_1800.docx
 .EXAMPLE
 	PS C:\PSScript > .\XA6_Inventory_V43.ps1 -PDF -AddDateTime
 	
@@ -367,17 +367,17 @@
 
 	Adds a date time stamp to the end of the file name.
 	Time stamp is in the format of yyyy-MM-dd_HHmm.
-	June 1, 2020 at 6PM is 2020-06-01_1800.
-	Output filename will be XA6FarmName_2020-06-01_1800.pdf
+	June 1, 2022 at 6PM is 2022-06-01_1800.
+	Output filename will be XA6FarmName_2022-06-01_1800.pdf
 .INPUTS
 	None.  You cannot pipe objects to this script.
 .OUTPUTS
 	No objects are output from this script.  This script creates a Word or PDF document.
 .NOTES
 	NAME: XA6_Inventory_V43.ps1
-	VERSION: 4.34
+	VERSION: 4.35
 	AUTHOR: Carl Webster (with a lot of help from Michael B. Smith, Jeff Wouters and Iain Brighton)
-	LASTEDIT: May 9, 2020
+	LASTEDIT: April 23, 2022
 #>
 
 
@@ -467,6 +467,28 @@ Param(
 #http://www.CarlWebster.com
 #originally released to the Citrix community on September 30, 2011
 
+#Version 4.35 23-Apr-2022
+#	Change all Get-WMIObject to Get-CIMInstance
+#	Fixed numerous $Null comparisons
+#	Fixed the German Table of Contents (Thanks to Rene Bigler)
+#		From 
+#			'de-'	{ 'Automatische Tabelle 2'; Break }
+#		To
+#			'de-'	{ 'Automatisches Verzeichnis 2'; Break }
+#	General code cleanup
+#	In Function AbortScript, add test for the winword process and terminate it if it is running
+#	In Functions AbortScript and SaveandCloseDocumentandShutdownWord, add code from Guy Leech to test for the "Id" property before using it
+#	In Function OutputNicItem, fixed several issues with DHCP data
+#	Updated the following functions to the latest version:
+#		AddWordTable
+#		Check-LoadedModule
+#		Check-NeededPSSnapins
+#		SetWordCellFormat
+#		UpdateDocumentProperties
+#		validStateProp
+#	Updated the help text
+#	Updated the ReadMe file
+#
 #Version 4.34 9-May-2020
 #	Add checking for a Word version of 0, which indicates the Office installation needs repairing
 #	Add Receive Side Scaling setting to Function OutputNICItem
@@ -571,7 +593,7 @@ $PSDefaultParameterValues = @{"*:Verbose"=$True}
 $SaveEAPreference = $ErrorActionPreference
 $ErrorActionPreference = 'SilentlyContinue'
 
-If($MSWord -eq $Null)
+If($Null -eq $MSWord)
 {
 	If($PDF)
 	{
@@ -602,11 +624,11 @@ Else
 {
 	$ErrorActionPreference = $SaveEAPreference
 	Write-Verbose "$(Get-Date): Unable to determine output parameter"
-	If($MSWord -eq $Null)
+	If($Null -eq $MSWord)
 	{
 		Write-Verbose "$(Get-Date): MSWord is Null"
 	}
-	ElseIf($PDF -eq $Null)
+	ElseIf($Null -eq $PDF)
 	{
 		Write-Verbose "$(Get-Date): PDF is Null"
 	}
@@ -630,16 +652,16 @@ Else
 $ValidSection = $False
 Switch ($Section)
 {
-	"Admins" {$ValidSection = $True}
-	"Apps" {$ValidSection = $True}
-	"ConfigLog" {$ValidSection = $True}
-	"LBPolicies" {$ValidSection = $True}
-	"LoadEvals" {$ValidSection = $True}
-	"Policies" {$ValidSection = $True}
-	"Servers" {$ValidSection = $True}
-	"WGs" {$ValidSection = $True}
-	"Zones" {$ValidSection = $True}
-	"All" {$ValidSection = $True}
+	"Admins"		{$ValidSection = $True}
+	"Apps"			{$ValidSection = $True}
+	"ConfigLog"		{$ValidSection = $True}
+	"LBPolicies"	{$ValidSection = $True}
+	"LoadEvals"		{$ValidSection = $True}
+	"Policies"		{$ValidSection = $True}
+	"Servers"		{$ValidSection = $True}
+	"WGs"			{$ValidSection = $True}
+	"Zones"			{$ValidSection = $True}
+	"All"			{$ValidSection = $True}
 }
 
 If($ValidSection -eq $False)
@@ -688,7 +710,7 @@ If($MSWord -or $PDF)
 	[int]$wdSeekPrimaryFooter = 4
 	[int]$wdStory = 6
 	[int]$wdColorRed = 255
-	[int]$wdColorBlack = 0
+	#[int]$wdColorBlack = 0
 	[int]$wdWord2007 = 12
 	[int]$wdWord2010 = 14
 	[int]$wdWord2013 = 15
@@ -697,29 +719,29 @@ If($MSWord -or $PDF)
 	[int]$wdFormatPDF = 17
 	#http://blogs.technet.com/b/heyscriptingguy/archive/2006/03/01/how-can-i-right-align-a-single-column-in-a-word-table.aspx
 	#http://msdn.microsoft.com/en-us/library/office/ff835817%28v=office.15%29.aspx
-	[int]$wdAlignParagraphLeft = 0
-	[int]$wdAlignParagraphCenter = 1
-	[int]$wdAlignParagraphRight = 2
+	#[int]$wdAlignParagraphLeft = 0
+	#[int]$wdAlignParagraphCenter = 1
+	#[int]$wdAlignParagraphRight = 2
 	#http://msdn.microsoft.com/en-us/library/office/ff193345%28v=office.15%29.aspx
-	[int]$wdCellAlignVerticalTop = 0
-	[int]$wdCellAlignVerticalCenter = 1
-	[int]$wdCellAlignVerticalBottom = 2
+	#[int]$wdCellAlignVerticalTop = 0
+	#[int]$wdCellAlignVerticalCenter = 1
+	#[int]$wdCellAlignVerticalBottom = 2
 	#http://msdn.microsoft.com/en-us/library/office/ff844856%28v=office.15%29.aspx
 	[int]$wdAutoFitFixed = 0
 	[int]$wdAutoFitContent = 1
-	[int]$wdAutoFitWindow = 2
+	#[int]$wdAutoFitWindow = 2
 	#http://msdn.microsoft.com/en-us/library/office/ff821928%28v=office.15%29.aspx
 	[int]$wdAdjustNone = 0
 	[int]$wdAdjustProportional = 1
-	[int]$wdAdjustFirstColumn = 2
-	[int]$wdAdjustSameWidth = 3
+	#[int]$wdAdjustFirstColumn = 2
+	#[int]$wdAdjustSameWidth = 3
 
 	[int]$PointsPerTabStop = 36
 	[int]$Indent0TabStops = 0 * $PointsPerTabStop
 	[int]$Indent1TabStops = 1 * $PointsPerTabStop
 	[int]$Indent2TabStops = 2 * $PointsPerTabStop
 	[int]$Indent3TabStops = 3 * $PointsPerTabStop
-	[int]$Indent4TabStops = 4 * $PointsPerTabStop
+	#[int]$Indent4TabStops = 4 * $PointsPerTabStop
 
 	# http://www.thedoctools.com/index.php?show=wt_style_names_english_danish_german_french
 	[int]$wdStyleHeading1 = -2
@@ -734,12 +756,12 @@ If($MSWord -or $PDF)
 	[int]$wdLineStyleSingle = 1
 
 	[int]$wdHeadingFormatTrue = -1
-	[int]$wdHeadingFormatFalse = 0 
+	#[int]$wdHeadingFormatFalse = 0 
 
-	[string]$RunningOS = (Get-WmiObject -class Win32_OperatingSystem -EA 0).Caption
+	[string]$RunningOS = (Get-CIMInstance -ClassName Win32_OperatingSystem -EA 0 -Verbose:$False).Caption
 }
 
-#region code for -hardware switch
+#region code for hardware data
 Function GetComputerWMIInfo
 {
 	Param([string]$RemoteComputerName)
@@ -750,21 +772,29 @@ Function GetComputerWMIInfo
 	# @kbaggerman on Twitter
 	# http://blog.myvirtualvision.com
 	# modified 1-May-2014 to work in trusted AD Forests and using different domain admin credentials	
+	# modified 17-Aug-2016 to fix a few issues with Text and HTML output
+	# modified 29-Apr-2018 to change from Arrays to New-Object System.Collections.ArrayList
+	# modified 11-Mar-2022 changed from using Get-WmiObject to Get-CimInstance
 
 	#Get Computer info
-	Write-Verbose "$(Get-Date): `t`tProcessing WMI Computer information"
-	Write-Verbose "$(Get-Date): `t`t`tHardware information"
+	Write-Verbose "$(Get-Date -Format G): `t`tProcessing WMI Computer information"
+	Write-Verbose "$(Get-Date -Format G): `t`t`tHardware information"
 	If($MSWord -or $PDF)
 	{
 		WriteWordLine 3 0 "Computer Information: $($RemoteComputerName)"
 		WriteWordLine 4 0 "General Computer"
 	}
 	
-	[bool]$GotComputerItems = $True
-	
 	Try
 	{
-		$Results = Get-WmiObject -computername $RemoteComputerName win32_computersystem
+		If($RemoteComputerName -eq $env:computername)
+		{
+			$Results = Get-CimInstance -ClassName win32_computersystem -Verbose:$False
+		}
+		Else
+		{
+			$Results = Get-CimInstance -computername $RemoteComputerName -ClassName win32_computersystem -Verbose:$False
+		}
 	}
 	
 	Catch
@@ -772,33 +802,38 @@ Function GetComputerWMIInfo
 		$Results = $Null
 	}
 	
-	If($? -and $Results -ne $Null)
+	If($? -and $Null -ne $Results)
 	{
-		$ComputerItems = $Results | Select Manufacturer, Model, Domain, `
+		$ComputerItems = $Results | Select-Object Manufacturer, Model, Domain, `
 		@{N="TotalPhysicalRam"; E={[math]::round(($_.TotalPhysicalMemory / 1GB),0)}}, `
 		NumberOfProcessors, NumberOfLogicalProcessors
 		$Results = $Null
+		If($RemoteComputerName -eq $env:computername)
+		{
+			[string]$ComputerOS = (Get-CimInstance -ClassName Win32_OperatingSystem -EA 0 -Verbose:$False).Caption
+		}
+		Else
+		{
+			[string]$ComputerOS = (Get-CimInstance -ClassName Win32_OperatingSystem -CimSession $RemoteComputerName -EA 0 -Verbose:$False).Caption
+		}
 
 		ForEach($Item in $ComputerItems)
 		{
-			OutputComputerItem $Item
+			OutputComputerItem $Item $ComputerOS $RemoteComputerName
 		}
 	}
 	ElseIf(!$?)
 	{
-		Write-Verbose "$(Get-Date): Get-WmiObject win32_computersystem failed for $($RemoteComputerName)"
-		Write-Warning "Get-WmiObject win32_computersystem failed for $($RemoteComputerName)"
+		Write-Verbose "$(Get-Date -Format G): Get-CimInstance win32_computersystem failed for $($RemoteComputerName)"
+		Write-Warning "Get-CimInstance win32_computersystem failed for $($RemoteComputerName)"
 		If($MSWORD -or $PDF)
 		{
-			WriteWordLine 0 2 "Get-WmiObject win32_computersystem failed for $($RemoteComputerName)" "" $Null 0 $False $True
-			WriteWordLine 0 2 "On $($RemoteComputerName) you may need to run winmgmt /verifyrepository" "" $Null 0 $False $True
-			WriteWordLine 0 2 "and winmgmt /salvagerepository.  If this is a trusted Forest, you may" "" $Null 0 $False $True
-			WriteWordLine 0 2 "need to rerun the script with Domain Admin credentials from the trusted Forest." "" $Null 0 $False $True
+			WriteWordLine 0 2 "Get-CimInstance win32_computersystem failed for $($RemoteComputerName)" "" $Null 0 $False $True
 		}
 	}
 	Else
 	{
-		Write-Verbose "$(Get-Date): No results Returned for Computer information"
+		Write-Verbose "$(Get-Date -Format G): No results Returned for Computer information"
 		If($MSWORD -or $PDF)
 		{
 			WriteWordLine 0 2 "No results Returned for Computer information" "" $Null 0 $False $True
@@ -806,18 +841,23 @@ Function GetComputerWMIInfo
 	}
 	
 	#Get Disk info
-	Write-Verbose "$(Get-Date): `t`t`tDrive information"
+	Write-Verbose "$(Get-Date -Format G): `t`t`tDrive information"
 
 	If($MSWord -or $PDF)
 	{
 		WriteWordLine 4 0 "Drive(s)"
 	}
 
-	[bool]$GotDrives = $True
-	
 	Try
 	{
-		$Results = Get-WmiObject -computername $RemoteComputerName Win32_LogicalDisk
+		If($RemoteComputerName -eq $env:computername)
+		{
+			$Results = Get-CimInstance -ClassName Win32_LogicalDisk -Verbose:$False
+		}
+		Else
+		{
+			$Results = Get-CimInstance -CimSession $RemoteComputerName -ClassName Win32_LogicalDisk -Verbose:$False
+		}
 	}
 	
 	Catch
@@ -825,9 +865,9 @@ Function GetComputerWMIInfo
 		$Results = $Null
 	}
 
-	If($? -and $Results -ne $Null)
+	If($? -and $Null -ne $Results)
 	{
-		$drives = $Results | Select caption, @{N="drivesize"; E={[math]::round(($_.size / 1GB),0)}}, 
+		$drives = $Results | Select-Object caption, @{N="drivesize"; E={[math]::round(($_.size / 1GB),0)}}, 
 		filesystem, @{N="drivefreespace"; E={[math]::round(($_.freespace / 1GB),0)}}, 
 		volumename, drivetype, volumedirty, volumeserialnumber
 		$Results = $Null
@@ -841,39 +881,40 @@ Function GetComputerWMIInfo
 	}
 	ElseIf(!$?)
 	{
-		Write-Verbose "$(Get-Date): Get-WmiObject Win32_LogicalDisk failed for $($RemoteComputerName)"
-		Write-Warning "Get-WmiObject Win32_LogicalDisk failed for $($RemoteComputerName)"
+		Write-Verbose "$(Get-Date -Format G): Get-CimInstance Win32_LogicalDisk failed for $($RemoteComputerName)"
+		Write-Warning "Get-CimInstance Win32_LogicalDisk failed for $($RemoteComputerName)"
 		If($MSWORD -or $PDF)
 		{
-			WriteWordLine 0 2 "Get-WmiObject Win32_LogicalDisk failed for $($RemoteComputerName)" "" $Null 0 $False $True
-			WriteWordLine 0 2 "On $($RemoteComputerName) you may need to run winmgmt /verifyrepository" "" $Null 0 $False $True
-			WriteWordLine 0 2 "and winmgmt /salvagerepository.  If this is a trusted Forest, you may" "" $Null 0 $False $True
-			WriteWordLine 0 2 "need to rerun the script with Domain Admin credentials from the trusted Forest." "" $Null 0 $False $True
+			WriteWordLine 0 2 "Get-CimInstance Win32_LogicalDisk failed for $($RemoteComputerName)" "" $Null 0 $False $True
 		}
 	}
 	Else
 	{
-		Write-Verbose "$(Get-Date): No results Returned for Drive information"
+		Write-Verbose "$(Get-Date -Format G): No results Returned for Drive information"
 		If($MSWORD -or $PDF)
 		{
 			WriteWordLine 0 2 "No results Returned for Drive information" "" $Null 0 $False $True
 		}
 	}
 	
-
 	#Get CPU's and stepping
-	Write-Verbose "$(Get-Date): `t`t`tProcessor information"
+	Write-Verbose "$(Get-Date -Format G): `t`t`tProcessor information"
 
 	If($MSWord -or $PDF)
 	{
 		WriteWordLine 4 0 "Processor(s)"
 	}
 
-	[bool]$GotProcessors = $True
-	
 	Try
 	{
-		$Results = Get-WmiObject -computername $RemoteComputerName win32_Processor
+		If($RemoteComputerName -eq $env:computername)
+		{
+			$Results = Get-CimInstance -ClassName win32_Processor -Verbose:$False
+		}
+		Else
+		{
+			$Results = Get-CimInstance -computername $RemoteComputerName -ClassName win32_Processor -Verbose:$False
+		}
 	}
 	
 	Catch
@@ -881,9 +922,9 @@ Function GetComputerWMIInfo
 		$Results = $Null
 	}
 
-	If($? -and $Results -ne $Null)
+	If($? -and $Null -ne $Results)
 	{
-		$Processors = $Results | Select availability, name, description, maxclockspeed, 
+		$Processors = $Results | Select-Object availability, name, description, maxclockspeed, 
 		l2cachesize, l3cachesize, numberofcores, numberoflogicalprocessors
 		$Results = $Null
 		ForEach($processor in $processors)
@@ -893,19 +934,16 @@ Function GetComputerWMIInfo
 	}
 	ElseIf(!$?)
 	{
-		Write-Verbose "$(Get-Date): Get-WmiObject win32_Processor failed for $($RemoteComputerName)"
-		Write-Warning "Get-WmiObject win32_Processor failed for $($RemoteComputerName)"
+		Write-Verbose "$(Get-Date -Format G): Get-CimInstance win32_Processor failed for $($RemoteComputerName)"
+		Write-Warning "Get-CimInstance win32_Processor failed for $($RemoteComputerName)"
 		If($MSWORD -or $PDF)
 		{
-			WriteWordLine 0 2 "Get-WmiObject win32_Processor failed for $($RemoteComputerName)" "" $Null 0 $False $True
-			WriteWordLine 0 2 "On $($RemoteComputerName) you may need to run winmgmt /verifyrepository" "" $Null 0 $False $True
-			WriteWordLine 0 2 "and winmgmt /salvagerepository.  If this is a trusted Forest, you may" "" $Null 0 $False $True
-			WriteWordLine 0 2 "need to rerun the script with Domain Admin credentials from the trusted Forest." "" $Null 0 $False $True
+			WriteWordLine 0 2 "Get-CimInstance win32_Processor failed for $($RemoteComputerName)" "" $Null 0 $False $True
 		}
 	}
 	Else
 	{
-		Write-Verbose "$(Get-Date): No results Returned for Processor information"
+		Write-Verbose "$(Get-Date -Format G): No results Returned for Processor information"
 		If($MSWORD -or $PDF)
 		{
 			WriteWordLine 0 2 "No results Returned for Processor information" "" $Null 0 $False $True
@@ -913,7 +951,7 @@ Function GetComputerWMIInfo
 	}
 
 	#Get Nics
-	Write-Verbose "$(Get-Date): `t`t`tNIC information"
+	Write-Verbose "$(Get-Date -Format G): `t`t`tNIC information"
 
 	If($MSWord -or $PDF)
 	{
@@ -924,26 +962,33 @@ Function GetComputerWMIInfo
 	
 	Try
 	{
-		$Results = Get-WmiObject -computername $RemoteComputerName win32_networkadapterconfiguration
+		If($RemoteComputerName -eq $env:computername)
+		{
+			$Results = Get-CimInstance -ClassName win32_networkadapterconfiguration -Verbose:$False
+		}
+		Else
+		{
+			$Results = Get-CimInstance -computername $RemoteComputerName -ClassName win32_networkadapterconfiguration -Verbose:$False
+		}
 	}
 	
 	Catch
 	{
-		$Results
+		$Results = $Null
 	}
 
-	If($? -and $Results -ne $Null)
+	If($? -and $Null -ne $Results)
 	{
-		$Nics = $Results | Where {$_.ipaddress -ne $Null}
+		$Nics = $Results | Where-Object {$Null -ne $_.ipaddress}
 		$Results = $Null
 
-		If($Nics -eq $Null ) 
+		If($Null -eq $Nics) 
 		{ 
 			$GotNics = $False 
 		} 
 		Else 
 		{ 
-			$GotNics = !($Nics.__PROPERTY_COUNT -eq 0) 
+			$GotNics = $True
 		} 
 	
 		If($GotNics)
@@ -952,7 +997,14 @@ Function GetComputerWMIInfo
 			{
 				Try
 				{
-					$ThisNic = Get-WmiObject -computername $RemoteComputerName win32_networkadapter | Where {$_.index -eq $nic.index}
+					If($RemoteComputerName -eq $env:computername)
+					{
+						$ThisNic = Get-CimInstance -ClassName win32_networkadapter -Verbose:$False | Where-Object {$_.index -eq $nic.index}
+					}
+					Else
+					{
+						$ThisNic = Get-CimInstance -computername $RemoteComputerName -ClassName win32_networkadapter -Verbose:$False | Where-Object {$_.index -eq $nic.index}
+					}
 				}
 				
 				Catch 
@@ -960,27 +1012,23 @@ Function GetComputerWMIInfo
 					$ThisNic = $Null
 				}
 				
-				If($? -and $ThisNic -ne $Null)
+				If($? -and $Null -ne $ThisNic)
 				{
 					OutputNicItem $Nic $ThisNic $RemoteComputerName
 				}
 				ElseIf(!$?)
 				{
 					Write-Warning "$(Get-Date): Error retrieving NIC information"
-					Write-Verbose "$(Get-Date): Get-WmiObject win32_networkadapterconfiguration failed for $($RemoteComputerName)"
-					Write-Warning "Get-WmiObject win32_networkadapterconfiguration failed for $($RemoteComputerName)"
+					Write-Verbose "$(Get-Date -Format G): Get-CimInstance win32_networkadapterconfiguration failed for $($RemoteComputerName)"
+					Write-Warning "Get-CimInstance win32_networkadapterconfiguration failed for $($RemoteComputerName)"
 					If($MSWORD -or $PDF)
 					{
 						WriteWordLine 0 2 "Error retrieving NIC information" "" $Null 0 $False $True
-						WriteWordLine 0 2 "Get-WmiObject win32_networkadapterconfiguration failed for $($RemoteComputerName)" "" $Null 0 $False $True
-						WriteWordLine 0 2 "On $($RemoteComputerName) you may need to run winmgmt /verifyrepository" "" $Null 0 $False $True
-						WriteWordLine 0 2 "and winmgmt /salvagerepository.  If this is a trusted Forest, you may" "" $Null 0 $False $True
-						WriteWordLine 0 2 "need to rerun the script with Domain Admin credentials from the trusted Forest." "" $Null 0 $False $True
 					}
 				}
 				Else
 				{
-					Write-Verbose "$(Get-Date): No results Returned for NIC information"
+					Write-Verbose "$(Get-Date -Format G): No results Returned for NIC information"
 					If($MSWORD -or $PDF)
 					{
 						WriteWordLine 0 2 "No results Returned for NIC information" "" $Null 0 $False $True
@@ -992,20 +1040,16 @@ Function GetComputerWMIInfo
 	ElseIf(!$?)
 	{
 		Write-Warning "$(Get-Date): Error retrieving NIC configuration information"
-		Write-Verbose "$(Get-Date): Get-WmiObject win32_networkadapterconfiguration failed for $($RemoteComputerName)"
-		Write-Warning "Get-WmiObject win32_networkadapterconfiguration failed for $($RemoteComputerName)"
+		Write-Verbose "$(Get-Date -Format G): Get-CimInstance win32_networkadapterconfiguration failed for $($RemoteComputerName)"
+		Write-Warning "Get-CimInstance win32_networkadapterconfiguration failed for $($RemoteComputerName)"
 		If($MSWORD -or $PDF)
 		{
 			WriteWordLine 0 2 "Error retrieving NIC configuration information" "" $Null 0 $False $True
-			WriteWordLine 0 2 "Get-WmiObject win32_networkadapterconfiguration failed for $($RemoteComputerName)" "" $Null 0 $False $True
-			WriteWordLine 0 2 "On $($RemoteComputerName) you may need to run winmgmt /verifyrepository" "" $Null 0 $False $True
-			WriteWordLine 0 2 "and winmgmt /salvagerepository.  If this is a trusted Forest, you may" "" $Null 0 $False $True
-			WriteWordLine 0 2 "need to rerun the script with Domain Admin credentials from the trusted Forest." "" $Null 0 $False $True
 		}
 	}
 	Else
 	{
-		Write-Verbose "$(Get-Date): No results Returned for NIC configuration information"
+		Write-Verbose "$(Get-Date -Format G): No results Returned for NIC configuration information"
 		If($MSWORD -or $PDF)
 		{
 			WriteWordLine 0 2 "No results Returned for NIC configuration information" "" $Null 0 $False $True
@@ -1016,29 +1060,54 @@ Function GetComputerWMIInfo
 	{
 		WriteWordLine 0 0 ""
 	}
-
-	$Results = $Null
-	$ComputerItems = $Null
-	$Drives = $Null
-	$Processors = $Null
-	$Nics = $Null
 }
 
 Function OutputComputerItem
 {
-	Param([object]$Item)
+	Param([object]$Item, [string]$OS, [string]$RemoteComputerName)
+	
+	#get computer's power plan
+	#https://techcommunity.microsoft.com/t5/core-infrastructure-and-security/get-the-active-power-plan-of-multiple-servers-with-powershell/ba-p/370429
+	
+	try 
+	{
+
+		If($RemoteComputerName -eq $env:computername)
+		{
+			$PowerPlan = (Get-CimInstance -ClassName Win32_PowerPlan -Namespace "root\cimv2\power" -Verbose:$False |
+				Where-Object {$_.IsActive -eq $true} |
+				Select-Object @{Name = "PowerPlan"; Expression = {$_.ElementName}}).PowerPlan
+		}
+		Else
+		{
+			$PowerPlan = (Get-CimInstance -CimSession $RemoteComputerName -ClassName Win32_PowerPlan -Namespace "root\cimv2\power" -Verbose:$False |
+				Where-Object {$_.IsActive -eq $true} |
+				Select-Object @{Name = "PowerPlan"; Expression = {$_.ElementName}}).PowerPlan
+		}
+	}
+
+	catch 
+	{
+
+		$PowerPlan = $_.Exception
+
+	}	
+	
 	If($MSWord -or $PDF)
 	{
-		[System.Collections.Hashtable[]] $ItemInformation = @()
-		$ItemInformation += @{ Data = "Manufacturer"; Value = $Item.manufacturer; }
-		$ItemInformation += @{ Data = "Model"; Value = $Item.model; }
-		$ItemInformation += @{ Data = "Domain"; Value = $Item.domain; }
-		$ItemInformation += @{ Data = "Total Ram"; Value = "$($Item.totalphysicalram) GB"; }
-		$ItemInformation += @{ Data = "Physical Processors (sockets)"; Value = $Item.NumberOfProcessors; }
-		$ItemInformation += @{ Data = "Logical Processors (cores w/HT)"; Value = $Item.NumberOfLogicalProcessors; }
+		$ItemInformation = New-Object System.Collections.ArrayList
+		$ItemInformation.Add(@{ Data = "Manufacturer"; Value = $Item.manufacturer; }) > $Null
+		$ItemInformation.Add(@{ Data = "Model"; Value = $Item.model; }) > $Null
+		$ItemInformation.Add(@{ Data = "Domain"; Value = $Item.domain; }) > $Null
+		$ItemInformation.Add(@{ Data = "Operating System"; Value = $OS; }) > $Null
+		$ItemInformation.Add(@{ Data = "Power Plan"; Value = $PowerPlan; }) > $Null
+		$ItemInformation.Add(@{ Data = "Total Ram"; Value = "$($Item.totalphysicalram) GB"; }) > $Null
+		$ItemInformation.Add(@{ Data = "Physical Processors (sockets)"; Value = $Item.NumberOfProcessors; }) > $Null
+		$ItemInformation.Add(@{ Data = "Logical Processors (cores w/HT)"; Value = $Item.NumberOfLogicalProcessors; }) > $Null
 		$Table = AddWordTable -Hashtable $ItemInformation `
 		-Columns Data,Value `
 		-List `
+		-Format $wdTableGrid `
 		-AutoFit $wdAutoFitFixed;
 
 		## Set first column format
@@ -1052,7 +1121,7 @@ Function OutputComputerItem
 
 		FindWordDocumentEnd
 		$Table = $Null
-		WriteWordLine 0 2 ""
+		WriteWordLine 0 0 ""
 	}
 }
 
@@ -1063,14 +1132,14 @@ Function OutputDriveItem
 	$xDriveType = ""
 	Switch ($drive.drivetype)
 	{
-		0	{$xDriveType = "Unknown"}
-		1	{$xDriveType = "No Root Directory"}
-		2	{$xDriveType = "Removable Disk"}
-		3	{$xDriveType = "Local Disk"}
-		4	{$xDriveType = "Network Drive"}
-		5	{$xDriveType = "Compact Disc"}
-		6	{$xDriveType = "RAM Disk"}
-		Default {$xDriveType = "Unknown"}
+		0		{$xDriveType = "Unknown"; Break}
+		1		{$xDriveType = "No Root Directory"; Break}
+		2		{$xDriveType = "Removable Disk"; Break}
+		3		{$xDriveType = "Local Disk"; Break}
+		4		{$xDriveType = "Network Drive"; Break}
+		5		{$xDriveType = "Compact Disc"; Break}
+		6		{$xDriveType = "RAM Disk"; Break}
+		Default {$xDriveType = "Unknown"; Break}
 	}
 	
 	$xVolumeDirty = ""
@@ -1088,30 +1157,31 @@ Function OutputDriveItem
 
 	If($MSWORD -or $PDF)
 	{
-		[System.Collections.Hashtable[]] $DriveInformation = @()
-		$DriveInformation += @{ Data = "Caption"; Value = $Drive.caption; }
-		$DriveInformation += @{ Data = "Size"; Value = "$($drive.drivesize) GB"; }
+		$DriveInformation = New-Object System.Collections.ArrayList
+		$DriveInformation.Add(@{ Data = "Caption"; Value = $Drive.caption; }) > $Null
+		$DriveInformation.Add(@{ Data = "Size"; Value = "$($drive.drivesize) GB"; }) > $Null
 		If(![String]::IsNullOrEmpty($drive.filesystem))
 		{
-			$DriveInformation += @{ Data = "File System"; Value = $Drive.filesystem; }
+			$DriveInformation.Add(@{ Data = "File System"; Value = $Drive.filesystem; }) > $Null
 		}
-		$DriveInformation += @{ Data = "Free Space"; Value = "$($drive.drivefreespace) GB"; }
+		$DriveInformation.Add(@{ Data = "Free Space"; Value = "$($drive.drivefreespace) GB"; }) > $Null
 		If(![String]::IsNullOrEmpty($drive.volumename))
 		{
-			$DriveInformation += @{ Data = "Volume Name"; Value = $Drive.volumename; }
+			$DriveInformation.Add(@{ Data = "Volume Name"; Value = $Drive.volumename; }) > $Null
 		}
 		If(![String]::IsNullOrEmpty($drive.volumedirty))
 		{
-			$DriveInformation += @{ Data = "Volume is Dirty"; Value = $xVolumeDirty; }
+			$DriveInformation.Add(@{ Data = "Volume is Dirty"; Value = $xVolumeDirty; }) > $Null
 		}
 		If(![String]::IsNullOrEmpty($drive.volumeserialnumber))
 		{
-			$DriveInformation += @{ Data = "Volume Serial Number"; Value = $Drive.volumeserialnumber; }
+			$DriveInformation.Add(@{ Data = "Volume Serial Number"; Value = $Drive.volumeserialnumber; }) > $Null
 		}
-		$DriveInformation += @{ Data = "Drive Type"; Value = $xDriveType; }
+		$DriveInformation.Add(@{ Data = "Drive Type"; Value = $xDriveType; }) > $Null
 		$Table = AddWordTable -Hashtable $DriveInformation `
 		-Columns Data,Value `
 		-List `
+		-Format $wdTableGrid `
 		-AutoFit $wdAutoFitFixed;
 
 		## Set first column format
@@ -1138,52 +1208,53 @@ Function OutputProcessorItem
 	$xAvailability = ""
 	Switch ($processor.availability)
 	{
-		1	{$xAvailability = "Other"}
-		2	{$xAvailability = "Unknown"}
-		3	{$xAvailability = "Running or Full Power"}
-		4	{$xAvailability = "Warning"}
-		5	{$xAvailability = "In Test"}
-		6	{$xAvailability = "Not Applicable"}
-		7	{$xAvailability = "Power Off"}
-		8	{$xAvailability = "Off Line"}
-		9	{$xAvailability = "Off Duty"}
-		10	{$xAvailability = "Degraded"}
-		11	{$xAvailability = "Not Installed"}
-		12	{$xAvailability = "Install Error"}
-		13	{$xAvailability = "Power Save - Unknown"}
-		14	{$xAvailability = "Power Save - Low Power Mode"}
-		15	{$xAvailability = "Power Save - Standby"}
-		16	{$xAvailability = "Power Cycle"}
-		17	{$xAvailability = "Power Save - Warning"}
-		Default	{$xAvailability = "Unknown"}
+		1		{$xAvailability = "Other"; Break}
+		2		{$xAvailability = "Unknown"; Break}
+		3		{$xAvailability = "Running or Full Power"; Break}
+		4		{$xAvailability = "Warning"; Break}
+		5		{$xAvailability = "In Test"; Break}
+		6		{$xAvailability = "Not Applicable"; Break}
+		7		{$xAvailability = "Power Off"; Break}
+		8		{$xAvailability = "Off Line"; Break}
+		9		{$xAvailability = "Off Duty"; Break}
+		10		{$xAvailability = "Degraded"; Break}
+		11		{$xAvailability = "Not Installed"; Break}
+		12		{$xAvailability = "Install Error"; Break}
+		13		{$xAvailability = "Power Save - Unknown"; Break}
+		14		{$xAvailability = "Power Save - Low Power Mode"; Break}
+		15		{$xAvailability = "Power Save - Standby"; Break}
+		16		{$xAvailability = "Power Cycle"; Break}
+		17		{$xAvailability = "Power Save - Warning"; Break}
+		Default	{$xAvailability = "Unknown"; Break}
 	}
 
 	If($MSWORD -or $PDF)
 	{
-		[System.Collections.Hashtable[]] $ProcessorInformation = @()
-		$ProcessorInformation += @{ Data = "Name"; Value = $Processor.name; }
-		$ProcessorInformation += @{ Data = "Description"; Value = $Processor.description; }
-		$ProcessorInformation += @{ Data = "Max Clock Speed"; Value = "$($processor.maxclockspeed) MHz"; }
+		$ProcessorInformation = New-Object System.Collections.ArrayList
+		$ProcessorInformation.Add(@{ Data = "Name"; Value = $Processor.name; }) > $Null
+		$ProcessorInformation.Add(@{ Data = "Description"; Value = $Processor.description; }) > $Null
+		$ProcessorInformation.Add(@{ Data = "Max Clock Speed"; Value = "$($processor.maxclockspeed) MHz"; }) > $Null
 		If($processor.l2cachesize -gt 0)
 		{
-			$ProcessorInformation += @{ Data = "L2 Cache Size"; Value = "$($processor.l2cachesize) KB"; }
+			$ProcessorInformation.Add(@{ Data = "L2 Cache Size"; Value = "$($processor.l2cachesize) KB"; }) > $Null
 		}
 		If($processor.l3cachesize -gt 0)
 		{
-			$ProcessorInformation += @{ Data = "L3 Cache Size"; Value = "$($processor.l3cachesize) KB"; }
+			$ProcessorInformation.Add(@{ Data = "L3 Cache Size"; Value = "$($processor.l3cachesize) KB"; }) > $Null
 		}
 		If($processor.numberofcores -gt 0)
 		{
-			$ProcessorInformation += @{ Data = "Number of Cores"; Value = $Processor.numberofcores; }
+			$ProcessorInformation.Add(@{ Data = "Number of Cores"; Value = $Processor.numberofcores; }) > $Null
 		}
 		If($processor.numberoflogicalprocessors -gt 0)
 		{
-			$ProcessorInformation += @{ Data = "Number of Logical Processors (cores w/HT)"; Value = $Processor.numberoflogicalprocessors; }
+			$ProcessorInformation.Add(@{ Data = "Number of Logical Processors (cores w/HT)"; Value = $Processor.numberoflogicalprocessors; }) > $Null
 		}
-		$ProcessorInformation += @{ Data = "Availability"; Value = $xAvailability; }
+		$ProcessorInformation.Add(@{ Data = "Availability"; Value = $xAvailability; }) > $Null
 		$Table = AddWordTable -Hashtable $ProcessorInformation `
 		-Columns Data,Value `
 		-List `
+		-Format $wdTableGrid `
 		-AutoFit $wdAutoFitFixed;
 
 		## Set first column format
@@ -1205,7 +1276,16 @@ Function OutputNicItem
 {
 	Param([object]$Nic, [object]$ThisNic, [string]$RemoteComputerName)
 	
-	$powerMgmt = Get-WmiObject -computername $RemoteComputerName MSPower_DeviceEnable -Namespace root\wmi | Where-Object{$_.InstanceName -match [regex]::Escape($ThisNic.PNPDeviceID)}
+	If($RemoteComputerName -eq $env:computername)
+	{
+		$powerMgmt = Get-CimInstance -ClassName MSPower_DeviceEnable -Namespace "root\wmi" -Verbose:$False |
+			Where-Object{$_.InstanceName -match [regex]::Escape($ThisNic.PNPDeviceID)}
+	}
+	Else
+	{
+		$powerMgmt = Get-CimInstance -CimSession $RemoteComputerName -ClassName MSPower_DeviceEnable -Namespace "root\wmi" -Verbose:$False |
+			Where-Object{$_.InstanceName -match [regex]::Escape($ThisNic.PNPDeviceID)}
+	}
 
 	If($? -and $Null -ne $powerMgmt)
 	{
@@ -1213,7 +1293,7 @@ Function OutputNicItem
 		{
 			$PowerSaving = "Enabled"
 		}
-		Else
+		Else	
 		{
 			$PowerSaving = "Disabled"
 		}
@@ -1251,13 +1331,20 @@ Function OutputNicItem
 	Try
 	{
 		#https://ios.developreference.com/article/10085450/How+do+I+enable+VRSS+(Virtual+Receive+Side+Scaling)+for+a+Windows+VM+without+relying+on+Enable-NetAdapterRSS%3F
-		$RSSEnabled = (Get-WmiObject -ComputerName $RemoteComputerName MSFT_NetAdapterRssSettingData -Namespace "root\StandardCimV2" -ea 0).Enabled
+		If($RemoteComputerName -eq $env:computername)
+		{
+			$RSSEnabled = (Get-CimInstance -ClassName MSFT_NetAdapterRssSettingData -Namespace "root\StandardCimV2" -ea 0 -Verbose:$False).Enabled
+		}
+		Else
+		{
+			$RSSEnabled = (Get-CimInstance -CimSession $RemoteComputerName -ClassName MSFT_NetAdapterRssSettingData -Namespace "root\StandardCimV2" -ea 0 -Verbose:$False).Enabled
+		}
 
 		If($RSSEnabled)
 		{
 			$RSSEnabled = "Enabled"
 		}
-		ELse
+		Else
 		{
 			$RSSEnabled = "Disabled"
 		}
@@ -1265,38 +1352,38 @@ Function OutputNicItem
 	
 	Catch
 	{
-		$RSSEnabled = "Not available on $Script:RunningOS"
+		$RSSEnabled = "Unable to determine for $RemoteComputerName"
 	}
 
-	$xIPAddress = @()
+	$xIPAddress = New-Object System.Collections.ArrayList
 	ForEach($IPAddress in $Nic.ipaddress)
 	{
-		$xIPAddress += "$($IPAddress)"
+		$xIPAddress.Add("$($IPAddress)") > $Null
 	}
 
-	$xIPSubnet = @()
+	$xIPSubnet = New-Object System.Collections.ArrayList
 	ForEach($IPSubnet in $Nic.ipsubnet)
 	{
-		$xIPSubnet += "$($IPSubnet)"
+		$xIPSubnet.Add("$($IPSubnet)") > $Null
 	}
 
-	If($nic.dnsdomainsuffixsearchorder -ne $Null -and $nic.dnsdomainsuffixsearchorder.length -gt 0)
+	If($Null -ne $nic.dnsdomainsuffixsearchorder -and $nic.dnsdomainsuffixsearchorder.length -gt 0)
 	{
 		$nicdnsdomainsuffixsearchorder = $nic.dnsdomainsuffixsearchorder
-		$xnicdnsdomainsuffixsearchorder = @()
+		$xnicdnsdomainsuffixsearchorder = New-Object System.Collections.ArrayList
 		ForEach($DNSDomain in $nicdnsdomainsuffixsearchorder)
 		{
-			$xnicdnsdomainsuffixsearchorder += "$($DNSDomain)"
+			$xnicdnsdomainsuffixsearchorder.Add("$($DNSDomain)") > $Null
 		}
 	}
 	
-	If($nic.dnsserversearchorder -ne $Null -and $nic.dnsserversearchorder.length -gt 0)
+	If($Null -ne $nic.dnsserversearchorder -and $nic.dnsserversearchorder.length -gt 0)
 	{
 		$nicdnsserversearchorder = $nic.dnsserversearchorder
-		$xnicdnsserversearchorder = @()
+		$xnicdnsserversearchorder = New-Object System.Collections.ArrayList
 		ForEach($DNSServer in $nicdnsserversearchorder)
 		{
-			$xnicdnsserversearchorder += "$($DNSServer)"
+			$xnicdnsserversearchorder.Add("$($DNSServer)") > $Null
 		}
 	}
 
@@ -1313,10 +1400,10 @@ Function OutputNicItem
 	$xTcpipNetbiosOptions = ""
 	Switch ($nic.TcpipNetbiosOptions)
 	{
-		0	{$xTcpipNetbiosOptions = "Use NetBIOS setting from DHCP Server"}
-		1	{$xTcpipNetbiosOptions = "Enable NetBIOS"}
-		2	{$xTcpipNetbiosOptions = "Disable NetBIOS"}
-		Default	{$xTcpipNetbiosOptions = "Unknown"}
+		0		{$xTcpipNetbiosOptions = "Use NetBIOS setting from DHCP Server"; Break}
+		1		{$xTcpipNetbiosOptions = "Enable NetBIOS"; Break}
+		2		{$xTcpipNetbiosOptions = "Disable NetBIOS"; Break}
+		Default	{$xTcpipNetbiosOptions = "Unknown"; Break}
 	}
 	
 	$xwinsenablelmhostslookup = ""
@@ -1329,101 +1416,116 @@ Function OutputNicItem
 		$xwinsenablelmhostslookup = "No"
 	}
 
+	If($nic.dhcpenabled)
+	{
+		$DHCPLeaseObtainedDate = $nic.dhcpleaseobtained.ToLocalTime()
+		$DHCPLeaseExpiresDate = $nic.dhcpleaseexpires.ToLocalTIme()
+	}
+		
 	If($MSWORD -or $PDF)
 	{
-		[System.Collections.Hashtable[]] $NicInformation = @()
-		$NicInformation += @{ Data = "Name"; Value = $ThisNic.Name; }
+		$NicInformation = New-Object System.Collections.ArrayList
+		$NicInformation.Add(@{ Data = "Name"; Value = $ThisNic.Name; }) > $Null
 		If($ThisNic.Name -ne $nic.description)
 		{
-			$NicInformation += @{ Data = "Description"; Value = $Nic.description; }
+			$NicInformation.Add(@{ Data = "Description"; Value = $Nic.description; }) > $Null
 		}
-		$NicInformation += @{ Data = "Connection ID"; Value = $ThisNic.NetConnectionID; }
-		$NicInformation += @{ Data = "Manufacturer"; Value = $Nic.manufacturer; }
-		$NicInformation += @{ Data = "Availability"; Value = $xAvailability; }
-		$NicInformation += @{ Data = "Allow the computer to turn off this device to save power"; Value = $PowerSaving; }
-		$NicInformation += @{ Data = "Receive Side Scaling"; Value = $RSSEnabled; }
-		$NicInformation += @{ Data = "Physical Address"; Value = $Nic.macaddress; }
+		$NicInformation.Add(@{ Data = "Connection ID"; Value = $ThisNic.NetConnectionID; }) > $Null
+		If(validObject $Nic Manufacturer)
+		{
+			$NicInformation.Add(@{ Data = "Manufacturer"; Value = $Nic.manufacturer; }) > $Null
+		}
+		$NicInformation.Add(@{ Data = "Availability"; Value = $xAvailability; }) > $Null
+		$NicInformation.Add(@{ Data = "Allow the computer to turn off this device to save power"; Value = $PowerSaving; }) > $Null
+		$NicInformation.Add(@{ Data = "Receive Side Scaling"; Value = $RSSEnabled; }) > $Null
+		$NicInformation.Add(@{ Data = "Physical Address"; Value = $Nic.macaddress; }) > $Null
 		If($xIPAddress.Count -gt 1)
 		{
-			$NicInformation += @{ Data = "IP Address"; Value = $xIPAddress[0]; }
-			$NicInformation += @{ Data = "Default Gateway"; Value = $Nic.Defaultipgateway; }
-			$NicInformation += @{ Data = "Subnet Mask"; Value = $xIPSubnet[0]; }
+			$NicInformation.Add(@{ Data = "IP Address"; Value = $xIPAddress[0]; }) > $Null
+			$NicInformation.Add(@{ Data = "Default Gateway"; Value = $Nic.Defaultipgateway; }) > $Null
+			$NicInformation.Add(@{ Data = "Subnet Mask"; Value = $xIPSubnet[0]; }) > $Null
 			$cnt = -1
 			ForEach($tmp in $xIPAddress)
 			{
 				$cnt++
 				If($cnt -gt 0)
 				{
-					$NicInformation += @{ Data = "IP Address"; Value = $tmp; }
-					$NicInformation += @{ Data = "Subnet Mask"; Value = $xIPSubnet[$cnt]; }
+					$NicInformation.Add(@{ Data = "IP Address"; Value = $tmp; }) > $Null
+					$NicInformation.Add(@{ Data = "Subnet Mask"; Value = $xIPSubnet[$cnt]; }) > $Null
 				}
 			}
 		}
 		Else
 		{
-			$NicInformation += @{ Data = "IP Address"; Value = $xIPAddress; }
-			$NicInformation += @{ Data = "Default Gateway"; Value = $Nic.Defaultipgateway; }
-			$NicInformation += @{ Data = "Subnet Mask"; Value = $xIPSubnet; }
+			$NicInformation.Add(@{ Data = "IP Address"; Value = $xIPAddress; }) > $Null
+			$NicInformation.Add(@{ Data = "Default Gateway"; Value = $Nic.Defaultipgateway; }) > $Null
+			$NicInformation.Add(@{ Data = "Subnet Mask"; Value = $xIPSubnet; }) > $Null
 		}
 		If($nic.dhcpenabled)
 		{
-			$DHCPLeaseObtainedDate = $nic.ConvertToDateTime($nic.dhcpleaseobtained)
-			$DHCPLeaseExpiresDate = $nic.ConvertToDateTime($nic.dhcpleaseexpires)
-			$NicInformation += @{ Data = "DHCP Enabled"; Value = $Nic.dhcpenabled; }
-			$NicInformation += @{ Data = "DHCP Lease Obtained"; Value = $dhcpleaseobtaineddate; }
-			$NicInformation += @{ Data = "DHCP Lease Expires"; Value = $dhcpleaseexpiresdate; }
-			$NicInformation += @{ Data = "DHCP Server"; Value = $Nic.dhcpserver; }
+			$NicInformation.Add(@{ Data = "DHCP Enabled"; Value = $Nic.dhcpenabled.ToString(); }) > $Null
+			$NicInformation.Add(@{ Data = "DHCP Lease Obtained"; Value = $dhcpleaseobtaineddate; }) > $Null
+			$NicInformation.Add(@{ Data = "DHCP Lease Expires"; Value = $dhcpleaseexpiresdate; }) > $Null
+			$NicInformation.Add(@{ Data = "DHCP Server"; Value = $Nic.dhcpserver; }) > $Null
+		}
+		Else
+		{
+			$NicInformation.Add(@{ Data = "DHCP Enabled"; Value = $Nic.dhcpenabled.ToString(); }) > $Null
 		}
 		If(![String]::IsNullOrEmpty($nic.dnsdomain))
 		{
-			$NicInformation += @{ Data = "DNS Domain"; Value = $Nic.dnsdomain; }
+			$NicInformation.Add(@{ Data = "DNS Domain"; Value = $Nic.dnsdomain; }) > $Null
 		}
-		If($nic.dnsdomainsuffixsearchorder -ne $Null -and $nic.dnsdomainsuffixsearchorder.length -gt 0)
+		If($Null -ne $nic.dnsdomainsuffixsearchorder -and $nic.dnsdomainsuffixsearchorder.length -gt 0)
 		{
-			$NicInformation += @{ Data = "DNS Search Suffixes"; Value = $xnicdnsdomainsuffixsearchorder[0]; }
+			$NicInformation.Add(@{ Data = "DNS Search Suffixes"; Value = $xnicdnsdomainsuffixsearchorder[0]; }) > $Null
 			$cnt = -1
 			ForEach($tmp in $xnicdnsdomainsuffixsearchorder)
 			{
 				$cnt++
 				If($cnt -gt 0)
 				{
-					$NicInformation += @{ Data = ""; Value = $tmp; }
+					$NicInformation.Add(@{ Data = ""; Value = $tmp; }) > $Null
 				}
 			}
 		}
-		$NicInformation += @{ Data = "DNS WINS Enabled"; Value = $xdnsenabledforwinsresolution; }
-		If($nic.dnsserversearchorder -ne $Null -and $nic.dnsserversearchorder.length -gt 0)
+		$NicInformation.Add(@{ Data = "DNS WINS Enabled"; Value = $xdnsenabledforwinsresolution; }) > $Null
+		If($Null -ne $nic.dnsserversearchorder -and $nic.dnsserversearchorder.length -gt 0)
 		{
-			$NicInformation += @{ Data = "DNS Servers"; Value = $xnicdnsserversearchorder[0]; }
+			$NicInformation.Add(@{ Data = "DNS Servers"; Value = $xnicdnsserversearchorder[0]; }) > $Null
 			$cnt = -1
 			ForEach($tmp in $xnicdnsserversearchorder)
 			{
 				$cnt++
 				If($cnt -gt 0)
 				{
-					$NicInformation += @{ Data = ""; Value = $tmp; }
+					$NicInformation.Add(@{ Data = ""; Value = $tmp; }) > $Null
 				}
 			}
 		}
-		$NicInformation += @{ Data = "NetBIOS Setting"; Value = $xTcpipNetbiosOptions; }
-		$NicInformation += @{ Data = "WINS: Enabled LMHosts"; Value = $xwinsenablelmhostslookup; }
+		$NicInformation.Add(@{ Data = "NetBIOS Setting"; Value = $xTcpipNetbiosOptions; }) > $Null
+		$NicInformation.Add(@{ Data = "WINS: Enabled LMHosts"; Value = $xwinsenablelmhostslookup; }) > $Null
 		If(![String]::IsNullOrEmpty($nic.winshostlookupfile))
 		{
-			$NicInformation += @{ Data = "Host Lookup File"; Value = $Nic.winshostlookupfile; }
+			$NicInformation.Add(@{ Data = "Host Lookup File"; Value = $Nic.winshostlookupfile; }) > $Null
 		}
 		If(![String]::IsNullOrEmpty($nic.winsprimaryserver))
 		{
-			$NicInformation += @{ Data = "Primary Server"; Value = $Nic.winsprimaryserver; }
+			$NicInformation.Add(@{ Data = "Primary Server"; Value = $Nic.winsprimaryserver; }) > $Null
 		}
 		If(![String]::IsNullOrEmpty($nic.winssecondaryserver))
 		{
-			$NicInformation += @{ Data = "Secondary Server"; Value = $Nic.winssecondaryserver; }
+			$NicInformation.Add(@{ Data = "Secondary Server"; Value = $Nic.winssecondaryserver; }) > $Null
 		}
 		If(![String]::IsNullOrEmpty($nic.winsscopeid))
 		{
-			$NicInformation += @{ Data = "Scope ID"; Value = $Nic.winsscopeid; }
+			$NicInformation.Add(@{ Data = "Scope ID"; Value = $Nic.winsscopeid; }) > $Null
 		}
-		$Table = AddWordTable -Hashtable $NicInformation -Columns Data,Value -List -AutoFit $wdAutoFitFixed;
+		$Table = AddWordTable -Hashtable $NicInformation `
+		-Columns Data,Value `
+		-List `
+		-Format $wdTableGrid `
+		-AutoFit $wdAutoFitFixed;
 
 		## Set first column format
 		SetWordCellFormat -Collection $Table.Columns.Item(1).Cells -Bold -BackgroundColor $wdColorGray15;
@@ -1436,6 +1538,7 @@ Function OutputNicItem
 
 		FindWordDocumentEnd
 		$Table = $Null
+		WriteWordLine 0 0 ""
 	}
 }
 #endregion
@@ -1473,7 +1576,7 @@ Function SetWordHashTable
 		{
 			'ca-'	{ 'Taula automática 2'; Break }
 			'da-'	{ 'Automatisk tabel 2'; Break }
-			'de-'	{ 'Automatische Tabelle 2'; Break }
+			'de-'	{ 'Automatisches Verzeichnis 2'; Break }
 			'en-'	{ 'Automatic Table 2'; Break }
 			'es-'	{ 'Tabla automática 2'; Break }
 			'fi-'	{ 'Automaattinen taulukko 2'; Break }
@@ -1839,7 +1942,7 @@ Function SWExclusions
 	$var = ""
 	$Tmp = '$InstalledApps | Where {'
 	$Exclusions = Get-Content "$($pwd.path)\SoftwareExclusions.txt" -EA 0
-	If($? -and $Exclusions -ne $Null)
+	If($? -and $Null -ne $Exclusions)
 	{
 		If($Exclusions -is [array])	
 		{
@@ -1865,20 +1968,29 @@ Function CheckWordPrereq
 	If((Test-Path  REGISTRY::HKEY_CLASSES_ROOT\Word.Application) -eq $False)
 	{
 		$ErrorActionPreference = $SaveEAPreference
-		Write-Host "`n`n`t`tThis script directly outputs to Microsoft Word, please install Microsoft Word`n`n"
-		Exit
+		
+		If(($MSWord -eq $False) -and ($PDF -eq $True))
+		{
+			Write-Host "`n`n`t`tThis script uses Microsoft Word's SaveAs PDF function, please install Microsoft Word`n`n"
+			AbortScript
+		}
+		Else
+		{
+			Write-Host "`n`n`t`tThis script directly outputs to Microsoft Word, please install Microsoft Word`n`n"
+			AbortScript
+		}
 	}
 
 	#find out our session (usually "1" except on TS/RDC or Citrix)
 	$SessionID = (Get-Process -PID $PID).SessionId
 	
 	#Find out if winword is running in our session
-	[bool]$wordrunning = ((Get-Process 'WinWord' -ea 0)|?{$_.SessionId -eq $SessionID}) -ne $Null
+	[bool]$wordrunning = $null –ne ((Get-Process 'WinWord' -ea 0) | Where-Object {$_.SessionId -eq $SessionID})
 	If($wordrunning)
 	{
 		$ErrorActionPreference = $SaveEAPreference
 		Write-Host "`n`n`tPlease close all instances of Microsoft Word before running this report.`n`n"
-		Exit
+		AbortScript
 	}
 }
 
@@ -2000,9 +2112,9 @@ Function Check-LoadedModule
 
 {
 	Param([parameter(Mandatory = $True)][alias("Module")][string]$ModuleName)
-	#$LoadedModules = Get-Module | Select Name
+	#$LoadedModules = Get-Module | Select-Object Name
 	#following line changed at the recommendation of @andyjmorgan
-	$LoadedModules = Get-Module |% { $_.Name.ToString() }
+	$LoadedModules = Get-Module | ForEach-Object { $_.Name.ToString() }
 	#bug reported on 21-JAN-2013 by @schose 
 	#the following line did not work if the citrix.grouppolicy.commands.psm1 module
 	#was manually loaded from a non Default folder
@@ -2041,10 +2153,10 @@ Function Check-NeededPSSnapins
 	$RegisteredSnapins = @()
 
 	#Creates arrays of strings, rather than objects, we're passing strings so this will be more robust.
-	$loadedSnapins += Get-pssnapin | % {$_.name}
-	$registeredSnapins += Get-pssnapin -Registered | % {$_.name}
+	$loadedSnapins += Get-PSSnapin | ForEach-Object {$_.name}
+	$registeredSnapins += Get-PSSnapin -Registered | ForEach-Object {$_.name}
 
-	ForEach ($Snapin in $Snapins)
+	ForEach($Snapin in $Snapins)
 	{
 		#check if the snapin is loaded
 		If(!($LoadedSnapins -like $snapin))
@@ -2064,7 +2176,18 @@ Function Check-NeededPSSnapins
 			{
 				#Snapin is registered, but not loaded, loading it now:
 				Write-Host "Loading Windows PowerShell snap-in: $snapin"
-				Add-PSSnapin -Name $snapin -EA 0 *>$Null
+				Add-PSSnapin -Name $snapin -EA 0
+
+				If(!($?))
+				{
+					Write-Error "
+	`n`n
+	Error loading snapin: $($error[0].Exception.Message)
+	`n`n
+	Script cannot continue.
+	`n`n"
+					Return $false
+				}				
 			}
 		}
 	}
@@ -2072,8 +2195,10 @@ Function Check-NeededPSSnapins
 	If($FoundMissingSnapin)
 	{
 		Write-Warning "Missing Windows PowerShell snap-ins Detected:"
-		$missingSnapins | % {Write-Warning "($_)"}
-		return $False
+		Write-Host ""
+		$missingSnapins | ForEach-Object {Write-Host "`tMissing Snapin: ($_)"}
+		Write-Host ""
+		Return $False
 	}
 	Else
 	{
@@ -2192,16 +2317,30 @@ Function Set-DocumentProperty {
 
 Function AbortScript
 {
-	$Script:Word.quit()
-	Write-Verbose "$(Get-Date): System Cleanup"
-	[System.Runtime.Interopservices.Marshal]::ReleaseComObject($Script:Word) | Out-Null
+	Write-Verbose "$(Get-Date -Format G): System Cleanup"
 	If(Test-Path variable:global:word)
 	{
+		$Script:Word.quit()
+		[System.Runtime.Interopservices.Marshal]::ReleaseComObject($Script:Word) | Out-Null
 		Remove-Variable -Name word -Scope Global 4>$Null
 	}
 	[gc]::collect() 
 	[gc]::WaitForPendingFinalizers()
-	Write-Verbose "$(Get-Date): Script has been aborted"
+
+	#is the winword Process still running? kill it
+
+	#find out our session (usually "1" except on TS/RDC or Citrix)
+	$SessionID = (Get-Process -PID $PID).SessionId
+
+	#Find out if winword running in our session
+	$wordprocess = ((Get-Process 'WinWord' -ea 0) | Where-Object {$_.SessionId -eq $SessionID}) | Select-Object -Property Id 
+	If( $wordprocess -and $wordprocess.Id -gt 0)
+	{
+		Write-Verbose "$(Get-Date -Format G): WinWord Process is still running. Attempting to stop WinWord Process # $($wordprocess.Id)"
+		Stop-Process $wordprocess.Id -EA 0
+	}
+	
+	Write-Verbose "$(Get-Date -Format G): Script has been aborted"
 	$ErrorActionPreference = $SaveEAPreference
 	Exit
 }
@@ -2224,11 +2363,11 @@ Function ProcessCitrixPolicies
 		{
 			WriteWordLine 0 0 ""
 			WriteWordLine 0 0 "IMA Policies"
-			$Policies = Get-CtxGroupPolicy -EA 0 | Sort Type,PolicyName
+			$Policies = Get-CtxGroupPolicy -EA 0 | Sort-Object Type,PolicyName
 		}
 		Else
 		{
-			$Policies = Get-CtxGroupPolicy -EA 0 | Sort Type,Priority
+			$Policies = Get-CtxGroupPolicy -EA 0 | Sort-Object Type,Priority
 		}
 	}
 	Else
@@ -2237,15 +2376,15 @@ Function ProcessCitrixPolicies
 		{
 			WriteWordLine 0 0 ""
 			WriteWordLine 0 0 "Active Directory Policies"
-			$Policies = Get-CtxGroupPolicy -DriveName $xDriveName -EA 0 | Sort Type,PolicyName
+			$Policies = Get-CtxGroupPolicy -DriveName $xDriveName -EA 0 | Sort-Object Type,PolicyName
 		}
 		Else
 		{
-			$Policies = Get-CtxGroupPolicy -DriveName $xDriveName -EA 0 | Sort Type,Priority
+			$Policies = Get-CtxGroupPolicy -DriveName $xDriveName -EA 0 | Sort-Object Type,Priority
 		}
 	}
 
-	If($? -and $Policies -ne $Null)
+	If($? -and $Null -ne $Policies)
 	{
 		ForEach($Policy in $Policies)
 		{
@@ -2360,7 +2499,7 @@ Function ProcessCitrixPolicies
 					$Settings = Get-CtxGroupPolicyConfiguration -PolicyName $Policy.PolicyName -DriveName $xDriveName -EA 0
 				}
 
-				If($? -and $Settings -ne $Null)
+				If($? -and $Null -ne $Settings)
 				{
 					ForEach($Setting in $Settings)
 					{
@@ -2620,7 +2759,7 @@ Function ProcessCitrixPolicies
 								$XML = $Null
 								$xRow = $Null
 								$Columns = $Null
-								$Row = $Null
+								$Rows = $Null
 							}
 							If($Setting.MaximumServersOfflinePercent.State -ne "NotConfigured")
 							{
@@ -3676,31 +3815,31 @@ Function GetCtxGPOsInAD
 {
 	#thanks to the Citrix Engineering Team for pointers and for Michael B. Smith for creating the function
 	#updated 07-Nov-13 to work in a Windows Workgroup environment
-	Write-Verbose "$(Get-Date): Testing for an Active Directory environment"
+	Write-Verbose "$(Get-Date -Format G): Testing for an Active Directory environment"
 	$root = [ADSI]"LDAP://RootDSE"
 	If([String]::IsNullOrEmpty($root.PSBase.Name))
 	{
-		Write-Verbose "$(Get-Date): Not in an Active Directory environment"
+		Write-Verbose "$(Get-Date -Format G): `tNot in an Active Directory environment"
 		$root = $Null
 		$xArray = @()
 	}
 	Else
 	{
-		Write-Verbose "$(Get-Date): In an Active Directory environment"
+		Write-Verbose "$(Get-Date -Format G): `tIn an Active Directory environment"
 		$domainNC = $root.defaultNamingContext.ToString()
 		$root = $Null
 		$xArray = @()
 
 		$domain = $domainNC.Replace( 'DC=', '' ).Replace( ',', '.' )
-		Write-Verbose "$(Get-Date): Searching \\$($domain)\sysvol\$($domain)\Policies"
+		Write-Verbose "$(Get-Date -Format G): `tSearching \\$($domain)\sysvol\$($domain)\Policies"
 		$sysvolFiles = @()
-		$sysvolFiles = dir -Recurse ( '\\' + $domain  + '\sysvol\' + $domain + '\Policies' ) -EA 0
+		$sysvolFiles = Get-ChildItem -Recurse ( '\\' + $domain  + '\sysvol\' + $domain + '\Policies' ) -EA 0
 		If($sysvolFiles.Count -eq 0)
 		{
-			Write-Verbose "$(Get-Date): Search timed out.  Retrying.  Searching \\ + $($domain)\sysvol\$($domain)\Policies a second time."
-			$sysvolFiles = dir -Recurse ( '\\' + $domain  + '\sysvol\' + $domain + '\Policies' ) -EA 0
+			Write-Verbose "$(Get-Date -Format G): `tSearch timed out. Retrying. Searching \\ + $($domain)\sysvol\$($domain)\Policies a second time."
+			$sysvolFiles = Get-ChildItem -Recurse ( '\\' + $domain  + '\sysvol\' + $domain + '\Policies' ) -EA 0
 		}
-		foreach( $file in $sysvolFiles )
+		ForEach( $file in $sysvolFiles )
 		{
 			If( -not $file.PSIsContainer )
 			{
@@ -3713,7 +3852,10 @@ Function GetCtxGPOsInAD
 					{
 						$gp = $array[ 6 ].ToString()
 						$gpObject = [ADSI]( "LDAP://" + "CN=" + $gp + ",CN=Policies,CN=System," + $domainNC )
-						$xArray += $gpObject.DisplayName	### name of the group policy object
+						If(!$xArray.Contains($gpObject.DisplayName))
+						{
+							$xArray += $gpObject.DisplayName	### name of the group policy object
+						}
 					}
 				}
 			}
@@ -3850,37 +3992,38 @@ Function AddWordTable
 	Param
 	(
 		# Array of Hashtable (including table headers)
-		[Parameter(Mandatory=$true, ValueFromPipelineByPropertyName=$true, ParameterSetName='Hashtable', Position=0)]
+		[Parameter(Mandatory=$True, ValueFromPipelineByPropertyName=$True, ParameterSetName='Hashtable', Position=0)]
 		[ValidateNotNullOrEmpty()] [System.Collections.Hashtable[]] $Hashtable,
 		# Array of PSCustomObjects
-		[Parameter(Mandatory=$true, ValueFromPipelineByPropertyName=$true, ParameterSetName='CustomObject', Position=0)]
+		[Parameter(Mandatory=$True, ValueFromPipelineByPropertyName=$True, ParameterSetName='CustomObject', Position=0)]
 		[ValidateNotNullOrEmpty()] [PSCustomObject[]] $CustomObject,
 		# Array of Hashtable key names or PSCustomObject property names to include, in display order.
 		# If not supplied then all Hashtable keys or all PSCustomObject properties will be displayed.
-		[Parameter(ValueFromPipelineByPropertyName=$true)] [AllowNull()] [string[]] $Columns = $null,
+		[Parameter(ValueFromPipelineByPropertyName=$True)] [AllowNull()] [string[]] $Columns = $Null,
 		# Array of custom table header strings in display order.
-		[Parameter(ValueFromPipelineByPropertyName=$true)] [AllowNull()] [string[]] $Headers = $null,
+		[Parameter(ValueFromPipelineByPropertyName=$True)] [AllowNull()] [string[]] $Headers = $Null,
 		# AutoFit table behavior.
-		[Parameter(ValueFromPipelineByPropertyName=$true)] [AllowNull()] [int] $AutoFit = -1,
+		[Parameter(ValueFromPipelineByPropertyName=$True)] [AllowNull()] [int] $AutoFit = -1,
 		# List view (no headers)
 		[Switch] $List,
 		# Grid lines
 		[Switch] $NoGridLines,
+		[Switch] $NoInternalGridLines,
 		# Built-in Word table formatting style constant
 		# Would recommend only $wdTableFormatContempory for normal usage (possibly $wdTableFormatList5 for List view)
-		[Parameter(ValueFromPipelineByPropertyName=$true)] [int] $Format = 0
+		[Parameter(ValueFromPipelineByPropertyName=$True)] [int] $Format = 0
 	)
 
 	Begin 
 	{
 		Write-Debug ("Using parameter set '{0}'" -f $PSCmdlet.ParameterSetName);
 		## Check if -Columns wasn't specified but -Headers were (saves some additional parameter sets!)
-		If(($Columns -eq $null) -and ($Headers -ne $null)) 
+		If(($Null -eq $Columns) -and ($Null -eq $Headers)) 
 		{
 			Write-Warning "No columns specified and therefore, specified headers will be ignored.";
-			$Columns = $null;
+			$Columns = $Null;
 		}
-		ElseIf(($Columns -ne $null) -and ($Headers -ne $null)) 
+		ElseIf(($Null -ne $Columns) -and ($Null -ne $Headers)) 
 		{
 			## Check if number of specified -Columns matches number of specified -Headers
 			If($Columns.Length -ne $Headers.Length) 
@@ -3893,13 +4036,13 @@ Function AddWordTable
 	Process
 	{
 		## Build the Word table data string to be converted to a range and then a table later.
-        [System.Text.StringBuilder] $WordRangeString = New-Object System.Text.StringBuilder;
+		[System.Text.StringBuilder] $WordRangeString = New-Object System.Text.StringBuilder;
 
 		Switch ($PSCmdlet.ParameterSetName) 
 		{
 			'CustomObject' 
 			{
-				If($Columns -eq $null) 
+				If($Null -eq $Columns) 
 				{
 					## Build the available columns from all availble PSCustomObject note properties
 					[string[]] $Columns = @();
@@ -3913,19 +4056,19 @@ Function AddWordTable
 				## Add the table headers from -Headers or -Columns (except when in -List(view)
 				If(-not $List) 
 				{
-					Write-Debug ("$(Get-Date): `t`tBuilding table headers");
-					If($Headers -ne $null) 
+					Write-Debug ("$(Get-Date -Format G): `t`tBuilding table headers");
+					If($Null -ne $Headers) 
 					{
-                        [ref] $null = $WordRangeString.AppendFormat("{0}`n", [string]::Join("`t", $Headers));
+                        [ref] $Null = $WordRangeString.AppendFormat("{0}`n", [string]::Join("`t", $Headers));
 					}
 					Else 
 					{ 
-                        [ref] $null = $WordRangeString.AppendFormat("{0}`n", [string]::Join("`t", $Columns));
+                        [ref] $Null = $WordRangeString.AppendFormat("{0}`n", [string]::Join("`t", $Columns));
 					}
 				}
 
 				## Iterate through each PSCustomObject
-				Write-Debug ("$(Get-Date): `t`tBuilding table rows");
+				Write-Debug ("$(Get-Date -Format G): `t`tBuilding table rows");
 				ForEach($Object in $CustomObject) 
 				{
 					$OrderedValues = @();
@@ -3935,14 +4078,14 @@ Function AddWordTable
 						$OrderedValues += $Object.$Column; 
 					}
 					## Use the ordered list to add each column in specified order
-                    [ref] $null = $WordRangeString.AppendFormat("{0}`n", [string]::Join("`t", $OrderedValues));
-				} ## end foreach
-				Write-Debug ("$(Get-Date): `t`t`tAdded '{0}' table rows" -f ($CustomObject.Count));
+					[ref] $Null = $WordRangeString.AppendFormat("{0}`n", [string]::Join("`t", $OrderedValues));
+				} ## end ForEach
+				Write-Debug ("$(Get-Date -Format G): `t`t`tAdded '{0}' table rows" -f ($CustomObject.Count));
 			} ## end CustomObject
 
 			Default 
 			{   ## Hashtable
-				If($Columns -eq $null) 
+				If($Null -eq $Columns) 
 				{
 					## Build the available columns from all available hashtable keys. Hopefully
 					## all Hashtables have the same keys (they should for a table).
@@ -3952,19 +4095,19 @@ Function AddWordTable
 				## Add the table headers from -Headers or -Columns (except when in -List(view)
 				If(-not $List) 
 				{
-					Write-Debug ("$(Get-Date): `t`tBuilding table headers");
-					If($Headers -ne $null) 
+					Write-Debug ("$(Get-Date -Format G): `t`tBuilding table headers");
+					If($Null -ne $Headers) 
 					{ 
-                        [ref] $null = $WordRangeString.AppendFormat("{0}`n", [string]::Join("`t", $Headers));
+						[ref] $Null = $WordRangeString.AppendFormat("{0}`n", [string]::Join("`t", $Headers));
 					}
 					Else 
 					{
-                        [ref] $null = $WordRangeString.AppendFormat("{0}`n", [string]::Join("`t", $Columns));
+						[ref] $Null = $WordRangeString.AppendFormat("{0}`n", [string]::Join("`t", $Columns));
 					}
 				}
                 
 				## Iterate through each Hashtable
-				Write-Debug ("$(Get-Date): `t`tBuilding table rows");
+				Write-Debug ("$(Get-Date -Format G): `t`tBuilding table rows");
 				ForEach($Hash in $Hashtable) 
 				{
 					$OrderedValues = @();
@@ -3974,15 +4117,15 @@ Function AddWordTable
 						$OrderedValues += $Hash.$Column; 
 					}
 					## Use the ordered list to add each column in specified order
-                    [ref] $null = $WordRangeString.AppendFormat("{0}`n", [string]::Join("`t", $OrderedValues));
-				} ## end foreach
+					[ref] $Null = $WordRangeString.AppendFormat("{0}`n", [string]::Join("`t", $OrderedValues));
+				} ## end ForEach
 
-				Write-Debug ("$(Get-Date): `t`t`tAdded '{0}' table rows" -f $Hashtable.Count);
+				Write-Debug ("$(Get-Date -Format G): `t`t`tAdded '{0}' table rows" -f $Hashtable.Count);
 			} ## end default
 		} ## end switch
 
 		## Create a MS Word range and set its text to our tab-delimited, concatenated string
-		Write-Debug ("$(Get-Date): `t`tBuilding table range");
+		Write-Debug ("$(Get-Date -Format G): `t`tBuilding table range");
 		$WordRange = $Script:Doc.Application.Selection.Range;
 		$WordRange.Text = $WordRangeString.ToString();
 
@@ -3993,38 +4136,38 @@ Function AddWordTable
 		If($Format -ge 0) 
 		{
 			$ConvertToTableArguments.Add("Format", $Format);
-			$ConvertToTableArguments.Add("ApplyBorders", $true);
-			$ConvertToTableArguments.Add("ApplyShading", $true);
-			$ConvertToTableArguments.Add("ApplyFont", $true);
-			$ConvertToTableArguments.Add("ApplyColor", $true);
+			$ConvertToTableArguments.Add("ApplyBorders", $True);
+			$ConvertToTableArguments.Add("ApplyShading", $True);
+			$ConvertToTableArguments.Add("ApplyFont", $True);
+			$ConvertToTableArguments.Add("ApplyColor", $True);
 			If(!$List) 
 			{ 
-				$ConvertToTableArguments.Add("ApplyHeadingRows", $true); 
+				$ConvertToTableArguments.Add("ApplyHeadingRows", $True); 
 			}
-			$ConvertToTableArguments.Add("ApplyLastRow", $true);
-			$ConvertToTableArguments.Add("ApplyFirstColumn", $true);
-			$ConvertToTableArguments.Add("ApplyLastColumn", $true);
+			$ConvertToTableArguments.Add("ApplyLastRow", $True);
+			$ConvertToTableArguments.Add("ApplyFirstColumn", $True);
+			$ConvertToTableArguments.Add("ApplyLastColumn", $True);
 		}
 
 		## Invoke ConvertToTable method - with named arguments - to convert Word range to a table
 		## See http://msdn.microsoft.com/en-us/library/office/aa171893(v=office.11).aspx
-		Write-Debug ("$(Get-Date): `t`tConverting range to table");
+		Write-Debug ("$(Get-Date -Format G): `t`tConverting range to table");
 		## Store the table reference just in case we need to set alternate row coloring
 		$WordTable = $WordRange.GetType().InvokeMember(
 			"ConvertToTable",                               # Method name
 			[System.Reflection.BindingFlags]::InvokeMethod, # Flags
-			$null,                                          # Binder
+			$Null,                                          # Binder
 			$WordRange,                                     # Target (self!)
 			([Object[]]($ConvertToTableArguments.Values)),  ## Named argument values
-			$null,                                          # Modifiers
-			$null,                                          # Culture
+			$Null,                                          # Modifiers
+			$Null,                                          # Culture
 			([String[]]($ConvertToTableArguments.Keys))     ## Named argument names
 		);
 
 		## Implement grid lines (will wipe out any existing formatting
 		If($Format -lt 0) 
 		{
-			Write-Debug ("$(Get-Date): `t`tSetting table format");
+			Write-Debug ("$(Get-Date -Format G): `t`tSetting table format");
 			$WordTable.Style = $Format;
 		}
 
@@ -4034,12 +4177,25 @@ Function AddWordTable
 			$WordTable.AutoFitBehavior($AutoFit); 
 		}
 
-		#the next line causes the heading row to flow across page breaks
-		$WordTable.Rows.First.Headingformat = $wdHeadingFormatTrue;
+		If(!$List)
+		{
+			#the next line causes the heading row to flow across page breaks
+			$WordTable.Rows.First.Headingformat = $wdHeadingFormatTrue;
+		}
 
 		If(!$NoGridLines) 
 		{
 			$WordTable.Borders.InsideLineStyle = $wdLineStyleSingle;
+			$WordTable.Borders.OutsideLineStyle = $wdLineStyleSingle;
+		}
+		If($NoGridLines) 
+		{
+			$WordTable.Borders.InsideLineStyle = $wdLineStyleNone;
+			$WordTable.Borders.OutsideLineStyle = $wdLineStyleNone;
+		}
+		If($NoInternalGridLines) 
+		{
+			$WordTable.Borders.InsideLineStyle = $wdLineStyleNone;
 			$WordTable.Borders.OutsideLineStyle = $wdLineStyleSingle;
 		}
 
@@ -4093,21 +4249,21 @@ Function SetWordCellFormat
 	[CmdletBinding(DefaultParameterSetName='Collection')]
 	Param (
 		# Word COM object cell collection reference
-		[Parameter(Mandatory=$true, ValueFromPipeline=$true, ParameterSetName='Collection', Position=0)] [ValidateNotNullOrEmpty()] $Collection,
+		[Parameter(Mandatory=$True, ValueFromPipeline=$True, ParameterSetName='Collection', Position=0)] [ValidateNotNullOrEmpty()] $Collection,
 		# Word COM object individual cell reference
-		[Parameter(Mandatory=$true, ParameterSetName='Cell', Position=0)] [ValidateNotNullOrEmpty()] $Cell,
+		[Parameter(Mandatory=$True, ParameterSetName='Cell', Position=0)] [ValidateNotNullOrEmpty()] $Cell,
 		# Hashtable of cell co-ordinates
-		[Parameter(Mandatory=$true, ParameterSetName='Hashtable', Position=0)] [ValidateNotNullOrEmpty()] [System.Collections.Hashtable[]] $Coordinates,
+		[Parameter(Mandatory=$True, ParameterSetName='Hashtable', Position=0)] [ValidateNotNullOrEmpty()] [System.Collections.Hashtable[]] $Coordinates,
 		# Word COM object table reference
-		[Parameter(Mandatory=$true, ParameterSetName='Hashtable', Position=1)] [ValidateNotNullOrEmpty()] $Table,
+		[Parameter(Mandatory=$True, ParameterSetName='Hashtable', Position=1)] [ValidateNotNullOrEmpty()] $Table,
 		# Font name
-		[Parameter()] [AllowNull()] [string] $Font = $null,
+		[Parameter()] [AllowNull()] [string] $Font = $Null,
 		# Font color
-		[Parameter()] [AllowNull()] $Color = $null,
+		[Parameter()] [AllowNull()] $Color = $Null,
 		# Font size
 		[Parameter()] [ValidateNotNullOrEmpty()] [int] $Size = 0,
 		# Cell background color
-		[Parameter()] [AllowNull()] [int]$BackgroundColor = $null,
+		[Parameter()] [AllowNull()] [int]$BackgroundColor = $Null,
 		# Force solid background color
 		[Switch] $Solid,
 		[Switch] $Bold,
@@ -4127,25 +4283,25 @@ Function SetWordCellFormat
 			'Collection' {
 				ForEach($Cell in $Collection) 
 				{
-					If($BackgroundColor -ne $null) { $Cell.Shading.BackgroundPatternColor = $BackgroundColor; }
-					If($Bold) { $Cell.Range.Font.Bold = $true; }
-					If($Italic) { $Cell.Range.Font.Italic = $true; }
+					If($Null -ne $BackgroundColor) { $Cell.Shading.BackgroundPatternColor = $BackgroundColor; }
+					If($Bold) { $Cell.Range.Font.Bold = $True; }
+					If($Italic) { $Cell.Range.Font.Italic = $True; }
 					If($Underline) { $Cell.Range.Font.Underline = 1; }
-					If($Font -ne $null) { $Cell.Range.Font.Name = $Font; }
-					If($Color -ne $null) { $Cell.Range.Font.Color = $Color; }
+					If($Null -ne $Font) { $Cell.Range.Font.Name = $Font; }
+					If($Null -ne $Color) { $Cell.Range.Font.Color = $Color; }
 					If($Size -ne 0) { $Cell.Range.Font.Size = $Size; }
 					If($Solid) { $Cell.Shading.Texture = 0; } ## wdTextureNone
-				} # end foreach
+				} # end ForEach
 			} # end Collection
 			'Cell' 
 			{
-				If($Bold) { $Cell.Range.Font.Bold = $true; }
-				If($Italic) { $Cell.Range.Font.Italic = $true; }
+				If($Bold) { $Cell.Range.Font.Bold = $True; }
+				If($Italic) { $Cell.Range.Font.Italic = $True; }
 				If($Underline) { $Cell.Range.Font.Underline = 1; }
-				If($Font -ne $null) { $Cell.Range.Font.Name = $Font; }
-				If($Color -ne $null) { $Cell.Range.Font.Color = $Color; }
+				If($Null -ne $Font) { $Cell.Range.Font.Name = $Font; }
+				If($Null -ne $Color) { $Cell.Range.Font.Color = $Color; }
 				If($Size -ne 0) { $Cell.Range.Font.Size = $Size; }
-				If($BackgroundColor -ne $null) { $Cell.Shading.BackgroundPatternColor = $BackgroundColor; }
+				If($Null -ne $BackgroundColor) { $Cell.Shading.BackgroundPatternColor = $BackgroundColor; }
 				If($Solid) { $Cell.Shading.Texture = 0; } ## wdTextureNone
 			} # end Cell
 			'Hashtable' 
@@ -4153,13 +4309,13 @@ Function SetWordCellFormat
 				ForEach($Coordinate in $Coordinates) 
 				{
 					$Cell = $Table.Cell($Coordinate.Row, $Coordinate.Column);
-					If($Bold) { $Cell.Range.Font.Bold = $true; }
-					If($Italic) { $Cell.Range.Font.Italic = $true; }
+					If($Bold) { $Cell.Range.Font.Bold = $True; }
+					If($Italic) { $Cell.Range.Font.Italic = $True; }
 					If($Underline) { $Cell.Range.Font.Underline = 1; }
-					If($Font -ne $null) { $Cell.Range.Font.Name = $Font; }
-					If($Color -ne $null) { $Cell.Range.Font.Color = $Color; }
+					If($Null -ne $Font) { $Cell.Range.Font.Name = $Font; }
+					If($Null -ne $Color) { $Cell.Range.Font.Color = $Color; }
 					If($Size -ne 0) { $Cell.Range.Font.Size = $Size; }
-					If($BackgroundColor -ne $null) { $Cell.Shading.BackgroundPatternColor = $BackgroundColor; }
+					If($Null -ne $BackgroundColor) { $Cell.Shading.BackgroundPatternColor = $BackgroundColor; }
 					If($Solid) { $Cell.Shading.Texture = 0; } ## wdTextureNone
 				}
 			} # end Hashtable
@@ -4272,11 +4428,11 @@ Function ShowScriptOptions
 Function validStateProp( [object] $object, [string] $topLevel, [string] $secondLevel )
 {
 	#function created 8-jan-2014 by Michael B. Smith
-	if( $object )
+	If( $object )
 	{
-		If( ( gm -Name $topLevel -InputObject $object ) )
+		If((Get-Member -Name $topLevel -InputObject $object))
 		{
-			If( ( gm -Name $secondLevel -InputObject $object.$topLevel ) )
+			If((Get-Member -Name $secondLevel -InputObject $object.$topLevel))
 			{
 				Return $True
 			}
@@ -4293,7 +4449,7 @@ Function SetupWord
 	Write-Verbose "$(Get-Date): Create Word comObject.  Ignore the next message."
 	$Script:Word = New-Object -comobject "Word.Application" -EA 0 4>$Null
 	
-	If(!$? -or $Script:Word -eq $Null)
+	If(!$? -or $Null -eq $Script:Word)
 	{
 		Write-Warning "The Word object could not be created.  You may need to repair your Word installation."
 		$ErrorActionPreference = $SaveEAPreference
@@ -4555,20 +4711,20 @@ Function SetupWord
 
 	$Script:Word.Templates.LoadBuildingBlocks()
 	#word 2010/2013
-	$BuildingBlocksCollection = $Script:Word.Templates | Where {$_.name -eq "Built-In Building Blocks.dotx"}
+	$BuildingBlocksCollection = $Script:Word.Templates | Where-Object{$_.name -eq "Built-In Building Blocks.dotx"}
 
 	Write-Verbose "$(Get-Date): Attempt to load cover page $($CoverPage)"
 	$part = $Null
 
 	$BuildingBlocksCollection | 
-	ForEach{
+	ForEach-Object {
 		If ($_.BuildingBlockEntries.Item($CoverPage).Name -eq $CoverPage) 
 		{
 			$BuildingBlocks = $_
 		}
 	}        
 
-	If($BuildingBlocks -ne $Null)
+	If($Null -ne $BuildingBlocks)
 	{
 		$BuildingBlocksExist = $True
 
@@ -4582,7 +4738,7 @@ Function SetupWord
 			$part = $Null
 		}
 
-		If($part -ne $Null)
+		If($Null -ne $part)
 		{
 			$Script:CoverPagesExist = $True
 		}
@@ -4597,7 +4753,7 @@ Function SetupWord
 
 	Write-Verbose "$(Get-Date): Create empty word doc"
 	$Script:Doc = $Script:Word.Documents.Add()
-	If($Script:Doc -eq $Null)
+	If($Null -ne $Script:Doc)
 	{
 		Write-Verbose "$(Get-Date): "
 		$ErrorActionPreference = $SaveEAPreference
@@ -4614,7 +4770,7 @@ Function SetupWord
 	}
 
 	$Script:Selection = $Script:Word.Selection
-	If($Script:Selection -eq $Null)
+	If($Null -eq $Script:Selection)
 	{
 		Write-Verbose "$(Get-Date): "
 		$ErrorActionPreference = $SaveEAPreference
@@ -4653,7 +4809,7 @@ Function SetupWord
 		#table of contents
 		Write-Verbose "$(Get-Date): Table of Contents - $($myHash.Word_TableOfContents)"
 		$toc = $BuildingBlocks.BuildingBlockEntries.Item($myHash.Word_TableOfContents)
-		If($toc -eq $Null)
+		If($Null -eq $toc)
 		{
 			Write-Verbose "$(Get-Date): "
 			Write-Verbose "$(Get-Date): Table of Content - $($myHash.Word_TableOfContents) could not be retrieved."
@@ -4710,7 +4866,7 @@ Function UpdateDocumentProperties
 	{
 		If($Script:CoverPagesExist)
 		{
-			Write-Verbose "$(Get-Date): Set Cover Page Properties"
+			Write-Verbose "$(Get-Date -Format G): Set Cover Page Properties"
 			#8-Jun-2017 put these 4 items in alpha order
             Set-DocumentProperty -Document $Script:Doc -DocProperty Author -Value $UserName
             Set-DocumentProperty -Document $Script:Doc -DocProperty Company -Value $Script:CoName
@@ -4718,10 +4874,10 @@ Function UpdateDocumentProperties
             Set-DocumentProperty -Document $Script:Doc -DocProperty Title -Value $Script:title
 
 			#Get the Coverpage XML part
-			$cp = $Script:Doc.CustomXMLParts | Where {$_.NamespaceURI -match "coverPageProps$"}
+			$cp = $Script:Doc.CustomXMLParts | Where-Object{$_.NamespaceURI -match "coverPageProps$"}
 
 			#get the abstract XML part
-			$ab = $cp.documentelement.ChildNodes | Where {$_.basename -eq "Abstract"}
+			$ab = $cp.documentelement.ChildNodes | Where-Object{$_.basename -eq "Abstract"}
 			#set the text
 			If([String]::IsNullOrEmpty($Script:CoName))
 			{
@@ -4734,35 +4890,35 @@ Function UpdateDocumentProperties
 			$ab.Text = $abstract
 
 			#added 8-Jun-2017
-			$ab = $cp.documentelement.ChildNodes | Where {$_.basename -eq "CompanyAddress"}
+			$ab = $cp.documentelement.ChildNodes | Where-Object{$_.basename -eq "CompanyAddress"}
 			#set the text
 			[string]$abstract = $CompanyAddress
 			$ab.Text = $abstract
 
 			#added 8-Jun-2017
-			$ab = $cp.documentelement.ChildNodes | Where {$_.basename -eq "CompanyEmail"}
+			$ab = $cp.documentelement.ChildNodes | Where-Object{$_.basename -eq "CompanyEmail"}
 			#set the text
 			[string]$abstract = $CompanyEmail
 			$ab.Text = $abstract
 
 			#added 8-Jun-2017
-			$ab = $cp.documentelement.ChildNodes | Where {$_.basename -eq "CompanyFax"}
+			$ab = $cp.documentelement.ChildNodes | Where-Object{$_.basename -eq "CompanyFax"}
 			#set the text
 			[string]$abstract = $CompanyFax
 			$ab.Text = $abstract
 
 			#added 8-Jun-2017
-			$ab = $cp.documentelement.ChildNodes | Where {$_.basename -eq "CompanyPhone"}
+			$ab = $cp.documentelement.ChildNodes | Where-Object{$_.basename -eq "CompanyPhone"}
 			#set the text
 			[string]$abstract = $CompanyPhone
 			$ab.Text = $abstract
 
-			$ab = $cp.documentelement.ChildNodes | Where {$_.basename -eq "PublishDate"}
+			$ab = $cp.documentelement.ChildNodes | Where-Object{$_.basename -eq "PublishDate"}
 			#set the text
 			[string]$abstract = (Get-Date -Format d).ToString()
 			$ab.Text = $abstract
 
-			Write-Verbose "$(Get-Date): Update the Table of Contents"
+			Write-Verbose "$(Get-Date -Format G): Update the Table of Contents"
 			#update the Table of Contents
 			$Script:Doc.TablesOfContents.item(1).Update()
 			$cp = $Null
@@ -4839,15 +4995,10 @@ Function SaveandCloseDocumentandShutdownWord
 		}
 	}
 
-	Write-Verbose "$(Get-Date): Closing Word"
+	Write-Verbose "$(Get-Date -Format G): Closing Word"
 	$Script:Doc.Close()
 	$Script:Word.Quit()
-	If($PDF)
-	{
-		Write-Verbose "$(Get-Date): Deleting $($Script:FileName1) since only $($Script:FileName2) is needed"
-		Remove-Item $Script:FileName1 4>$Null
-	}
-	Write-Verbose "$(Get-Date): System Cleanup"
+	Write-Verbose "$(Get-Date -Format G): System Cleanup"
 	[System.Runtime.Interopservices.Marshal]::ReleaseComObject($Script:Word) | Out-Null
 	If(Test-Path variable:global:word)
 	{
@@ -4856,6 +5007,19 @@ Function SaveandCloseDocumentandShutdownWord
 	$SaveFormat = $Null
 	[gc]::collect() 
 	[gc]::WaitForPendingFinalizers()
+	
+	#is the winword Process still running? kill it
+
+	#find out our session (usually "1" except on TS/RDC or Citrix)
+	$SessionID = (Get-Process -PID $PID).SessionId
+
+	#Find out if winword running in our session
+	$wordprocess = ((Get-Process 'WinWord' -ea 0) | Where-Object {$_.SessionId -eq $SessionID}) | Select-Object -Property Id 
+	If( $wordprocess -and $wordprocess.Id -gt 0)
+	{
+		Write-Verbose "$(Get-Date -Format G): WinWord Process is still running. Attempting to stop WinWord Process # $($wordprocess.Id)"
+		Stop-Process $wordprocess.Id -EA 0
+	}
 }
 
 Function SetFileName1andFileName2
@@ -4960,7 +5124,7 @@ If($Software)
 Write-Verbose "$(Get-Date): Getting initial Farm data"
 $farm = Get-XAFarm -EA 0
 
-If($? -and $Farm -ne $Null)
+If($? -and $Null -ne $Farm)
 {
 	Write-Verbose "$(Get-Date): Verify farm version"
 	#first check to make sure this is a XenApp 6 farm
@@ -5001,7 +5165,7 @@ If(!$Summary -and ($Section -eq "All" -or $Section -eq "ConfigLog"))
 	[bool]$ConfigLog = $False
 	$ConfigurationLogging = Get-XAConfigurationLog -EA 0
 
-	If($? -and $ConfigurationLogging -ne $Null)
+	If($? -and $Null -ne $ConfigurationLogging)
 	{
 		$selection.InsertNewPage()
 		WriteWordLine 1 0 "Configuration Logging"
@@ -5048,9 +5212,9 @@ If($Section -eq "All" -or $Section -eq "Admins")
 	[int]$TotalAdmins = 0
 
 	Write-Verbose "$(Get-Date): `tRetrieving Administrators"
-	$Administrators = Get-XAAdministrator -EA 0 | Sort AdministratorName
+	$Administrators = Get-XAAdministrator -EA 0 | Sort-Object AdministratorName
 
-	If($? -and $Administrators -ne $Null)
+	If($? -and $Null -ne $Administrators)
 	{
 		$selection.InsertNewPage()
 		WriteWordLine 1 0 "Administrators:"
@@ -5179,14 +5343,14 @@ If($Section -eq "All" -or $Section -eq "Apps")
 	Write-Verbose "$(Get-Date): `tRetrieving Applications"
 	If($Summary)
 	{
-		$Applications = Get-XAApplication -EA 0 | Sort DisplayName
+		$Applications = Get-XAApplication -EA 0 | Sort-Object DisplayName
 	}
 	Else
 	{
-		$Applications = Get-XAApplication -EA 0 | Sort FolderPath, DisplayName
+		$Applications = Get-XAApplication -EA 0 | Sort-Object FolderPath, DisplayName
 	}
 
-	If($? -and $Applications -ne $Null)
+	If($? -and $Null -ne $Applications)
 	{
 		$selection.InsertNewPage()
 		WriteWordLine 1 0 "Applications:"
@@ -5236,7 +5400,7 @@ If($Section -eq "All" -or $Section -eq "Apps")
 				
 				[bool]$AppServerInfoResults = $False
 				$AppServerInfo = Get-XAApplicationReport -BrowserName $Application.BrowserName -EA 0
-				If($? -and $AppServerInfo -ne $Null)
+				If($? -and $Null -ne $AppServerInfo)
 				{
 					$AppServerInfoResults = $True
 				}
@@ -5379,14 +5543,14 @@ If($Section -eq "All" -or $Section -eq "Apps")
 						If(![String]::IsNullOrEmpty($AppServerInfo.ServerNames))
 						{
 							WriteWordLine 0 1 "Servers:"
-							$TempArray = $AppServerInfo.ServerNames | Sort
+							$TempArray = $AppServerInfo.ServerNames | Sort-Object
 							BuildTableForServerOrWG $TempArray "Server"
 							$TempArray = $Null
 						}
 						If(![String]::IsNullOrEmpty($AppServerInfo.WorkerGroupNames))
 						{
 							WriteWordLine 0 1 "Worker Groups:"
-							$TempArray = $AppServerInfo.WorkerGroupNames | Sort
+							$TempArray = $AppServerInfo.WorkerGroupNames | Sort-Object
 							BuildTableForServerOrWG $TempArray "Server"
 							$TempArray = $Null
 						}
@@ -5700,7 +5864,7 @@ If($Section -eq "All" -or $Section -eq "Apps")
 			}
 		}
 	}
-	ElseIf($Applications -eq $Null)
+	ElseIf($Null -eq $Applications)
 	{
 		Write-Verbose "$(Get-Date): There are no Applications published"
 	}
@@ -5733,7 +5897,7 @@ If(!$Summary -and ($Section -eq "All" -or $Section -eq "ConfigLog"))
 			$ConnectionString = Get-Content "$($pwd.path)\XA6ConfigLog.udl" 4>$Null| select-object -last 1
 			$ConfigLogReport = Get-CtxConfigurationLogReport -connectionstring $ConnectionString -TimePeriodFrom $StartDate -TimePeriodTo $EndDate -EA 0 4>$Null
 
-			If($? -and $ConfigLogReport -ne $Null)
+			If($? -and $Null -ne $ConfigLogReport)
 			{
 				Write-Verbose "$(Get-Date): `tProcessing $($ConfigLogReport.Count) history items"
 				$selection.InsertNewPage()
@@ -5799,7 +5963,7 @@ If(!$Summary -and ($Section -eq "All" -or $Section -eq "ConfigLog"))
 
 				FindWordDocumentEnd
 			} 
-			ElseIf($? -and $ConfigLogReport -eq $Null)
+			ElseIf($? -and $Null -eq $ConfigLogReport)
 			{
 				Write-Verbose "$(Get-Date): There was no configuration logging data returned"
 				WriteWordLine 0 0 "There was no configuration logging data returned"
@@ -5829,9 +5993,9 @@ If($Section -eq "All" -or $Section -eq "LBPolicies")
 	[int]$TotalLBPolicies = 0
 
 	Write-Verbose "$(Get-Date): `tRetrieving Load Balancing Policies"
-	$LoadBalancingPolicies = Get-XALoadBalancingPolicy -EA 0 | Sort PolicyName
+	$LoadBalancingPolicies = Get-XALoadBalancingPolicy -EA 0 | Sort-Object PolicyName
 
-	If($? -and $LoadBalancingPolicies -ne $Null)
+	If($? -and $Null -ne $LoadBalancingPolicies)
 	{
 		$selection.InsertNewPage()
 		WriteWordLine 1 0 "Load Balancing Policies:"
@@ -6089,7 +6253,7 @@ If($Section -eq "All" -or $Section -eq "LBPolicies")
 			}
 		}
 	}
-	ElseIf($LoadBalancingPolicies -eq $Null)
+	ElseIf($Null -eq $LoadBalancingPolicies)
 	{
 		Write-Verbose "$(Get-Date): There are no Load balancing policies created"
 	}
@@ -6110,9 +6274,9 @@ If($Section -eq "All" -or $Section -eq "LoadEvals")
 	[int]$TotalLoadEvaluators = 0
 
 	Write-Verbose "$(Get-Date): `tRetrieving Load Evaluators"
-	$LoadEvaluators = Get-XALoadEvaluator -EA 0 | Sort LoadEvaluatorName
+	$LoadEvaluators = Get-XALoadEvaluator -EA 0 | Sort-Object LoadEvaluatorName
 
-	If($? -and $LoadEvaluators -ne $Null)
+	If($? -and $Null -ne $LoadEvaluators)
 	{
 		$selection.InsertNewPage()
 		WriteWordLine 1 0 "Load Evaluators:"
@@ -6279,14 +6443,14 @@ If($Section -eq "All" -or $Section -eq "Servers")
 	Write-Verbose "$(Get-Date): `tRetrieving Servers"
 	If($Summary)
 	{
-		$servers = Get-XAServer -EA 0 | Sort ServerName
+		$servers = Get-XAServer -EA 0 | Sort-Object ServerName
 	}
 	Else
 	{
-		$servers = Get-XAServer -EA 0 | Sort FolderPath, ServerName
+		$servers = Get-XAServer -EA 0 | Sort-Object FolderPath, ServerName
 	}
 
-	If($? -and $Servers -ne $Null)
+	If($? -and $Null -ne $Servers)
 	{
 		$selection.InsertNewPage()
 		WriteWordLine 1 0 "Servers:"
@@ -6410,8 +6574,8 @@ If($Section -eq "All" -or $Section -eq "Servers")
 				}
 
 				#applications published to server
-				$Applications = Get-XAApplication -ServerName $server.ServerName -EA 0 | Sort FolderPath, DisplayName
-				If($? -and $Applications -ne $Null)
+				$Applications = Get-XAApplication -ServerName $server.ServerName -EA 0 | Sort-Object FolderPath, DisplayName
+				If($? -and $Null -ne $Applications)
 				{
 					WriteWordLine 0 1 "Published applications:"
 					Write-Verbose "$(Get-Date): `t`tProcessing published applications for server $($server.ServerName)"
@@ -6475,7 +6639,7 @@ If($Section -eq "All" -or $Section -eq "Servers")
 					$regkey1=$reg.OpenSubKey($UninstallKey1) 
 
 					#Retrieve an array of string that contain all the subkey names
-					If($regkey1 -ne $Null)
+					If($Null -ne $regkey1)
 					{
 						$subkeys1=$regkey1.GetSubKeyNames() 
 
@@ -6496,7 +6660,7 @@ If($Section -eq "All" -or $Section -eq "Servers")
 
 					$UninstallKey2="SOFTWARE\\Wow6432Node\\Microsoft\\Windows\\CurrentVersion\\Uninstall" 
 					$regkey2=$reg.OpenSubKey($UninstallKey2)
-					If($regkey2 -ne $Null)
+					If($Null -ne $regkey2)
 					{
 						$subkeys2=$regkey2.GetSubKeyNames()
 
@@ -6514,7 +6678,7 @@ If($Section -eq "All" -or $Section -eq "Servers")
 						}
 					}
 
-					$InstalledApps = $InstalledApps | Sort DisplayName
+					$InstalledApps = $InstalledApps | Sort-Object DisplayName
 
 					$tmp1 = SWExclusions
 					If($Tmp1 -ne "")
@@ -6526,7 +6690,7 @@ If($Section -eq "All" -or $Section -eq "Servers")
 					{
 						$tempapps = $InstalledApps
 					}
-					$JustApps = $TempApps | Select DisplayName, DisplayVersion | Sort DisplayName -unique
+					$JustApps = $TempApps | Select-Object DisplayName, DisplayVersion | Sort-Object DisplayName -unique
 
 					WriteWordLine 0 1 "Installed applications:"
 					Write-Verbose "$(Get-Date): `t`tProcessing installed applications for server $($server.ServerName)"
@@ -6572,7 +6736,18 @@ If($Section -eq "All" -or $Section -eq "Servers")
 						#Replaced with a single call to retrieve services via WMI. The repeated
 						## "Get-WMIObject Win32_Service -Filter" calls were the major delays in the script.
 						## If we need to retrieve the StartUp type might as well just use WMI.
-						$Services = Get-WMIObject Win32_Service -ComputerName $server.ServerName -EA 0 | Where {$_.DisplayName -like "*Citrix*"} | Sort DisplayName
+						If($server.ServerName -eq $env:computername)
+						{
+							$Services = Get-CIMInstance Win32_Service -EA 0 -Verbose:$False | `
+							Where-Object {$_.DisplayName -like "*Citrix*"} | `
+							Sort-Object DisplayName
+						}
+						Else
+						{
+							$Services = Get-CIMInstance Win32_Service -CIMSession $server.ServerName -EA 0 -Verbose:$False | `
+							Where-Object {$_.DisplayName -like "*Citrix*"} | `
+							Sort-Object DisplayName
+						}
 					}
 					
 					Catch
@@ -6581,7 +6756,7 @@ If($Section -eq "All" -or $Section -eq "Servers")
 					}
 
 					WriteWordLine 0 1 "Citrix Services" -NoNewLine
-					If($? -and $Services -ne $Null)
+					If($? -and $Null -ne $Services)
 					{
 						If($Services -is [array])
 						{
@@ -6668,7 +6843,9 @@ If($Section -eq "All" -or $Section -eq "Servers")
 					Write-Verbose "$(Get-Date): `t`tGet list of Citrix hotfixes installed"
 					Try
 					{
-						$hotfixes = (Get-XAServerHotfix -ServerName $server.ServerName -EA 0 | Where {$_.Valid -eq $True}) | Sort HotfixName
+						$hotfixes = (Get-XAServerHotfix -ServerName $server.ServerName -EA 0 | `
+						Where-Object {$_.Valid -eq $True}) | `
+						Sort-Object HotfixName
 					}
 					
 					Catch
@@ -6676,7 +6853,7 @@ If($Section -eq "All" -or $Section -eq "Servers")
 						$hotfixes = $Null
 					}
 
-					If($? -and $hotfixes -ne $Null)
+					If($? -and $Null -ne $hotfixes)
 					{
 						[int]$Rows = 1
 						$Single_Row = (Get-Member -Type Property -Name Length -InputObject $hotfixes -EA 0) -eq $Null
@@ -6831,7 +7008,9 @@ If($Section -eq "All" -or $Section -eq "Servers")
 						Try
 						{
 							$results = Get-HotFix -computername $Server.ServerName 
-							$MSInstalledHotfixes = $results | select-object -Expand HotFixID | Sort HotFixID
+							$MSInstalledHotfixes = $results | `
+							Select-Object -Expand HotFixID | `
+							Sort-Object HotFixID
 							$results = $Null
 						}
 						
@@ -6993,9 +7172,9 @@ If($Section -eq "All" -or $Section -eq "WGs")
 	[int]$TotalWGs = 0
 
 	Write-Verbose "$(Get-Date): `tRetrieving Worker Groups"
-	$WorkerGroups = Get-XAWorkerGroup -EA 0 | Sort WorkerGroupName
+	$WorkerGroups = Get-XAWorkerGroup -EA 0 | Sort-Object WorkerGroupName
 
-	If($? -and $WorkerGroups -ne $Null)
+	If($? -and $Null -ne $WorkerGroups)
 	{
 		$selection.InsertNewPage()
 		WriteWordLine 1 0 "Worker Groups:"
@@ -7016,7 +7195,7 @@ If($Section -eq "All" -or $Section -eq "WGs")
 					WriteWordLine 0 1 "Farm Servers:"
 					Write-Verbose "$(Get-Date): `t`tProcessing Worker Group by Farm Servers"
 					Write-Verbose "$(Get-Date): `t`tCreate Word Table for Worker Group by Farm Server"
-					$TempArray = $WorkerGroup.ServerNames | Sort
+					$TempArray = $WorkerGroup.ServerNames | Sort-Object
 					BuildTableForServerOrWG $TempArray "Server"
 					$TempArray = $Null
 				}
@@ -7026,7 +7205,7 @@ If($Section -eq "All" -or $Section -eq "WGs")
 					WriteWordLine 0 1 "Server Group Accounts:"
 					Write-Verbose "$(Get-Date): `t`tProcessing Worker Group by Server Groups"
 					Write-Verbose "$(Get-Date): `t`tCreate Word Table for Worker Group by Server Groups"
-					$TempArray = $WorkerGroup.ServerGroups | Sort
+					$TempArray = $WorkerGroup.ServerGroups | Sort-Object
 					BuildTableForServerOrWG $TempArray "Security Group"
 					$TempArray = $Null
 				}
@@ -7036,13 +7215,13 @@ If($Section -eq "All" -or $Section -eq "WGs")
 					WriteWordLine 0 1 "Organizational Units:"
 					Write-Verbose "$(Get-Date): `t`tProcessing Worker Group by OUs"
 					Write-Verbose "$(Get-Date): `t`tCreate Word Table for Worker Group by OUs"
-					$TempArray = $WorkerGroup.OUs | Sort {$_.Length}
+					$TempArray = $WorkerGroup.OUs | Sort-Object {$_.Length}
 					BuildTableForServerOrWG $TempArray "OU"
 					$TempArray = $Null
 				}
 				#applications published to worker group
-				$Applications = Get-XAApplication -WorkerGroup $WorkerGroup.WorkerGroupName -EA 0 | Sort FolderPath, DisplayName
-				If($? -and $Applications -ne $Null)
+				$Applications = Get-XAApplication -WorkerGroup $WorkerGroup.WorkerGroupName -EA 0 | Sort-Object FolderPath, DisplayName
+				If($? -and $Null -ne $Applications)
 				{
 					WriteWordLine 0 0 ""
 					WriteWordLine 0 1 "Published applications:"
@@ -7093,7 +7272,7 @@ If($Section -eq "All" -or $Section -eq "WGs")
 			}
 		}
 	}
-	ElseIf($WorkerGroups -eq $Null)
+	ElseIf($Null -eq $WorkerGroups)
 	{
 
 		Write-Verbose "$(Get-Date): There are no Worker Groups created"
@@ -7115,8 +7294,8 @@ If($Section -eq "All" -or $Section -eq "Zones")
 	[int]$TotalZones = 0
 
 	Write-Verbose "$(Get-Date): `tRetrieving Zones"
-	$Zones = Get-XAZone -EA 0 | Sort ZoneName
-	If($? -and $Zones -ne $Null)
+	$Zones = Get-XAZone -EA 0 | Sort-Object ZoneName
+	If($? -and $Null -ne $Zones)
 	{
 		$selection.InsertNewPage()
 		WriteWordLine 1 0 "Zones:"
@@ -7128,8 +7307,8 @@ If($Section -eq "All" -or $Section -eq "Zones")
 			{
 				WriteWordLine 2 0 $Zone.ZoneName
 				WriteWordLine 0 1 "Current Data Collector: " $Zone.DataCollector
-				$Servers = Get-XAServer -ZoneName $Zone.ZoneName -EA 0 | Sort ElectionPreference, ServerName
-				If($? -and $Servers -ne $Null)
+				$Servers = Get-XAServer -ZoneName $Zone.ZoneName -EA 0 | Sort-Object ElectionPreference, ServerName
+				If($? -and $Null -ne $Servers)
 				{		
 					WriteWordLine 0 1 "Servers in Zone"
 			
@@ -7210,7 +7389,7 @@ If($Section -eq "All" -or $Section -eq "Policies")
 		{
 			Write-Verbose "$(Get-Date): There are $($CtxGPOArray.Count) Citrix AD based policies to process"
 
-			$CtxGPOArray = $CtxGPOArray | Sort
+			$CtxGPOArray = $CtxGPOArray | Sort-Object
 			
 			ForEach($CtxGPO in $CtxGPOArray)
 			{
@@ -7239,7 +7418,7 @@ If($Section -eq "All" -or $Section -eq "Policies")
 				If($Global:TotalADPoliciesNotProcessed -gt 0)
 				{
 					Write-Verbose "$(Get-Date): Processing list of Citrix AD Policies not processed"
-					$ADPoliciesNotProcessed = $ADPoliciesNotProcessed | Sort -unique
+					$ADPoliciesNotProcessed = $ADPoliciesNotProcessed | Sort-Object -unique
 					WriteWordLine 0 0 ""
 					WriteWordLine 2 0 "Active Directory Citrix policies that could not be processed:"
 					ForEach($Policy in $ADPoliciesNotProcessed)

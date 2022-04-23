@@ -4,6 +4,28 @@
 #http://www.CarlWebster.com
 #originally released to the Citrix community on September 30, 2011
 
+#Version 4.35 23-Apr-2022
+#	Change all Get-WMIObject to Get-CIMInstance
+#	Fixed numerous $Null comparisons
+#	Fixed the German Table of Contents (Thanks to Rene Bigler)
+#		From 
+#			'de-'	{ 'Automatische Tabelle 2'; Break }
+#		To
+#			'de-'	{ 'Automatisches Verzeichnis 2'; Break }
+#	General code cleanup
+#	In Function AbortScript, add test for the winword process and terminate it if it is running
+#	In Functions AbortScript and SaveandCloseDocumentandShutdownWord, add code from Guy Leech to test for the "Id" property before using it
+#	In Function OutputNicItem, fixed several issues with DHCP data
+#	Updated the following functions to the latest version:
+#		AddWordTable
+#		Check-LoadedModule
+#		Check-NeededPSSnapins
+#		SetWordCellFormat
+#		UpdateDocumentProperties
+#		validStateProp
+#	Updated the help text
+#	Updated the ReadMe file
+
 #Version 4.34 9-May-2020
 #	Add checking for a Word version of 0, which indicates the Office installation needs repairing
 #	Add Receive Side Scaling setting to Function OutputNICItem
